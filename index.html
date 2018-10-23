@@ -85,16 +85,23 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="运行与编译"><a href="#运行与编译" class="headerlink" title="运行与编译"></a>运行与编译</h3><hr>
-<p>PHP是解释型语言，构建在ZEND虚拟机上，运行时首先会被zend引擎编译或者解释为OPCODE（或者运行时读取已经缓存的OPCODE），再由zend引擎处理后对接机器指令。<br>所以PHP现在作为web语言有一个明显的优势，代码更新后没有重启的概念，下次执行的时候直接读取新文件解释。<br>Go 是编译型语言，运行前需要直接编译为机器指令的二进制可执行文件。<br>所以一些数据结构造成的问题是可以在编译时检查出来的，当然调用值超下标之类的就没办法了。<br>最大的问题是每次代码更新后都需要重新编译，作为web服务支持需要停止原来的服务重启新的服务，至少我还没想到好的解决方案。好在Go的编译启动很快，现在看是毫秒级的。</p>
-<h3 id="语言类型"><a href="#语言类型" class="headerlink" title="语言类型"></a>语言类型</h3><p>PHP是绝对的弱类型语言<br>PHP里几乎没有类型的概念，int和string bool可以默认转换，一个数组可以有任何类型的数据结构。或者我可以理解为没有数据结构的概念，因为会在编译为OPCODE的时候根据词法分析、语法分析、语义分析和优化最终生成对应机器语言。<br>Go是强类型语言<br>Go里的数据结构要求非常严格。不同位的int都只能强制转换。slice和数组只能包含同一类型的数据结构，在定义时基本就要指定（或者再赋值时默认定义）。要想像PHP那样一个返回一个包含各种数据结构的数组型数据，只能定义一个结构体struct。</p>
-<p>###web服务<br>PHP本身没有web服务的概念，虽然它就是为了web而生的。它只能对接第三方web服务（Apache Nginx）。这其实也切合互联网发展历程的吧。最早的互联网没有动态的概念，一切都是静态的。也就不需要动态语言，只需要web服务即可。后面随着发展肯定没法接受纯静态互联网，于是就有了动态的需求，但是web服务器自身是不能支持动态的，怎么办呢，记得以前看过印象深刻的话，在计算机领域，没有什么是加一个中间件解决不了的。CGI出现了，通用网管接口，也可以理解为一个对接web服务的规范吧，只要动态语言支持这个规范就可以接上web服务器了，PHP的诞生伴随着fastcgi，经常看到进程里有一个php-cgi，就是这玩意吧，当然后面因为单纯fastcgi的性能可能实在弱到没法忍受，就接着诞生了php-fpm，fastcgi process manager（以前老觉得这种fpm什么的专业术语很牛逼的样子，后来发现基本都是英文首字母的组合，就略对歪果仁的怪癖无语）。当然fpm怎么提高性能就扯远了，也扯不出来，因为我也不太懂，总结就是一句话，PHP自己不支持web服务，靠CGI对接web服务器。<br>Go不需要第三方web服务器，它自己就可以支持web服务。Go的net包提供了各种接口，包括TCP/IP，UDP或者Unix下的socket。基于此，还开发出了专门针对的http的包。为了兼容现在的系统，还有http还有CGI和fcgi子包，具体干嘛的我也不知道。</p>
-<p>###垃圾回收机制<br>PHP的垃圾回收是靠引用计数，一个变量生成的时候自带计数，有人指向它计数就加一，所以指向它的都被unset掉了，计数变零，OK，这个内存可以释放掉了。我以前觉得PHP每个进程过来的时候生成一个新进程，然后请求结束干掉进程，那进程包含的内存肯定就自动释放掉了，但写着写着突然想到PHP是不是没有这么low每次请求是一个进程而不是一个线程，线程结束那进程还是有必须要主动释放指定的内存的吧，当然每个线程也有自己的标示，所以线程结束进程可以主动释放这个标示下的所以内存块吧。至于释放是不是靠引用计数就不知道了。反正这个请求结束相关的内存块都被干掉了是肯定的。所以PHPer不用考虑内存释放不释放的，反正请求结束全自动释放。<br>Go的垃圾回收是不可达回收，就是一个变量在运行的过程中发现后面用不到它了，OK，放到回收池，等到一定量了一起回收掉。这个回收的过程会STW（stop the world，还是那个奇葩怪癖），所以饱受诟病。太较真了，要是这样谁都写不出来纯完美的代码吧。</p>
-<p>当然写代码最后不要分号之类的写就没意思，大局上能想到的暂时就这么多，以后想到再补充。</p>
+<p>PHP是解释型语言，构建在ZEND虚拟机上，运行时首先会被zend引擎编译或者解释为OPCODE（或者运行时读取已经缓存的OPCODE），再由zend引擎处理后对接机器指令。<br>所以PHP现在作为web语言有一个明显的优势，代码更新后没有重启的概念，下次执行的时候直接读取新文件解释。</p>
+<p>Go 是编译型语言，运行前需要直接编译为机器指令的二进制可执行文件。<br>所以一些数据结构造成的问题是可以在编译时检查出来的，当然调用值超下标之类的就没办法了。<br>最大的问题是每次代码更新后都需要重新编译，作为web服务支持需要停止原来的服务重启新的服务，至少我还没想到好的解决方案。好在Go的编译启动很快，现在看是毫秒级的。</p>
+<h3 id="语言类型"><a href="#语言类型" class="headerlink" title="语言类型"></a>语言类型</h3><hr>
+<p>PPHP是绝对的弱类型语言<br>PHP里几乎没有类型的概念，int和string bool可以默认转换，一个数组可以有任何类型的数据结构。或者我可以理解为没有数据结构的概念，因为会在编译为OPCODE的时候根据词法分析、语法分析、语义分析和优化最终生成对应机器语言。</p>
+<p>Go是强类型语言<br>Go里的数据结构要求非常严格。不同位的int都只能强制转换。slice和数组只能包含同一类型的数据结构，在定义时基本就要指定（或者再赋值时默认定义）。要想像PHP那样一个返回一个包含各种数据结构的数组型数据，只能定义一个结构体struct。</p>
+<h3 id="web服务"><a href="#web服务" class="headerlink" title="web服务"></a>web服务</h3><hr>
+<p>PPHP本身没有web服务的概念，虽然它就是为了web而生的。它只能对接第三方web服务（Apache Nginx）。这其实也切合互联网发展历程的吧。最早的互联网没有动态的概念，一切都是静态的。也就不需要动态语言，只需要web服务即可。后面随着发展肯定没法接受纯静态互联网，于是就有了动态的需求，但是web服务器自身是不能支持动态的，怎么办呢，记得以前看过印象深刻的话，在计算机领域，没有什么是加一个中间件解决不了的。CGI出现了，通用网管接口，也可以理解为一个对接web服务的规范吧，只要动态语言支持这个规范就可以接上web服务器了，PHP的诞生伴随着fastcgi，经常看到进程里有一个php-cgi，就是这玩意吧，当然后面因为单纯fastcgi的性能可能实在弱到没法忍受，就接着诞生了php-fpm，fastcgi process manager（以前老觉得这种fpm什么的专业术语很牛逼的样子，后来发现基本都是英文首字母的组合，就略对歪果仁的怪癖无语）。当然fpm怎么提高性能就扯远了，也扯不出来，因为我也不太懂，总结就是一句话，PHP自己不支持web服务，靠CGI对接web服务器。</p>
+<p>Go不需要第三方web服务器，它自己就可以支持web服务。Go的net包提供了各种接口，包括TCP/IP，UDP或者Unix下的socket。基于此，还开发出了专门针对的http的包。为了兼容现在的系统，还有http还有CGI和fcgi子包，具体干嘛的我也不知道。</p>
+<h3 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h3><hr>
+<p>PPHP的垃圾回收是靠引用计数，一个变量生成的时候自带计数，有人指向它计数就加一，所以指向它的都被unset掉了，计数变零，OK，这个内存可以释放掉了。我以前觉得PHP每个进程过来的时候生成一个新进程，然后请求结束干掉进程，那进程包含的内存肯定就自动释放掉了，但写着写着突然想到PHP是不是没有这么low每次请求是一个进程而不是一个线程，线程结束那进程还是有必须要主动释放指定的内存的吧，当然每个线程也有自己的标示，所以线程结束进程可以主动释放这个标示下的所以内存块吧。至于释放是不是靠引用计数就不知道了。反正这个请求结束相关的内存块都被干掉了是肯定的。所以PHPer不用考虑内存释放不释放的，反正请求结束全自动释放。</p>
+<p>Go的垃圾回收是不可达回收，就是一个变量在运行的过程中发现后面用不到它了，OK，放到回收池，等到一定量了一起回收掉。这个回收的过程会STW（stop the world，还是那个奇葩怪癖），所以饱受诟病。太较真了，要是这样谁都写不出来纯完美的代码吧。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>代码最后不要分好，引用服务调用包等其余部分感觉具体也写不出来什么，而且Go确实也还不太熟悉。先写这么多，以后想到再说吧</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnlfg1ox0000pe38sfs9o0zb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnlfq4n20001vs389n0dmptv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -118,7 +125,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/23/hello-world/">Hello World</a>
+      <a class="article-title" href="/2018/10/23/hello-world/">Hexo 博客搭建指南</a>
     </h1>
   
 
@@ -126,20 +133,72 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <p>Hexo 博客搭建指南<br>Hexo的简洁、神秘让我跃跃欲试，在使用过程中遇到了很多问题，整理此文，一是方便其他技术人搭建自己的博客，二是给自己的学习之旅做个总结。本文未完结，欢迎star、fork，如果有错误，请不吝指出。 我搭建的博客地址：limedroid.github.io</p>
+<p>Hexo_Learning</p>
+<p>Hexo_Learning</p>
+<p>Hexo_Learning</p>
+<p>1 Hexo介绍<br>Hexo是基于NodeJs的静态博客框架，简单、轻量，其生成的静态网页可以托管在Github和Heroku上。</p>
+<p>超快速度<br>支持MarkDown<br>一键部署<br>丰富的插件<br>下面以我的博客为例，limedroid.github.io</p>
+<p>2 环境准备<br>2.1 安装node.js<br>去nodejs官网下载对应系统的安装包，按提示安装。</p>
+<p>检验安装成功：</p>
+<p>$ node -v<br>2.2 安装hexo<br>$ npm install hexo-cli -g<br>注意：Mac系统，则需要</p>
+<p>$ sudo npm install hexo-cli -g<br>3 利用Hexo搭建一个博客<br>3.1 创建博客目录limedroid.github.io<br>$ hexo init limedroid.github.io<br>$ cd limedroid.github.io<br>$ npm install<br>3.2 生成静态页面<br>$ hexo clean<br>$ hexo g<br>g 即generate</p>
+<p>3.3 运行<br>$ hexo s<br>s 即server</p>
+<p>然后打开浏览器，输入地址 localhost:4000 即可看到效果</p>
+<p>4 发一篇文章试试<br>4.1 命令方式<br>$ hexo new test<br>此时会在source/_posts目录下生成test.md文件，输入些许内容，然后保存.</p>
+<p>生成下，看看效果</p>
+<p>$ hexo clean<br>$ hexo g<br>$ hexo s<br>访问 localhost:4000 即可</p>
+<p>4.2 直接方式<br>在 <strong>source/_posts/</strong>下新建一个.md文件也可</p>
+<p>5 配置<br>网站的设置大部分都在<strong>_config.yml</strong>文件中，详细配置可以查看官方文档</p>
+<p>下面只列出简单常用配置</p>
+<p>title -&gt; 网站标题<br>subtitle -&gt; 网站副标题<br>description -&gt; 网站描述<br>author -&gt; 您的名字<br>language -&gt; 网站使用的语言<br>坑：进行配置时，需要在冒号:后加一个英文空格</p>
+<p>title: Droidlover<br>6 换一个好看的主题<br>Hexo 中有很多主题，可以在官网查看。 这里我推荐hexo-theme-next，下面列举更换主题的一般套路：</p>
+<p>6.1 下载主题资源<br>$ git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> themes/next<br>6.2 应用下载的主题<br>在网站配置文件<strong>_config.yml中，配置theme</strong></p>
+<p>theme: next<br>next是主题名称，具体的可查看主题的文档</p>
+<p>6.3 主题其他配置<br>可在/theme/{theme}/_config.yml 主题的配置文件下进行主题的配置。</p>
+<p>接下来，可以执行万能的调试命令看看效果</p>
+<p>$ hexo clean<br>$ hexo g<br>$ hexo s<br>7 部署到Github<br>7.1 有个github账号xxx<br>7.2 创建一个xxx.github.io的public仓库<br>如果您的账户名是limedroid,则需要创建一个limedroid.github.io的public仓库.</p>
+<p>7.3 安装 hexo-deployer-git<br>$ npm install hexo-deployer-git –save<br>7.4 网站配置git<br>在网站的_config.yml中配置deploy</p>
+<p>deploy:<br>  type: git<br>  repo: <repository url=""><br>  branch: [branch]<br>branch为分支，默认为master,可以不配置 repo为仓库地址，在github上新建仓库后，可复制此地址</repository></p>
+<p>7.5 部署<br>$ hexo d<br>d 即deploy</p>
+<p>8 贴标签，方便搜索<br>8.1 两个确认<br>确认站点配置文件有<br>tag_dir: tags<br>确认主题配置文件有<br>tags: tags<br>8.2 新建tags页面<br>$ hexo new page tags<br>此时会在source/下生成tags/index.md文件</p>
+<p>8.3 修改source/tags/index.md<br>title: tags<br>date: 2015-10-20 06:49:50<br>type: “tags”<br>comments: false<br>date 可保持系统生成的时间，</p>
+<p>type: “tags”<br>comments: false<br>很重要</p>
+<p>8.4 在文章中添加tags<br>在文章xx.md中添加：</p>
+<p>tags: </p>
+<pre><code>- Tag1
+- Tag2
+- Tag3
+</code></pre><p>多个Tag可按上面的格式添加。</p>
+<p>其文件头部类似：</p>
+<p>title: TagEditText<br>date: 2016-11-19 10:44:25<br>tags: </p>
+<pre><code>- Tag1
+- Tag2
+- Tag3
+</code></pre><p>9 分类，给文章归档<br>9.1 两个确认<br>确认站点配置文件打开了<br>category_dir: categories<br>确认主题配置文件打开了<br>categories: /categories<br>9.2 新建categories文件<br>$ hexo new page categories<br>此时会在source目录下生成categories/index.md文件</p>
+<p>9.3 修改categories/index.md<br>title: categories<br>date: 2015-10-20 06:49:50<br>type: “categories”<br>comments: false<br>date 可保持系统生成的时间，</p>
+<p>type: “categories”<br>comments: false<br>很重要</p>
+<p>9.4 在文章中添加categories<br>在文章xx.md中添加：</p>
+<p>categories: </p>
+<pre><code>- cate
+</code></pre><p>其文件头部类似：</p>
+<p>title: TagEditText<br>date: 2016-11-19 10:44:25<br>categories: </p>
+<pre><code>- cate
+</code></pre><p>10 添加评论功能<br>评论功能在国内一般使用多说。</p>
+<p>10.1 注册多说账号<br>10.2 创建站点<br>需要注意的是，填写的多说域名不能更改，会在后面使用，在这里我配置成droidlover</p>
+<p>10.3 配置<br>在hexo主题配置文件中搜索：</p>
+<p>duoshuo_shortname<br>，然后打开开关，配置成前面设置的多说域名，如下：</p>
+<p>duoshuo_shortname: droidlover<br>有时，可能需要一段js</p>
+<!-- 多说评论框 start -->
+<pre><code>&lt;div class=&quot;ds-thread&quot; data-thread-key=&quot;请将此处替换成文章在你的站点中的ID&quot; data-title=&quot;请替换成文章的标题&quot; data-url=&quot;请替换成文章的网址&quot;&gt;&lt;/div&gt;
+</code></pre><!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<p><script type="text/javascript"><br>var duoshuoQuery = {short_name:”droidlover”};<br>    (function() {<br>        var ds = document.createElement(‘script’);<br>        ds.type = ‘text/javascript’;ds.async = true;<br>        ds.src = (document.location.protocol == ‘https:’ ? ‘https:’ : ‘http:’) + ‘//static.duoshuo.com/embed.js’;<br>        ds.charset = ‘UTF-8’;<br>        (document.getElementsByTagName(‘head’)[0]<br>         || document.getElementsByTagName(‘body’)[0]).appendChild(ds);<br>    })();<br>    </script><br><!-- 多说公共JS代码 end --><br>现在，你可以运行看下效果了:)</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/hello-world/" data-id="cjnlfg1p30001pe38079fy06g" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/hello-world/" data-id="cjnlfq4mv0000vs38dzqkts85" class="article-share-link">Share</a>
       
       
     </footer>
@@ -184,7 +243,7 @@
           </li>
         
           <li>
-            <a href="/2018/10/23/hello-world/">Hello World</a>
+            <a href="/2018/10/23/hello-world/">Hexo 博客搭建指南</a>
           </li>
         
       </ul>
