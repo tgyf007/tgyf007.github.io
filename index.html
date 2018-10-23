@@ -5,17 +5,17 @@
   
 
   
-  <title>Hexo</title>
+  <title>一个PHP和GO的developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="一个PHP和GO的developer">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="一个PHP和GO的developer">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="一个PHP和GO的developer">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="一个PHP和GO的developer" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -34,7 +34,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo">一个PHP和GO的developer</a>
       </h1>
       
     </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/23/goandphp/">goandphp</a>
+      <a class="article-title" href="/2018/10/23/goandphp/">go and php</a>
     </h1>
   
 
@@ -84,13 +84,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一、运行与编译<br>PHP是解释型语言，构建在ZEND虚拟机上，运行时首先会被zend引擎编译或者解释为OPCODE（或者运行时读取已经缓存的OPCODE），再由zend引擎处理后对接机器指令。<br>所以PHP现在作为web语言有一个明显的优势，代码更新后没有重启的概念，下次执行的时候直接读取新文件解释。<br>Go 是编译型语言，运行前需要直接编译为机器指令的二进制可执行文件。<br>所以一些数据结构造成的问题是可以在编译时检查出来的，当然调用值超下标之类的就没办法了。<br>最大的问题是每次代码更新后都需要重新编译，作为web服务支持需要停止原来的服务重启新的服务，至少我还没想到好的解决方案。好在Go的编译启动很快，现在看是毫秒级的。<br>二 语言类型<br>PHP是绝对的弱类型语言<br>PHP里几乎没有类型的概念，int和string bool可以默认转换，一个数组可以有任何类型的数据结构。或者我可以理解为没有数据结构的概念，因为会在编译为OPCODE的时候根据词法分析、语法分析、语义分析和优化最终生成对应机器语言。<br>Go是强类型语言<br>Go里的数据结构要求非常严格。不同位的int都只能强制转换。slice和数组只能包含同一类型的数据结构，在定义时基本就要指定（或者再赋值时默认定义）。要想像PHP那样一个返回一个包含各种数据结构的数组型数据，只能定义一个结构体struct。<br>三 web服务<br>PHP本身没有web服务的概念，虽然它就是为了web而生的。它只能对接第三方web服务（Apache Nginx）。这其实也切合互联网发展历程的吧。最早的互联网没有动态的概念，一切都是静态的。也就不需要动态语言，只需要web服务即可。后面随着发展肯定没法接受纯静态互联网，于是就有了动态的需求，但是web服务器自身是不能支持动态的，怎么办呢，记得以前看过印象深刻的话，在计算机领域，没有什么是加一个中间件解决不了的。CGI出现了，通用网管接口，也可以理解为一个对接web服务的规范吧，只要动态语言支持这个规范就可以接上web服务器了，PHP的诞生伴随着fastcgi，经常看到进程里有一个php-cgi，就是这玩意吧，当然后面因为单纯fastcgi的性能可能实在弱到没法忍受，就接着诞生了php-fpm，fastcgi process manager（以前老觉得这种fpm什么的专业术语很牛逼的样子，后来发现基本都是英文首字母的组合，就略对歪果仁的怪癖无语）。当然fpm怎么提高性能就扯远了，也扯不出来，因为我也不太懂，总结就是一句话，PHP自己不支持web服务，靠CGI对接web服务器。<br>Go不需要第三方web服务器，它自己就可以支持web服务。Go的net包提供了各种接口，包括TCP/IP，UDP或者Unix下的socket。基于此，还开发出了专门针对的http的包。为了兼容现在的系统，还有http还有CGI和fcgi子包，具体干嘛的我也不知道。<br>四 垃圾回收机制<br>PHP的垃圾回收是靠引用计数，一个变量生成的时候自带计数，有人指向它计数就加一，所以指向它的都被unset掉了，计数变零，OK，这个内存可以释放掉了。我以前觉得PHP每个进程过来的时候生成一个新进程，然后请求结束干掉进程，那进程包含的内存肯定就自动释放掉了，但写着写着突然想到PHP是不是没有这么low每次请求是一个进程而不是一个线程，线程结束那进程还是有必须要主动释放指定的内存的吧，当然每个线程也有自己的标示，所以线程结束进程可以主动释放这个标示下的所以内存块吧。至于释放是不是靠引用计数就不知道了。反正这个请求结束相关的内存块都被干掉了是肯定的。所以PHPer不用考虑内存释放不释放的，反正请求结束全自动释放。<br>Go的垃圾回收是不可达回收，就是一个变量在运行的过程中发现后面用不到它了，OK，放到回收池，等到一定量了一起回收掉。这个回收的过程会STW（stop the world，还是那个奇葩怪癖），所以饱受诟病。太较真了，要是这样谁都写不出来纯完美的代码吧。</p>
+        <h3 id="运行与编译"><a href="#运行与编译" class="headerlink" title="运行与编译"></a>运行与编译</h3><hr>
+<p>PHP是解释型语言，构建在ZEND虚拟机上，运行时首先会被zend引擎编译或者解释为OPCODE（或者运行时读取已经缓存的OPCODE），再由zend引擎处理后对接机器指令。<br>所以PHP现在作为web语言有一个明显的优势，代码更新后没有重启的概念，下次执行的时候直接读取新文件解释。<br>Go 是编译型语言，运行前需要直接编译为机器指令的二进制可执行文件。<br>所以一些数据结构造成的问题是可以在编译时检查出来的，当然调用值超下标之类的就没办法了。<br>最大的问题是每次代码更新后都需要重新编译，作为web服务支持需要停止原来的服务重启新的服务，至少我还没想到好的解决方案。好在Go的编译启动很快，现在看是毫秒级的。</p>
+<h3 id="语言类型"><a href="#语言类型" class="headerlink" title="语言类型"></a>语言类型</h3><p>PHP是绝对的弱类型语言<br>PHP里几乎没有类型的概念，int和string bool可以默认转换，一个数组可以有任何类型的数据结构。或者我可以理解为没有数据结构的概念，因为会在编译为OPCODE的时候根据词法分析、语法分析、语义分析和优化最终生成对应机器语言。<br>Go是强类型语言<br>Go里的数据结构要求非常严格。不同位的int都只能强制转换。slice和数组只能包含同一类型的数据结构，在定义时基本就要指定（或者再赋值时默认定义）。要想像PHP那样一个返回一个包含各种数据结构的数组型数据，只能定义一个结构体struct。</p>
+<p>###web服务<br>PHP本身没有web服务的概念，虽然它就是为了web而生的。它只能对接第三方web服务（Apache Nginx）。这其实也切合互联网发展历程的吧。最早的互联网没有动态的概念，一切都是静态的。也就不需要动态语言，只需要web服务即可。后面随着发展肯定没法接受纯静态互联网，于是就有了动态的需求，但是web服务器自身是不能支持动态的，怎么办呢，记得以前看过印象深刻的话，在计算机领域，没有什么是加一个中间件解决不了的。CGI出现了，通用网管接口，也可以理解为一个对接web服务的规范吧，只要动态语言支持这个规范就可以接上web服务器了，PHP的诞生伴随着fastcgi，经常看到进程里有一个php-cgi，就是这玩意吧，当然后面因为单纯fastcgi的性能可能实在弱到没法忍受，就接着诞生了php-fpm，fastcgi process manager（以前老觉得这种fpm什么的专业术语很牛逼的样子，后来发现基本都是英文首字母的组合，就略对歪果仁的怪癖无语）。当然fpm怎么提高性能就扯远了，也扯不出来，因为我也不太懂，总结就是一句话，PHP自己不支持web服务，靠CGI对接web服务器。<br>Go不需要第三方web服务器，它自己就可以支持web服务。Go的net包提供了各种接口，包括TCP/IP，UDP或者Unix下的socket。基于此，还开发出了专门针对的http的包。为了兼容现在的系统，还有http还有CGI和fcgi子包，具体干嘛的我也不知道。</p>
+<p>###垃圾回收机制<br>PHP的垃圾回收是靠引用计数，一个变量生成的时候自带计数，有人指向它计数就加一，所以指向它的都被unset掉了，计数变零，OK，这个内存可以释放掉了。我以前觉得PHP每个进程过来的时候生成一个新进程，然后请求结束干掉进程，那进程包含的内存肯定就自动释放掉了，但写着写着突然想到PHP是不是没有这么low每次请求是一个进程而不是一个线程，线程结束那进程还是有必须要主动释放指定的内存的吧，当然每个线程也有自己的标示，所以线程结束进程可以主动释放这个标示下的所以内存块吧。至于释放是不是靠引用计数就不知道了。反正这个请求结束相关的内存块都被干掉了是肯定的。所以PHPer不用考虑内存释放不释放的，反正请求结束全自动释放。<br>Go的垃圾回收是不可达回收，就是一个变量在运行的过程中发现后面用不到它了，OK，放到回收池，等到一定量了一起回收掉。这个回收的过程会STW（stop the world，还是那个奇葩怪癖），所以饱受诟病。太较真了，要是这样谁都写不出来纯完美的代码吧。</p>
 <p>当然写代码最后不要分号之类的写就没意思，大局上能想到的暂时就这么多，以后想到再补充。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnles76f0000bg38m6d6urqs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnlfg1ox0000pe38sfs9o0zb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -135,7 +139,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/hello-world/" data-id="cjnles76k0001bg38l6wh88cv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/hello-world/" data-id="cjnlfg1p30001pe38079fy06g" class="article-share-link">Share</a>
       
       
     </footer>
@@ -176,7 +180,7 @@
       <ul>
         
           <li>
-            <a href="/2018/10/23/goandphp/">goandphp</a>
+            <a href="/2018/10/23/goandphp/">go and php</a>
           </li>
         
           <li>
