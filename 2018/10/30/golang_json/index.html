@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>golang 解析 json 文件的无解情况 | 会一点PHP和Go的Junior Developer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="拿到一个json文件，格式如下1[[&quot;ss1&quot;, &quot;ss2&quot;, 3, &quot;ss4&quot;],[&quot;tt1&quot;, &quot;tt2&quot;, 3, &quot;tt4&quot;]] 代码12345678910data, err := ioutil.ReadFile(os.Args[2])if err != nil &amp;#123;	fmt.Println(`read file`, err)&amp;#125;var v [][]stringerr = j">
+<meta name="keywords" content="golang,json">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang 解析 json 文件的无解情况">
+<meta property="og:url" content="http://yoursite.com/2018/10/30/golang_json/index.html">
+<meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
+<meta property="og:description" content="拿到一个json文件，格式如下1[[&quot;ss1&quot;, &quot;ss2&quot;, 3, &quot;ss4&quot;],[&quot;tt1&quot;, &quot;tt2&quot;, 3, &quot;tt4&quot;]] 代码12345678910data, err := ioutil.ReadFile(os.Args[2])if err != nil &amp;#123;	fmt.Println(`read file`, err)&amp;#125;var v [][]stringerr = j">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-10-30T08:46:33.915Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="golang 解析 json 文件的无解情况">
+<meta name="twitter:description" content="拿到一个json文件，格式如下1[[&quot;ss1&quot;, &quot;ss2&quot;, 3, &quot;ss4&quot;],[&quot;tt1&quot;, &quot;tt2&quot;, 3, &quot;tt4&quot;]] 代码12345678910data, err := ioutil.ReadFile(os.Args[2])if err != nil &amp;#123;	fmt.Println(`read file`, err)&amp;#125;var v [][]stringerr = j">
+  
+    <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">会一点PHP和Go的Junior Developer</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">天行健 君子以自强不息 地势坤 君子以厚德载物</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-golang_json" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/30/golang_json/" class="article-date">
+  <time datetime="2018-10-30T07:27:48.000Z" itemprop="datePublished">2018-10-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      golang 解析 json 文件的无解情况
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>拿到一个json文件，格式如下<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="string">"ss1"</span>, <span class="string">"ss2"</span>, <span class="number">3</span>, <span class="string">"ss4"</span>],[<span class="string">"tt1"</span>, <span class="string">"tt2"</span>, <span class="number">3</span>, <span class="string">"tt4"</span>]]</span><br></pre></td></tr></table></figure></p>
+<p>代码<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data, err := ioutil.ReadFile(os.Args[<span class="number">2</span>])</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`read file`</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> v [][]<span class="keyword">string</span></span><br><span class="line">err = json.Unmarshal(data, &amp;v)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`json unmeshal error:`</span>, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json unmeshal error: json: cannot unmarshal number into Go value of type string</span><br></pre></td></tr></table></figure></p>
+<p>数据格式对应不上，想了一下这样写<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> dataFormat <span class="keyword">struct</span> &#123;</span><br><span class="line">	S1     <span class="keyword">string</span></span><br><span class="line">	S2     <span class="keyword">string</span></span><br><span class="line">	I1     <span class="keyword">int</span></span><br><span class="line">	S3     <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> v []dataFormat</span><br><span class="line">err = json.Unmarshal(data, &amp;v)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`json unmeshal error:`</span>, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json unmeshal error: json: cannot unmarshal array into Go value of type main.dataFormat</span><br></pre></td></tr></table></figure></p>
+<p>正常，因为本身json文件的格式确实是一个数组</p>
+<h2 id="所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。"><a href="#所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。" class="headerlink" title="所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。"></a>所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。</h2><h3 id="最后还是写了个PHP脚本解决。。。。"><a href="#最后还是写了个PHP脚本解决。。。。" class="headerlink" title="最后还是写了个PHP脚本解决。。。。"></a>最后还是写了个PHP脚本解决。。。。</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjnvhjrec0003yo385v85fq8z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/23/goandphp/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">go and php</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/golang/" style="font-size: 10px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/php/" style="font-size: 10px;">php</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/10/30/golang_json/">golang 解析 json 文件的无解情况</a>
+          </li>
+        
+          <li>
+            <a href="/2018/10/23/goandphp/">go and php</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/23/crontab_keng/">crontab踩坑总结</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/23/linux_learn/">鸟哥的linux私房菜读书笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2001/08/23/hello-world/">Hexo 博客搭建指南</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Cli<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
