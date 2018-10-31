@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
 <meta property="og:description" content="运行与编译 PHP是解释型语言，构建在ZEND虚拟机上，运行时首先会被zend引擎编译或者解释为OPCODE（或者运行时读取已经缓存的OPCODE），再由zend引擎处理后对接机器指令。所以PHP现在作为web语言有一个明显的优势，代码更新后没有重启的概念，下次执行的时候直接读取新文件解释。 Go 是编译型语言，运行前需要直接编译为机器指令的二进制可执行文件。所以一些数据结构造成的问题是可以在编译">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-10-30T08:59:56.410Z">
+<meta property="og:updated_time" content="2018-10-31T06:14:08.779Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go and php">
 <meta name="twitter:description" content="运行与编译 PHP是解释型语言，构建在ZEND虚拟机上，运行时首先会被zend引擎编译或者解释为OPCODE（或者运行时读取已经缓存的OPCODE），再由zend引擎处理后对接机器指令。所以PHP现在作为web语言有一个明显的优势，代码更新后没有重启的概念，下次执行的时候直接读取新文件解释。 Go 是编译型语言，运行前需要直接编译为机器指令的二进制可执行文件。所以一些数据结构造成的问题是可以在编译">
@@ -103,12 +103,13 @@
 <h3 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h3><hr>
 <p>PHP的垃圾回收是靠引用计数，一个变量生成的时候自带计数，有人指向它计数就加一，所以指向它的都被unset掉了，计数变零，OK，这个内存可以释放掉了。我以前觉得PHP每个进程过来的时候生成一个新进程，然后请求结束干掉进程，那进程包含的内存肯定就自动释放掉了，但写着写着突然想到PHP是不是没有这么low每次请求是一个进程而不是一个线程，线程结束那进程还是有必须要主动释放指定的内存的吧，当然每个线程也有自己的标示，所以线程结束进程可以主动释放这个标示下的所以内存块吧。至于释放是不是靠引用计数就不知道了。反正这个请求结束相关的内存块都被干掉了是肯定的。所以PHPer不用考虑内存释放不释放的，反正请求结束全自动释放。</p>
 <p>Go的垃圾回收是不可达回收，就是一个变量在运行的过程中发现后面用不到它了，OK，放到回收池，等到一定量了一起回收掉。这个回收的过程会STW（stop the world，还是那个奇葩怪癖），所以饱受诟病。太较真了，要是这样谁都写不出来纯完美的代码吧。</p>
+<h3 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h3><p>1 引用代码<br>golang使用包的概念引用代码可以方便的让代码独立出来，一个脚本只需要import所需的脚本就行了，显得更为简洁容易。<br>PHP经过长时间的发展，基本都是框架式使用，如果要单独的开发一个小项目或者脚本比较麻烦，需要把部分代码拷贝来拷贝去。</p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>代码最后不要分好，引用服务调用包等其余部分感觉具体也写不出来什么，而且Go确实也还不太熟悉。先写这么多，以后想到再说吧</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnvi4hhd00006l385xc2jm8r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnwro34y00013q3845972dqb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>

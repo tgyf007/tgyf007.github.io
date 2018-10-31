@@ -99,7 +99,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjnvi4hhp00036l388807mcsk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjnwro35400033q38azwer7zv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
@@ -145,12 +145,13 @@
 <h3 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h3><hr>
 <p>PHP的垃圾回收是靠引用计数，一个变量生成的时候自带计数，有人指向它计数就加一，所以指向它的都被unset掉了，计数变零，OK，这个内存可以释放掉了。我以前觉得PHP每个进程过来的时候生成一个新进程，然后请求结束干掉进程，那进程包含的内存肯定就自动释放掉了，但写着写着突然想到PHP是不是没有这么low每次请求是一个进程而不是一个线程，线程结束那进程还是有必须要主动释放指定的内存的吧，当然每个线程也有自己的标示，所以线程结束进程可以主动释放这个标示下的所以内存块吧。至于释放是不是靠引用计数就不知道了。反正这个请求结束相关的内存块都被干掉了是肯定的。所以PHPer不用考虑内存释放不释放的，反正请求结束全自动释放。</p>
 <p>Go的垃圾回收是不可达回收，就是一个变量在运行的过程中发现后面用不到它了，OK，放到回收池，等到一定量了一起回收掉。这个回收的过程会STW（stop the world，还是那个奇葩怪癖），所以饱受诟病。太较真了，要是这样谁都写不出来纯完美的代码吧。</p>
+<h3 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h3><p>1 引用代码<br>golang使用包的概念引用代码可以方便的让代码独立出来，一个脚本只需要import所需的脚本就行了，显得更为简洁容易。<br>PHP经过长时间的发展，基本都是框架式使用，如果要单独的开发一个小项目或者脚本比较麻烦，需要把部分代码拷贝来拷贝去。</p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>代码最后不要分好，引用服务调用包等其余部分感觉具体也写不出来什么，而且Go确实也还不太熟悉。先写这么多，以后想到再说吧</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnvi4hhd00006l385xc2jm8r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnwro34y00013q3845972dqb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
@@ -197,7 +198,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjnvi4hhk00016l3896es81x7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjnwro34q00003q389c3jbt32" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -396,7 +397,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjnvi4hiw000g6l388flps173" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjnwro369000g3q389omyi916" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -495,7 +496,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjnvi4hhs00046l38nklaeymn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjnwro35600043q38914u0q19" class="article-share-link">Share</a>
       
       
     </footer>
