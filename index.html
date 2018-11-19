@@ -67,6 +67,48 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-crontab_auto" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/11/19/crontab_auto/" class="article-date">
+  <time datetime="2018-11-18T16:00:00.000Z" itemprop="datePublished">2018-11-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/19/crontab_auto/">定时任务不能确认完成时间的解决方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>   有些脚本因为要循环的执行，比如每天执行一次，或者执行完后重新执行一次，使用crontab设置定时任务指定每天执行时间。</p>
+<p>   但是这样存在一个问题，如果一个脚本一天执行不完，这样第二天到了时间会开启第二个脚本执行，会有重叠执行的情况，而其实可能需要的情况只是第一次执行完后执行第二次，不一定需要指定时间执行。</p>
+<p>   仔细想了一下发现其实被crontab的定时指定给局限了思路，另外的思路是写一个脚本监听进程，使用crontab每隔一段时间监听，看进程是否还存在，不存在则重新启动。</p>
+<p>   脚本可以如下：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> #!/bin/bash</span><br><span class="line">PID=$(ps aux|grep &quot;进程特殊标示（最好奇怪一点不要用通用的脚本名，负责监听无效）&quot;| grep -v grep | awk &apos;&#123;printf $2&#125;&apos;)</span><br><span class="line">if [ $PID &gt; 0 ]; then</span><br><span class="line">	echo $PID</span><br><span class="line">    exit</span><br><span class="line">fi</span><br><span class="line"># 重启脚本命令</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjonz39bz0000bn38qw5c495p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-golang_post_cookie" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/10/31/golang_post_cookie/" class="article-date">
@@ -95,7 +137,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjnx0rcm70000kz382uoyoqge" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjonz39cj0007bn38c7ntfe8t" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -139,7 +181,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjnx0qb3w0003kg38ozhtxg42" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjonz39ch0005bn38c86z6t3d" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
@@ -191,7 +233,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjnx0qb3q0001kg38tl958wku" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjonz39ce0003bn38tmi1b6pi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
@@ -233,7 +275,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjnx0qb3z0005kg381mpejcfx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjonz39cq000abn38b9d8phxe" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-os/">mac os</a></li></ul>
@@ -272,10 +314,41 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjnx0qb410007kg38yfps2u6d" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjonz39ct000cbn38bdoid7or" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-add_service" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/add_service/" class="article-date">
+  <time datetime="2018-08-23T07:27:48.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>安装mysql后想使用Linux的service命令控制启动</p>
+<p>red hat 下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">#设置</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig --level 2345 mysqld on</span><br></pre></td></tr></table></figure></p>
+<p>utubun 下没有chkconfig，试了一下使用update-rc.d，好像可以了，但具体还没太了解这个命令。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjonz39c90001bn381edi7tc6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -319,7 +392,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjnx0qb3i0000kg3817rfgytn" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjonz39cg0004bn38iowghayc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -518,7 +591,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjnx0qb5h000mkg38vlgxv80x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjonz39ec000wbn38sxg2vvdg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -617,7 +690,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjnx0qb3y0004kg38dx4oqylz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjonz39ck0008bn38611a9hqd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -650,7 +723,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/crontab/" style="font-size: 10px;">crontab</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 15px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/php/" style="font-size: 10px;">php</a>
+      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/golang/" style="font-size: 16.67px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/php/" style="font-size: 10px;">php</a>
     </div>
   </div>
 
@@ -659,7 +732,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -670,6 +743,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/11/19/crontab_auto/">定时任务不能确认完成时间的解决方法</a>
+          </li>
         
           <li>
             <a href="/2018/10/31/golang_post_cookie/">golang 带header的post请求</a>
@@ -685,10 +762,6 @@
         
           <li>
             <a href="/2018/10/22/mac_os_xcode/">macOS 升级后Git不能使用</a>
-          </li>
-        
-          <li>
-            <a href="/2018/10/01/markdown/">几点基本的Markdown语法</a>
           </li>
         
       </ul>
