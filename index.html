@@ -91,11 +91,12 @@
       
         <p>使用node.js搜索数据库，发现每次搜到的bigint字段的值都会被处理，因为db包上面包了一层knex.js，还以为是knex.js的问题。查看文档：<br><a href="https://knexjs.org/" title="knex官方文档" target="_blank" rel="noopener">knex官方文档</a><br>没有发现有说明这个问题，咨询同事，被提醒可能是MySQL包的问题。<br>搜索后发现<br>supportBigNumbers－处理大数字（BIGINT和DECIMAL）时需要启动此项（默认false）<br>bigNumberStrings－使用supportbignumbers和bignumberstrings时总是返回JavaScript字符串对象（默认false）</p>
 <p>于是配置调整加上了supportBigNumbers:true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">config = &#123;</span><br><span class="line">        &quot;host&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;user&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;password&quot;: &quot;&quot;,</span><br><span class="line">        &quot;supportBigNumbers&quot; : true</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://itbilu.com/nodejs/npm/NyPG8LhlW.html" title="node-mysql 模块介绍资料地址" target="_blank" rel="noopener">node-mysql 模块介绍资料地址</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjp7xyun0000fq8384ezy7eoz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjp7y2rf0000est38ixbbhawz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li></ul>
@@ -137,7 +138,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjp7xyum50000q838wp84db03" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjp7y2red0001st38ujqm1eqz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -177,7 +178,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjp7xyumr0007q838npi2mbqo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjp7y2req0008st388tchvd7s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -221,7 +222,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjp7xyumm0004q838vjywpn0g" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjp7y2ren0005st38varhkv20" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
@@ -273,7 +274,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjp7xyumo0005q838secof3mk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjp7y2rel0004st38culrzex4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
@@ -315,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjp7xyumy000cq838xjq9ru8y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjp7y2rew000bst389izcpt98" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-os/">mac os</a></li></ul>
@@ -354,10 +355,41 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjp7xyumw000aq838mn2htivy" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjp7y2rey000cst383muqh33e" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-add_service" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/add_service/" class="article-date">
+  <time datetime="2018-08-23T07:27:48.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>安装mysql后想使用Linux的service命令控制启动</p>
+<p>red hat 下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">#设置</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig --level 2345 mysqld on</span><br></pre></td></tr></table></figure></p>
+<p>utubun 下没有chkconfig，试了一下使用update-rc.d，好像可以了，但具体还没太了解这个命令。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjp7y2re50000st38uwhatxfe" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -401,41 +433,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjp7xyumd0001q8381j5gln5x" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjp7y2rej0003st38amtue839" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-add_service" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/23/add_service/" class="article-date">
-  <time datetime="2018-08-23T07:27:48.000Z" itemprop="datePublished">2018-08-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>安装mysql后想使用Linux的service命令控制启动</p>
-<p>red hat 下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">#设置</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig --level 2345 mysqld on</span><br></pre></td></tr></table></figure></p>
-<p>utubun 下没有chkconfig，试了一下使用update-rc.d，好像可以了，但具体还没太了解这个命令。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjp7xyumi0003q838swwoaw1c" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -631,7 +632,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjp7xyuog0010q838zi0u77pf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjp7y2rgd0010st382uqrzyjz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
