@@ -5,20 +5,20 @@
   
 
   
-  <title>node.js搜索bigint字段失败 | 会一点PHP和Go的Junior Developer</title>
+  <title>Git服务器配置指定客户端免密 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用node.js搜索数据库，发现每次搜到的bigint字段的值都会被处理，因为db包上面包了一层knex.js，还以为是knex.js的问题。查看文档：knex官方文档没有发现有说明这个问题，咨询同事，被提醒可能是MySQL包的问题。搜索后发现supportBigNumbers－处理大数字（BIGINT和DECIMAL）时需要启动此项（默认false）bigNumberStrings－使用sup">
-<meta name="keywords" content="mysql node.js">
+  <meta name="description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中">
+<meta name="keywords" content="git linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="node.js搜索bigint字段失败">
-<meta property="og:url" content="http://yoursite.com/2018/12/03/mysql_support_bignum/index.html">
+<meta property="og:title" content="Git服务器配置指定客户端免密">
+<meta property="og:url" content="http://yoursite.com/2018/12/06/git_no_pass/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
-<meta property="og:description" content="使用node.js搜索数据库，发现每次搜到的bigint字段的值都会被处理，因为db包上面包了一层knex.js，还以为是knex.js的问题。查看文档：knex官方文档没有发现有说明这个问题，咨询同事，被提醒可能是MySQL包的问题。搜索后发现supportBigNumbers－处理大数字（BIGINT和DECIMAL）时需要启动此项（默认false）bigNumberStrings－使用sup">
+<meta property="og:description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-03T06:39:30.333Z">
+<meta property="og:updated_time" content="2018-12-06T03:10:09.455Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="node.js搜索bigint字段失败">
-<meta name="twitter:description" content="使用node.js搜索数据库，发现每次搜到的bigint字段的值都会被处理，因为db包上面包了一层knex.js，还以为是knex.js的问题。查看文档：knex官方文档没有发现有说明这个问题，咨询同事，被提醒可能是MySQL包的问题。搜索后发现supportBigNumbers－处理大数字（BIGINT和DECIMAL）时需要启动此项（默认false）bigNumberStrings－使用sup">
+<meta name="twitter:title" content="Git服务器配置指定客户端免密">
+<meta name="twitter:description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -69,10 +69,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-mysql_support_bignum" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-git_no_pass" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/12/03/mysql_support_bignum/" class="article-date">
-  <time datetime="2018-12-02T16:00:00.000Z" itemprop="datePublished">2018-12-03</time>
+    <a href="/2018/12/06/git_no_pass/" class="article-date">
+  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
 </a>
     
   </div>
@@ -83,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      node.js搜索bigint字段失败
+      Git服务器配置指定客户端免密
     </h1>
   
 
@@ -91,17 +91,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>使用node.js搜索数据库，发现每次搜到的bigint字段的值都会被处理，因为db包上面包了一层knex.js，还以为是knex.js的问题。查看文档：<br><a href="https://knexjs.org/" title="knex官方文档" target="_blank" rel="noopener">knex官方文档</a><br>没有发现有说明这个问题，咨询同事，被提醒可能是MySQL包的问题。<br>搜索后发现<br>supportBigNumbers－处理大数字（BIGINT和DECIMAL）时需要启动此项（默认false）<br>bigNumberStrings－使用supportbignumbers和bignumberstrings时总是返回JavaScript字符串对象（默认false）</p>
-<p>于是配置调整加上了supportBigNumbers:true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">config = &#123;</span><br><span class="line">        &quot;host&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;user&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;password&quot;: &quot;&quot;,</span><br><span class="line">        &quot;supportBigNumbers&quot; : true</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://itbilu.com/nodejs/npm/NyPG8LhlW.html" title="node-mysql 模块介绍资料地址" target="_blank" rel="noopener">node-mysql 模块介绍资料地址</a></p>
+        <p>服务器上切换到git账号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su git</span><br></pre></td></tr></table></figure></p>
+<p>设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br><span class="line">vim authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjp7y3249000ete38sz0q56kh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjpc0xkmj00011b38mcd00xie" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
 
     </footer>
   </div>
@@ -109,19 +109,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/12/06/git_new/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/12/06/reset_mysql_root/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Git服务器新建项目
+          Mac OS MySQL重置root密码
         
       </div>
     </a>
   
   
-    <a href="/2018/11/19/crontab_auto/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/12/06/git_new/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">定时任务不能确认完成时间的解决方法</div>
+      <div class="article-nav-title">Git服务器新建项目</div>
     </a>
   
 </nav>
