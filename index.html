@@ -93,7 +93,10 @@
 <h1 id="1-2-程序被其他程序翻译成不同的格式"><a href="#1-2-程序被其他程序翻译成不同的格式" class="headerlink" title="1.2 程序被其他程序翻译成不同的格式"></a>1.2 程序被其他程序翻译成不同的格式</h1><p>每条C语句都必须被其他程序转化为一些列的低级机器语言指令。然后这些指令按照一种称为可执行目标程序的格式打好包，并以二进制磁盘文件的形式存放起来。目标程序也称为可执行目标文件。<br>在Unix系统上，从源文件到目标文件的转化是编辑器驱动程序完成的。<br>gcc -o hello hello.c</p>
 <p>这个翻译过程分为四个阶段</p>
 <ol>
-<li>预处理阶段<br>预处理器cpp根据以字符#开头的命令，修改原始的C程序。比如读取#include&lt;stdio.h&gt; 命令告诉预处理器读取系统头文件stdio.h的内容并把它直接插入程序文本中。<br>2.编译阶段<br>编译器ccl把文本文件hello.i翻译成文本文件hello.s，它包含一个汇编语言程序。<br>3.汇编阶段<br>汇编器al 把hello.s 翻译成机器语言指令，把这些指令打包成一种叫做可重定位目标程序的格式，并把结果保存在目标文件hello.o中。hello.o文件是一个二进制文件<br>4.链接阶段<br>hello调用了printf，printf函数存在于一个名为printf.o的单独的预编译器好了的目标文件中，而这个文件必须以某种方式合并到我们的hello.o程序中。</li>
+<li>预处理阶段<br>预处理器cpp根据以字符#开头的命令，修改原始的C程序。比如读取#include&lt;stdio.h&gt; 命令告诉预处理器读取系统头文件stdio.h的内容并把它直接插入程序文本中。</li>
+<li>编译阶段<br>编译器ccl把文本文件hello.i翻译成文本文件hello.s，它包含一个汇编语言程序。</li>
+<li>汇编阶段<br>汇编器al 把hello.s 翻译成机器语言指令，把这些指令打包成一种叫做可重定位目标程序的格式，并把结果保存在目标文件hello.o中。hello.o文件是一个二进制文件</li>
+<li>链接阶段<br>hello调用了printf，printf函数存在于一个名为printf.o的单独的预编译器好了的目标文件中，而这个文件必须以某种方式合并到我们的hello.o程序中。</li>
 </ol>
 <h1 id="1-4-处理器读并解释储存在内存中的指令"><a href="#1-4-处理器读并解释储存在内存中的指令" class="headerlink" title="1.4 处理器读并解释储存在内存中的指令"></a>1.4 处理器读并解释储存在内存中的指令</h1><p>shell是一个命令行解释器，它输出一个提示符，等待输入一个命令行，然后执行这个命令。如果该命令行的第一个单词不是内置的shell命令，那么shell就会假设这是一个可执行文件的名字，它将加载并运行这个文件。</p>
 <h2 id="1-4-1-系统的硬件组成"><a href="#1-4-1-系统的硬件组成" class="headerlink" title="1.4.1 系统的硬件组成"></a>1.4.1 系统的硬件组成</h2><ol>
@@ -113,7 +116,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjpmqaxn7001deh38y36s6hfa" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjpmqcpd4001dgk38xcvlkqvt" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
@@ -153,7 +156,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjpmqaxm8000jeh38355ugilh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjpmqcpbv000ngk38kl0e7ht6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -193,7 +196,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjpmqaxlr0004eh38vko5vqnv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjpmqcpae0000gk38wtlse26a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -237,7 +240,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjpmqaxls0005eh38s94lzsuc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjpmqcpas0003gk38xh1va0uo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
@@ -278,7 +281,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/reset_mysql_root/" data-id="cjpmqaxma000keh38az6lhofv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/reset_mysql_root/" data-id="cjpmqcpbr000kgk38v8lpcq71" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
@@ -319,7 +322,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjpmqaxmc000neh38f9s0tqxi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjpmqcpbp000igk385105wv1d" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li></ul>
@@ -361,7 +364,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjpmqaxla0000eh38bxnm13o3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjpmqcpam0001gk38tfc1a1hu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -401,7 +404,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjpmqaxlv0008eh38wf35hjur" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjpmqcpb30008gk38yog7hwi9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -445,7 +448,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjpmqaxly000aeh381rds997a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjpmqcpbl000ggk38d7d69rvu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
@@ -497,7 +500,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjpmqaxlu0007eh3879sapnh2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjpmqcpb10007gk384iie8r1w" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
