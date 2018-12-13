@@ -7,18 +7,18 @@
   
   <title>定时任务不能确认完成时间的解决方法 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="有些脚本因为要循环的执行，比如每天执行一次，或者执行完后重新执行一次，使用crontab设置定时任务指定每天执行时间。    但是这样存在一个问题，如果一个脚本一天执行不完，这样第二天到了时间会开启第二个脚本执行，会有重叠执行的情况，而其实可能需要的情况只是第一次执行完后执行第二次，不一定需要指定时间执行。    仔细想了一下发现其实被crontab的定时指定给局限了思路，另外的思路是写一个">
-<meta name="keywords" content="crontab,linux">
+  <meta name="description" content="Linux 命令行常用编辑快捷键ctrl + ? 撤消前一次输入ctrl + c 另起一行ctrl + r 输入单词搜索历史命令ctrl + u 删除光标前面所有字符相当于VIM里d shift+^ctrl + k 删除光标后面所有字符相当于VIM里d shift+$ 删除 ctrl + d 删除光标所在位置上的字符相当于VIM里x或者dl ctrl + h 删除光标所在位置前的字符相当于VIM里">
+<meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="定时任务不能确认完成时间的解决方法">
-<meta property="og:url" content="http://yoursite.com/2018/11/19/crontab_auto/index.html">
+<meta property="og:url" content="http://yoursite.com/2018/12/07/linux_quick/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
-<meta property="og:description" content="有些脚本因为要循环的执行，比如每天执行一次，或者执行完后重新执行一次，使用crontab设置定时任务指定每天执行时间。    但是这样存在一个问题，如果一个脚本一天执行不完，这样第二天到了时间会开启第二个脚本执行，会有重叠执行的情况，而其实可能需要的情况只是第一次执行完后执行第二次，不一定需要指定时间执行。    仔细想了一下发现其实被crontab的定时指定给局限了思路，另外的思路是写一个">
+<meta property="og:description" content="Linux 命令行常用编辑快捷键ctrl + ? 撤消前一次输入ctrl + c 另起一行ctrl + r 输入单词搜索历史命令ctrl + u 删除光标前面所有字符相当于VIM里d shift+^ctrl + k 删除光标后面所有字符相当于VIM里d shift+$ 删除 ctrl + d 删除光标所在位置上的字符相当于VIM里x或者dl ctrl + h 删除光标所在位置前的字符相当于VIM里">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-11-19T07:13:12.999Z">
+<meta property="og:updated_time" content="2018-12-07T03:14:42.228Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="定时任务不能确认完成时间的解决方法">
-<meta name="twitter:description" content="有些脚本因为要循环的执行，比如每天执行一次，或者执行完后重新执行一次，使用crontab设置定时任务指定每天执行时间。    但是这样存在一个问题，如果一个脚本一天执行不完，这样第二天到了时间会开启第二个脚本执行，会有重叠执行的情况，而其实可能需要的情况只是第一次执行完后执行第二次，不一定需要指定时间执行。    仔细想了一下发现其实被crontab的定时指定给局限了思路，另外的思路是写一个">
+<meta name="twitter:description" content="Linux 命令行常用编辑快捷键ctrl + ? 撤消前一次输入ctrl + c 另起一行ctrl + r 输入单词搜索历史命令ctrl + u 删除光标前面所有字符相当于VIM里d shift+^ctrl + k 删除光标后面所有字符相当于VIM里d shift+$ 删除 ctrl + d 删除光标所在位置上的字符相当于VIM里x或者dl ctrl + h 删除光标所在位置前的字符相当于VIM里">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -69,10 +69,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-crontab_auto" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-linux_quick" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/11/19/crontab_auto/" class="article-date">
-  <time datetime="2018-11-18T16:00:00.000Z" itemprop="datePublished">2018-11-19</time>
+    <a href="/2018/12/07/linux_quick/" class="article-date">
+  <time datetime="2018-12-06T16:00:00.000Z" itemprop="datePublished">2018-12-07</time>
 </a>
     
   </div>
@@ -91,18 +91,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>   有些脚本因为要循环的执行，比如每天执行一次，或者执行完后重新执行一次，使用crontab设置定时任务指定每天执行时间。</p>
-<p>   但是这样存在一个问题，如果一个脚本一天执行不完，这样第二天到了时间会开启第二个脚本执行，会有重叠执行的情况，而其实可能需要的情况只是第一次执行完后执行第二次，不一定需要指定时间执行。</p>
-<p>   仔细想了一下发现其实被crontab的定时指定给局限了思路，另外的思路是写一个脚本监听进程，使用crontab每隔一段时间监听，看进程是否还存在，不存在则重新启动。</p>
-<p>   脚本可以如下：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> #!/bin/bash</span><br><span class="line">PID=$(ps aux|grep &quot;进程特殊标示（最好奇怪一点不要用通用的脚本名，负责监听无效）&quot;| grep -v grep | awk &apos;&#123;printf $2&#125;&apos;)</span><br><span class="line">if [ $PID &gt; 0 ]; then</span><br><span class="line">	echo $PID</span><br><span class="line">    exit</span><br><span class="line">fi</span><br><span class="line"># 重启脚本命令</span><br></pre></td></tr></table></figure></p>
+        <h2 id="Linux-命令行常用编辑快捷键"><a href="#Linux-命令行常用编辑快捷键" class="headerlink" title="Linux 命令行常用编辑快捷键"></a>Linux 命令行常用编辑快捷键</h2><p>ctrl + ? 撤消前一次输入<br>ctrl + c 另起一行<br>ctrl + r 输入单词搜索历史命令<br>ctrl + u 删除光标前面所有字符相当于VIM里d shift+^<br>ctrl + k 删除光标后面所有字符相当于VIM里d shift+$ <br>删除 ctrl + d 删除光标所在位置上的字符相当于VIM里x或者dl ctrl + h 删除光标所在位置前的字符相当于VIM里hx或者dh ctrl + k 删除光标后面所有字符相当于VIM里d shift+$ ctrl + u 删除光标前面所有字符相当于VIM里d shift+^ ctrl + w 删除光标前一个单词相当于VIM里db ctrl + y 恢复ctrl+u上次执行时删除的字符 ctrl + ? 撤消前一次输入 alt + r 撤消前一次动作 alt + d 删除光标所在位置的后单词<br>移动 ctrl + a 将光标移动到命令行开头相当于VIM里shift+^ ctrl + e 将光标移动到命令行结尾处相当于VIM里shift+$ ctrl + f 光标向后移动一个字符相当于VIM里l ctrl + b 光标向前移动一个字符相当于VIM里h ctrl + 方向键左键 光标移动到前一个单词开头 ctrl + 方向键右键 光标移动到后一个单词结尾 ctrl + x 在上次光标所在字符和当前光标所在字符之间跳转 alt + f 跳到光标所在位置单词尾部<br>替换 ctrl + t 将光标当前字符与前面一个字符替换 alt + t 交换两个光标当前所处位置单词和光标前一个单词 alt + u 把光标当前位置单词变为大写 alt + l 把光标当前位置单词变为小写 alt + c 把光标当前位置单词头一个字母变为大写 ^oldstr^newstr 替换前一次命令中字符串<br>历史命令编辑 ctrl + p 返回上一次输入命令字符 ctrl + r 输入单词搜索历史命令 alt + p 输入字符查找与字符相接近的历史命令 alt + &gt; 返回上一次执行命令<br>其它 ctrl + s 锁住终端 ctrl + q 解锁终端 ctrl + l 清屏相当于命令clear ctrl + c 另起一行 ctrl + i 类似TAB健补全功能 ctrl + o 重复执行命令 alt + 数字键 操作的次数<br>搜索操作快捷键<br>搜索历史命令的快捷键：Ctrl + r 它是通过关键字去匹配历史记录，执行后会提示：(reverse-i-search)`’:<br>输入你记得的关键字去匹配，如果出现你需要的命令，按Enter就可以选择命令；如果不是请输入更精确的关键字去匹配。<br>移动操作快捷键<br>Ctrl + f– 向右移动一个字符，当然多数人用→ Ctrl + b– 向左移动一个字符， 多数人用← ESC + f– 向右移动一个单词，MAC下建议用ALT + → ESC + b– 向左移动一个单词，MAC下建议用ALT + ← Ctrl + a– 跳到行首 Ctrl + e– 跳到行尾<br>删除操作快捷键<br>Ctrl + d– 向右删除一个字符 Ctrl + h– 向左删除一个字符 Ctrl + u– 删除当前位置字符至行首（输入密码错误的时候多用下这个） Ctrl + k– 删除当前位置字符至行尾 Ctrl + w– 删除从光标到当前单词开头<br>命令切换操作快捷键<br>Ctrl + p– 上一个命令，也可以用↑ Ctrl + n– 下一个命令，也可以用↓<br>其他操作快捷键<br>Ctrl + y– 插入最近删除的单词 Ctrl + c– 终止操作 Ctrl + d– 当前操作转到后台 Ctrl + l– 清屏 （有时候为了好看）</p>
+<p>部分命令记录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">netstat -nat|grep -i &quot;80&quot;|wc -l</span><br><span class="line"></span><br><span class="line">kill -9 `ps -ef |grep cli|awk &apos;&#123;print $2&#125;’`</span><br><span class="line"></span><br><span class="line">vim 查看第n行   :n</span><br><span class="line"></span><br><span class="line">bg命令后台执行</span><br><span class="line">fg命令前台执行</span><br><span class="line"></span><br><span class="line">ps -aux | grep</span><br><span class="line">ps -ef | grep</span><br><span class="line"></span><br><span class="line">ln -s f1 f3  f1源文件</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjpmoct2j0000bb388518m7uk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjpmoct3h000ibb389hcbuky5" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -110,19 +108,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/12/03/mysql_support_bignum/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/12/13/indeedsystem/chapter1/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          node.js搜索bigint字段失败
+          第一章 计算机系统漫游
         
       </div>
     </a>
   
   
-    <a href="/2018/10/31/golang_post_cookie/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/12/06/git_new/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">golang 带header的post请求</div>
+      <div class="article-nav-title">Git服务器新建项目</div>
     </a>
   
 </nav>

@@ -7,18 +7,18 @@
   
   <title>Git服务器配置指定客户端免密 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中">
+  <meta name="description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中 附1·上本地生成秘钥方法二、生成SSH密钥过程：1.查看是否已经有了ssh密钥：cd ~/.ssh如果没有密钥则不会有此文件夹，有则备份删除2.生存密钥：$ ssh-keygen -t rsa -C “haiyan.xu.vi">
 <meta name="keywords" content="git linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git服务器配置指定客户端免密">
 <meta property="og:url" content="http://yoursite.com/2018/12/06/git_no_pass/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
-<meta property="og:description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中">
+<meta property="og:description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中 附1·上本地生成秘钥方法二、生成SSH密钥过程：1.查看是否已经有了ssh密钥：cd ~/.ssh如果没有密钥则不会有此文件夹，有则备份删除2.生存密钥：$ ssh-keygen -t rsa -C “haiyan.xu.vi">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-06T03:10:09.455Z">
+<meta property="og:updated_time" content="2018-12-07T02:35:43.073Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git服务器配置指定客户端免密">
-<meta name="twitter:description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中">
+<meta name="twitter:description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中 附1·上本地生成秘钥方法二、生成SSH密钥过程：1.查看是否已经有了ssh密钥：cd ~/.ssh如果没有密钥则不会有此文件夹，有则备份删除2.生存密钥：$ ssh-keygen -t rsa -C “haiyan.xu.vi">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -94,11 +94,14 @@
         <p>服务器上切换到git账号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su git</span><br></pre></td></tr></table></figure></p>
 <p>设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br><span class="line">vim authorized_keys</span><br></pre></td></tr></table></figure></p>
 <p>把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中</p>
+<p>附1·上本地生成秘钥方法<br>二、生成SSH密钥过程：<br>1.查看是否已经有了ssh密钥：cd ~/.ssh<br>如果没有密钥则不会有此文件夹，有则备份删除<br>2.生存密钥：<br>$ ssh-keygen -t rsa -C “<a href="mailto:haiyan.xu.vip@gmail.com" target="_blank" rel="noopener">haiyan.xu.vip@gmail.com</a>” 按3个回车，密码为空。<br> Your identification has been saved in /home/tekkub/.ssh/id_rsa. Your public key has been saved in /home/tekkub/.ssh/id_rsa.pub. The key fingerprint is: ………………</p>
+<p>最后得到了两个文件：id_rsa和id_rsa.pub<br> 3.添加密钥到ssh：ssh-add 文件名 需要之前输入密码。 4.在github上添加ssh密钥，这要添加的是“id_rsa.pub”里面的公钥。</p>
+<p>附2·<br>设置Git的user name和email：<br>$ git config –global user.name “xuhaiyan”<br>$ git config –global user.email “<a href="mailto:haiyan.xu.vip@gmail.com" target="_blank" rel="noopener">haiyan.xu.vip@gmail.com</a>“</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjpc0xkmj00011b38mcd00xie" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjpmoct300005bb38hfwpe7ow" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
@@ -109,19 +112,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/12/06/reset_mysql_root/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/12/06/git_new/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Mac OS MySQL重置root密码
+          Git服务器新建项目
         
       </div>
     </a>
   
   
-    <a href="/2018/12/06/git_new/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/12/06/reset_mysql_root/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Git服务器新建项目</div>
+      <div class="article-nav-title">Mac OS MySQL重置root密码</div>
     </a>
   
 </nav>
@@ -140,7 +143,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -150,7 +153,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 16.67px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a>
+      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 16.67px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -172,11 +175,11 @@
       <ul>
         
           <li>
-            <a href="/2018/12/06/reset_mysql_root/">Mac OS MySQL重置root密码</a>
+            <a href="/2018/12/13/indeedsystem/chapter1/">第一章 计算机系统漫游</a>
           </li>
         
           <li>
-            <a href="/2018/12/06/git_no_pass/">Git服务器配置指定客户端免密</a>
+            <a href="/2018/12/07/linux_quick/">定时任务不能确认完成时间的解决方法</a>
           </li>
         
           <li>
@@ -184,11 +187,11 @@
           </li>
         
           <li>
-            <a href="/2018/12/03/mysql_support_bignum/">node.js搜索bigint字段失败</a>
+            <a href="/2018/12/06/git_no_pass/">Git服务器配置指定客户端免密</a>
           </li>
         
           <li>
-            <a href="/2018/11/19/crontab_auto/">定时任务不能确认完成时间的解决方法</a>
+            <a href="/2018/12/06/reset_mysql_root/">Mac OS MySQL重置root密码</a>
           </li>
         
       </ul>
