@@ -5,20 +5,20 @@
   
 
   
-  <title>Git服务器配置指定客户端免密 | 会一点PHP和Go的Junior Developer</title>
+  <title>Golang管道死锁调试学习 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中 附1·上本地生成秘钥方法二、生成SSH密钥过程：1.查看是否已经有了ssh密钥：cd ~/.ssh如果没有密钥则不会有此文件夹，有则备份删除2.生存密钥：$ ssh-keygen -t rsa -C “haiyan.xu.vi">
-<meta name="keywords" content="git linux">
+  <meta name="description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
+<meta name="keywords" content="Golang">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git服务器配置指定客户端免密">
-<meta property="og:url" content="http://yoursite.com/2018/12/06/git_no_pass/index.html">
+<meta property="og:title" content="Golang管道死锁调试学习">
+<meta property="og:url" content="http://yoursite.com/2018/12/17/golang_channel_deadlock/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
-<meta property="og:description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中 附1·上本地生成秘钥方法二、生成SSH密钥过程：1.查看是否已经有了ssh密钥：cd ~/.ssh如果没有密钥则不会有此文件夹，有则备份删除2.生存密钥：$ ssh-keygen -t rsa -C “haiyan.xu.vi">
+<meta property="og:description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-07T02:35:43.073Z">
+<meta property="og:updated_time" content="2018-12-17T09:02:18.292Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Git服务器配置指定客户端免密">
-<meta name="twitter:description" content="服务器上切换到git账号1su git 设置12cd ~/.sshvim authorized_keys 把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中 附1·上本地生成秘钥方法二、生成SSH密钥过程：1.查看是否已经有了ssh密钥：cd ~/.ssh如果没有密钥则不会有此文件夹，有则备份删除2.生存密钥：$ ssh-keygen -t rsa -C “haiyan.xu.vi">
+<meta name="twitter:title" content="Golang管道死锁调试学习">
+<meta name="twitter:description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -69,10 +69,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-git_no_pass" class="article article-type-post" itemscope="" itemprop="blogPost">
+        <section id="main"><article id="post-golang_channel_deadlock" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/12/06/git_no_pass/" class="article-date">
-  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
+    <a href="/2018/12/17/golang_channel_deadlock/" class="article-date">
+  <time datetime="2018-12-16T16:00:00.000Z" itemprop="datePublished">2018-12-17</time>
 </a>
     
   </div>
@@ -83,7 +83,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Git服务器配置指定客户端免密
+      Golang管道死锁调试学习
     </h1>
   
 
@@ -91,20 +91,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>服务器上切换到git账号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su git</span><br></pre></td></tr></table></figure></p>
-<p>设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br><span class="line">vim authorized_keys</span><br></pre></td></tr></table></figure></p>
-<p>把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中</p>
-<p>附1·上本地生成秘钥方法<br>二、生成SSH密钥过程：<br>1.查看是否已经有了ssh密钥：cd ~/.ssh<br>如果没有密钥则不会有此文件夹，有则备份删除<br>2.生存密钥：<br>$ ssh-keygen -t rsa -C “<a href="mailto:haiyan.xu.vip@gmail.com" target="_blank" rel="noopener">haiyan.xu.vip@gmail.com</a>” 按3个回车，密码为空。<br> Your identification has been saved in /home/tekkub/.ssh/id_rsa. Your public key has been saved in /home/tekkub/.ssh/id_rsa.pub. The key fingerprint is: ………………</p>
-<p>最后得到了两个文件：id_rsa和id_rsa.pub<br> 3.添加密钥到ssh：ssh-add 文件名 需要之前输入密码。 4.在github上添加ssh密钥，这要添加的是“id_rsa.pub”里面的公钥。</p>
-<p>附2·<br>设置Git的user name和email：<br>$ git config –global user.name “xuhaiyan”<br>$ git config –global user.email “<a href="mailto:haiyan.xu.vip@gmail.com" target="_blank" rel="noopener">haiyan.xu.vip@gmail.com</a>“</p>
+        <p>Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var ch1, ch2 chan int</span><br><span class="line"></span><br><span class="line">func send() &#123;</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	go send()</span><br><span class="line"></span><br><span class="line">	fmt.Println(`ch1`, &lt;-ch1)</span><br><span class="line">	fmt.Println(`ch2`, &lt;-ch2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
+<p>想这个是顺序执行的，怎么会死锁，然后发现channel和map slice一样，需要make后才能使用<br>修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var ch1, ch2 chan int</span><br><span class="line"></span><br><span class="line">func send() &#123;</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	ch1 = make(chan int)</span><br><span class="line">	ch2 = make(chan int)</span><br><span class="line">	go send()</span><br><span class="line"></span><br><span class="line">	fmt.Println(`ch1`, &lt;-ch1)</span><br><span class="line">	fmt.Println(`ch2`, &lt;-ch2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>正常返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ch1 1</span><br><span class="line">ch2 2</span><br></pre></td></tr></table></figure></p>
+<p>替换ch1 ch2发送顺序，不改变接受顺序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func send() &#123;</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
+<p>死锁再现，因为先发送了管道ch2，先接收ch1，因为ch1没有发送，协程卡主，就导致主线程ch1 没法发送， 死循环，生成了死锁。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjps4223w0007zq38y2u9wh0p" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjps4223u0005zq38nhnzyly1" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Golang/">Golang</a></li></ul>
 
     </footer>
   </div>
@@ -112,19 +113,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/12/07/linux_quick/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          定时任务不能确认完成时间的解决方法
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/12/06/git_new/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/12/13/indeedsystem/chapter1/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Git服务器新建项目</div>
+      <div class="article-nav-title">第一章 计算机系统漫游</div>
     </a>
   
 </nav>
