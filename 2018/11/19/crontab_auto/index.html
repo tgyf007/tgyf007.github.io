@@ -8,7 +8,7 @@
   <title>定时任务不能确认完成时间的解决方法 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="有些脚本因为要循环的执行，比如每天执行一次，或者执行完后重新执行一次，使用crontab设置定时任务指定每天执行时间。    但是这样存在一个问题，如果一个脚本一天执行不完，这样第二天到了时间会开启第二个脚本执行，会有重叠执行的情况，而其实可能需要的情况只是第一次执行完后执行第二次，不一定需要指定时间执行。    仔细想了一下发现其实被crontab的定时指定给局限了思路，另外的思路是写一个">
-<meta name="keywords" content="linux,crontab">
+<meta name="keywords" content="crontab,linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="定时任务不能确认完成时间的解决方法">
 <meta property="og:url" content="http://yoursite.com/2018/11/19/crontab_auto/index.html">
@@ -99,7 +99,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjps42ozl00040z38se0funk7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjpwdd9cr0000c838edzlui6k" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -141,7 +141,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -151,7 +151,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Golang/" style="font-size: 16.67px;">Golang</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/crontab/" style="font-size: 15px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -173,6 +173,10 @@
       <ul>
         
           <li>
+            <a href="/2018/12/20/golangerrshadow/">golang 操作符:= 造成的err is shadowed during return</a>
+          </li>
+        
+          <li>
             <a href="/2018/12/19/golang_yinyong/">golang 调试中碰到的结构体指针和值指针使用不同</a>
           </li>
         
@@ -186,10 +190,6 @@
         
           <li>
             <a href="/2018/12/07/linux_quick/">定时任务不能确认完成时间的解决方法</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/06/git_no_pass/">Git服务器配置指定客户端免密</a>
           </li>
         
       </ul>

@@ -8,14 +8,14 @@
   <title>Golang管道死锁调试学习 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
-<meta name="keywords" content="Golang">
+<meta name="keywords" content="golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang管道死锁调试学习">
 <meta property="og:url" content="http://yoursite.com/2018/12/17/golang_channel_deadlock/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
 <meta property="og:description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-12-17T09:02:18.292Z">
+<meta property="og:updated_time" content="2018-12-20T08:45:44.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang管道死锁调试学习">
 <meta name="twitter:description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
@@ -102,10 +102,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjps42ozu000b0z38cwoz06q1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjpwdd9dm000cc838yrjulvrw" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Golang/">Golang</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
 
     </footer>
   </div>
@@ -144,7 +144,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -154,7 +154,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Golang/" style="font-size: 16.67px;">Golang</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/crontab/" style="font-size: 15px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -176,6 +176,10 @@
       <ul>
         
           <li>
+            <a href="/2018/12/20/golangerrshadow/">golang 操作符:= 造成的err is shadowed during return</a>
+          </li>
+        
+          <li>
             <a href="/2018/12/19/golang_yinyong/">golang 调试中碰到的结构体指针和值指针使用不同</a>
           </li>
         
@@ -189,10 +193,6 @@
         
           <li>
             <a href="/2018/12/07/linux_quick/">定时任务不能确认完成时间的解决方法</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/06/git_no_pass/">Git服务器配置指定客户端免密</a>
           </li>
         
       </ul>
