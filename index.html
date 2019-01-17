@@ -67,6 +67,50 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-golang_cvs" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/17/golang_cvs/" class="article-date">
+  <time datetime="2019-01-16T16:00:00.000Z" itemprop="datePublished">2019-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/17/golang_cvs/">golang csv文件操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一、写csv文件</p>
+<p>函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func NewWriter(w io.Writer) *Writer</span><br><span class="line"></span><br><span class="line">func (w *Writer) Flush()</span><br><span class="line"></span><br><span class="line">func (w *Writer) Write(record []string) (err os.Error)</span><br><span class="line"></span><br><span class="line">func (w *Writer) WriteAll(records [][]string) (err os.Error)</span><br></pre></td></tr></table></figure></p>
+<p>demo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;bytes&quot;</span><br><span class="line">	&quot;encoding/csv&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;os&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	fileName := &quot;2.csv&quot;</span><br><span class="line">	buf := new(bytes.Buffer)</span><br><span class="line">	r2 := csv.NewWriter(buf)</span><br><span class="line">	for i := 0; i &lt; 10; i++ &#123;</span><br><span class="line">		s := make([]string, 3)</span><br><span class="line">		s[0] = &quot;user id&quot;</span><br><span class="line">		s[1] = &quot;name&quot;</span><br><span class="line">		s[2] = &quot;depart&quot;</span><br><span class="line">		r2.Write(s)</span><br><span class="line">		r2.Flush()</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(buf)</span><br><span class="line">	fout, err := os.Create(fileName)</span><br><span class="line">	defer fout.Close()</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		fmt.Println(fileName, err)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	fout.WriteString(buf.String())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>二、读csv文件</p>
+<p>函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func NewReader(r io.Reader) *Reader</span><br><span class="line"></span><br><span class="line">func (r *Reader) Read() (record []string, err os.Error)</span><br><span class="line"></span><br><span class="line">func (r *Reader) ReadAll() (records [][]string, err os.Error)</span><br></pre></td></tr></table></figure></p>
+<p>demo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;encoding/csv&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;io/ioutil&quot;</span><br><span class="line">	&quot;strings&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	//fileName := &quot;1.csv&quot;</span><br><span class="line">	fmt.Printf(&quot;Input file name : &quot;)</span><br><span class="line">	var fileName string</span><br><span class="line">	fmt.Scanf(&quot;%s&quot;, &amp;fileName)</span><br><span class="line">	cntb, err := ioutil.ReadFile(fileName)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">	r2 := csv.NewReader(strings.NewReader(string(cntb)))</span><br><span class="line">	ss, _ := r2.ReadAll()</span><br><span class="line">	//fmt.Println(ss)</span><br><span class="line">	sz := len(ss)</span><br><span class="line">	for i := 0; i &lt; sz; i++ &#123;</span><br><span class="line">		fmt.Println(ss[i])</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjr01uspv0008j238nzs4kyp4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-golang_map_keng" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/09/golang_map_keng/" class="article-date">
@@ -97,7 +141,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjqn6h9nx0008wa38w68bw5kb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjr01usq3000fj238r1no3iap" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -140,7 +184,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjqn6h9ox000kwa381kn570gv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjr01usqf000mj2384gvdz3rh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -182,7 +226,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjqn6h9oa000cwa38n22c4tks" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjr01usq0000cj238qfnp0200" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -227,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjqn6h9of000fwa38p78x51lz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjr01uspz000aj238knzdkhj9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -288,7 +332,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjqn6h9qf001owa38svsv92li" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjr01usrp001rj238p0rdpsu4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
@@ -328,10 +372,50 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjqn6h9p8000wwa38uypqww3b" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjr01usqn000wj23807d6tohz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-git_new" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/06/git_new/" class="article-date">
+  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/06/git_new/">Git服务器新建项目</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Git 服务器上新建项目操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init --bare ***.git</span><br><span class="line"></span><br><span class="line">chown -R git.git ***.git</span><br></pre></td></tr></table></figure></p>
+<p>init时需要使用 –bare， 并且需要全文件夹授权，否则无法push</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjr01usps0007j238nb5dinuy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -372,7 +456,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjqn6h9nu0005wa38eqbavith" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjr01uspo0004j238ehbjbtsh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
@@ -413,91 +497,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/reset_mysql_root/" data-id="cjqn6h9p6000twa38vnwgs968" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/reset_mysql_root/" data-id="cjr01usqm000vj238ys1zdsj9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-git_new" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/06/git_new/" class="article-date">
-  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/06/git_new/">Git服务器新建项目</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Git 服务器上新建项目操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init --bare ***.git</span><br><span class="line"></span><br><span class="line">chown -R git.git ***.git</span><br></pre></td></tr></table></figure></p>
-<p>init时需要使用 –bare， 并且需要全文件夹授权，否则无法push</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjqn6h9nq0003wa38aak7ip0m" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mysql_support_bignum" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/03/mysql_support_bignum/" class="article-date">
-  <time datetime="2018-12-02T16:00:00.000Z" itemprop="datePublished">2018-12-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/03/mysql_support_bignum/">node.js搜索bigint字段失败</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用node.js搜索数据库，发现每次搜到的bigint字段的值都会被处理，因为db包上面包了一层knex.js，还以为是knex.js的问题。查看文档：<br><a href="https://knexjs.org/" title="knex官方文档" target="_blank" rel="noopener">knex官方文档</a><br>没有发现有说明这个问题，咨询同事，被提醒可能是MySQL包的问题。<br>搜索后发现<br>supportBigNumbers－处理大数字（BIGINT和DECIMAL）时需要启动此项（默认false）<br>bigNumberStrings－使用supportbignumbers和bignumberstrings时总是返回JavaScript字符串对象（默认false）</p>
-<p>于是配置调整加上了supportBigNumbers:true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">config = &#123;</span><br><span class="line">        &quot;host&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;user&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;password&quot;: &quot;&quot;,</span><br><span class="line">        &quot;supportBigNumbers&quot; : true</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://itbilu.com/nodejs/npm/NyPG8LhlW.html" title="node-mysql 模块介绍资料地址" target="_blank" rel="noopener">node-mysql 模块介绍资料地址</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjqn6h9p4000rwa38y2i5am56" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li></ul>
 
     </footer>
   </div>
@@ -510,7 +513,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -556,6 +559,10 @@
       <ul>
         
           <li>
+            <a href="/2019/01/17/golang_cvs/">golang csv文件操作</a>
+          </li>
+        
+          <li>
             <a href="/2019/01/09/golang_map_keng/">golang  map的排序</a>
           </li>
         
@@ -569,10 +576,6 @@
         
           <li>
             <a href="/2018/12/17/golang_channel_deadlock/">Golang管道死锁调试学习</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/13/indeedsystem/chapter1/">第一章 计算机系统漫游</a>
           </li>
         
       </ul>

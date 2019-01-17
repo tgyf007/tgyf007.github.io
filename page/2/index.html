@@ -67,6 +67,47 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mysql_support_bignum" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/03/mysql_support_bignum/" class="article-date">
+  <time datetime="2018-12-02T16:00:00.000Z" itemprop="datePublished">2018-12-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/03/mysql_support_bignum/">node.js搜索bigint字段失败</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用node.js搜索数据库，发现每次搜到的bigint字段的值都会被处理，因为db包上面包了一层knex.js，还以为是knex.js的问题。查看文档：<br><a href="https://knexjs.org/" title="knex官方文档" target="_blank" rel="noopener">knex官方文档</a><br>没有发现有说明这个问题，咨询同事，被提醒可能是MySQL包的问题。<br>搜索后发现<br>supportBigNumbers－处理大数字（BIGINT和DECIMAL）时需要启动此项（默认false）<br>bigNumberStrings－使用supportbignumbers和bignumberstrings时总是返回JavaScript字符串对象（默认false）</p>
+<p>于是配置调整加上了supportBigNumbers:true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">config = &#123;</span><br><span class="line">        &quot;host&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;user&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;password&quot;: &quot;&quot;,</span><br><span class="line">        &quot;supportBigNumbers&quot; : true</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://itbilu.com/nodejs/npm/NyPG8LhlW.html" title="node-mysql 模块介绍资料地址" target="_blank" rel="noopener">node-mysql 模块介绍资料地址</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjr01usqg000oj238si4t4312" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-crontab_auto" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/11/19/crontab_auto/" class="article-date">
@@ -97,7 +138,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjqn6h9n90000wa38hkekd9mu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjr01usp20000j238nv6gcn4q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -137,7 +178,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjqn6h9ov000jwa38jxz0i0zo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjr01usq9000hj238e7p7urah" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -181,7 +222,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjqn6h9o3000awa389mjbejzi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjr01usqd000kj238eytplinu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
@@ -233,7 +274,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjqn6h9nw0007wa38uenahrz6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjr01uspq0005j2386t9ps0rl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
@@ -275,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjqn6h9p0000mwa38rntlljwq" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjr01usqk000tj238x6w0c8w4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-os/">mac os</a></li></ul>
@@ -314,10 +355,41 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjqn6h9p2000owa38ljfmcyhu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjr01usqi000rj238xyye9mg3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-add_service" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/add_service/" class="article-date">
+  <time datetime="2018-08-23T07:27:48.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>安装mysql后想使用Linux的service命令控制启动</p>
+<p>red hat 下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">#设置</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig --level 2345 mysqld on</span><br></pre></td></tr></table></figure></p>
+<p>utubun 下没有chkconfig，试了一下使用update-rc.d，好像可以了，但具体还没太了解这个命令。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjr01uspf0001j238niugncz9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -361,41 +433,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjqn6h9ns0004wa38hx8oytjf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjr01uspm0003j238c45ao8is" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-add_service" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/23/add_service/" class="article-date">
-  <time datetime="2018-08-23T07:27:48.000Z" itemprop="datePublished">2018-08-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>安装mysql后想使用Linux的service命令控制启动</p>
-<p>red hat 下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">#设置</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig --level 2345 mysqld on</span><br></pre></td></tr></table></figure></p>
-<p>utubun 下没有chkconfig，试了一下使用update-rc.d，好像可以了，但具体还没太了解这个命令。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjqn6h9nj0001wa38ljp5yw7i" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -591,7 +632,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjqn6h9r7001rwa38vk1te7wa" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjr01ussh001uj238a4xvn0w0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -603,108 +644,11 @@
 
 
   
-    <article id="post-hello-world" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2001/08/23/hello-world/" class="article-date">
-  <time datetime="2001-08-23T07:27:48.000Z" itemprop="datePublished">2001-08-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2001/08/23/hello-world/">Hexo 博客搭建指南</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Hexo 博客搭建指南<br>Hexo的简洁、神秘让我跃跃欲试，在使用过程中遇到了很多问题，整理此文，一是方便其他技术人搭建自己的博客，二是给自己的学习之旅做个总结。本文未完结，欢迎star、fork，如果有错误，请不吝指出。 我搭建的博客地址：limedroid.github.io</p>
-<p>Hexo_Learning</p>
-<p>Hexo_Learning</p>
-<p>Hexo_Learning</p>
-<p>1 Hexo介绍<br>Hexo是基于NodeJs的静态博客框架，简单、轻量，其生成的静态网页可以托管在Github和Heroku上。</p>
-<p>超快速度<br>支持MarkDown<br>一键部署<br>丰富的插件<br>下面以我的博客为例，limedroid.github.io</p>
-<p>2 环境准备<br>2.1 安装node.js<br>去nodejs官网下载对应系统的安装包，按提示安装。</p>
-<p>检验安装成功：</p>
-<p>$ node -v<br>2.2 安装hexo<br>$ npm install hexo-cli -g<br>注意：Mac系统，则需要</p>
-<p>$ sudo npm install hexo-cli -g<br>3 利用Hexo搭建一个博客<br>3.1 创建博客目录limedroid.github.io<br>$ hexo init limedroid.github.io<br>$ cd limedroid.github.io<br>$ npm install<br>3.2 生成静态页面<br>$ hexo clean<br>$ hexo g<br>g 即generate</p>
-<p>3.3 运行<br>$ hexo s<br>s 即server</p>
-<p>然后打开浏览器，输入地址 localhost:4000 即可看到效果</p>
-<p>4 发一篇文章试试<br>4.1 命令方式<br>$ hexo new test<br>此时会在source/_posts目录下生成test.md文件，输入些许内容，然后保存.</p>
-<p>生成下，看看效果</p>
-<p>$ hexo clean<br>$ hexo g<br>$ hexo s<br>访问 localhost:4000 即可</p>
-<p>4.2 直接方式<br>在 <strong>source/_posts/</strong>下新建一个.md文件也可</p>
-<p>5 配置<br>网站的设置大部分都在<strong>_config.yml</strong>文件中，详细配置可以查看官方文档</p>
-<p>下面只列出简单常用配置</p>
-<p>title -&gt; 网站标题<br>subtitle -&gt; 网站副标题<br>description -&gt; 网站描述<br>author -&gt; 您的名字<br>language -&gt; 网站使用的语言<br>坑：进行配置时，需要在冒号:后加一个英文空格</p>
-<p>title: Droidlover<br>6 换一个好看的主题<br>Hexo 中有很多主题，可以在官网查看。 这里我推荐hexo-theme-next，下面列举更换主题的一般套路：</p>
-<p>6.1 下载主题资源<br>$ git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> themes/next<br>6.2 应用下载的主题<br>在网站配置文件<strong>_config.yml中，配置theme</strong></p>
-<p>theme: next<br>next是主题名称，具体的可查看主题的文档</p>
-<p>6.3 主题其他配置<br>可在/theme/{theme}/_config.yml 主题的配置文件下进行主题的配置。</p>
-<p>接下来，可以执行万能的调试命令看看效果</p>
-<p>$ hexo clean<br>$ hexo g<br>$ hexo s<br>7 部署到Github<br>7.1 有个github账号xxx<br>7.2 创建一个xxx.github.io的public仓库<br>如果您的账户名是limedroid,则需要创建一个limedroid.github.io的public仓库.</p>
-<p>7.3 安装 hexo-deployer-git<br>$ npm install hexo-deployer-git –save<br>7.4 网站配置git<br>在网站的_config.yml中配置deploy</p>
-<p>deploy:<br>  type: git<br>  repo: <repository url=""><br>  branch: [branch]<br>branch为分支，默认为master,可以不配置 repo为仓库地址，在github上新建仓库后，可复制此地址</repository></p>
-<p>7.5 部署<br>$ hexo d<br>d 即deploy</p>
-<p>8 贴标签，方便搜索<br>8.1 两个确认<br>确认站点配置文件有<br>tag_dir: tags<br>确认主题配置文件有<br>tags: tags<br>8.2 新建tags页面<br>$ hexo new page tags<br>此时会在source/下生成tags/index.md文件</p>
-<p>8.3 修改source/tags/index.md<br>title: tags<br>date: 2015-10-20 06:49:50<br>type: “tags”<br>comments: false<br>date 可保持系统生成的时间，</p>
-<p>type: “tags”<br>comments: false<br>很重要</p>
-<p>8.4 在文章中添加tags<br>在文章xx.md中添加：</p>
-<p>tags: </p>
-<pre><code>- Tag1
-- Tag2
-- Tag3
-</code></pre><p>多个Tag可按上面的格式添加。</p>
-<p>其文件头部类似：</p>
-<p>title: TagEditText<br>date: 2016-11-19 10:44:25<br>tags: </p>
-<pre><code>- Tag1
-- Tag2
-- Tag3
-</code></pre><p>9 分类，给文章归档<br>9.1 两个确认<br>确认站点配置文件打开了<br>category_dir: categories<br>确认主题配置文件打开了<br>categories: /categories<br>9.2 新建categories文件<br>$ hexo new page categories<br>此时会在source目录下生成categories/index.md文件</p>
-<p>9.3 修改categories/index.md<br>title: categories<br>date: 2015-10-20 06:49:50<br>type: “categories”<br>comments: false<br>date 可保持系统生成的时间，</p>
-<p>type: “categories”<br>comments: false<br>很重要</p>
-<p>9.4 在文章中添加categories<br>在文章xx.md中添加：</p>
-<p>categories: </p>
-<pre><code>- cate
-</code></pre><p>其文件头部类似：</p>
-<p>title: TagEditText<br>date: 2016-11-19 10:44:25<br>categories: </p>
-<pre><code>- cate
-</code></pre><p>10 添加评论功能<br>评论功能在国内一般使用多说。</p>
-<p>10.1 注册多说账号<br>10.2 创建站点<br>需要注意的是，填写的多说域名不能更改，会在后面使用，在这里我配置成droidlover</p>
-<p>10.3 配置<br>在hexo主题配置文件中搜索：</p>
-<p>duoshuo_shortname<br>，然后打开开关，配置成前面设置的多说域名，如下：</p>
-<p>duoshuo_shortname: droidlover<br>有时，可能需要一段js</p>
-<!-- 多说评论框 start -->
-<pre><code>&lt;div class=&quot;ds-thread&quot; data-thread-key=&quot;请将此处替换成文章在你的站点中的ID&quot; data-title=&quot;请替换成文章的标题&quot; data-url=&quot;请替换成文章的网址&quot;&gt;&lt;/div&gt;
-</code></pre><!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<p><script type="text/javascript"><br>var duoshuoQuery = {short_name:”droidlover”};<br>    (function() {<br>        var ds = document.createElement(‘script’);<br>        ds.type = ‘text/javascript’;ds.async = true;<br>        ds.src = (document.location.protocol == ‘https:’ ? ‘https:’ : ‘http:’) + ‘//static.duoshuo.com/embed.js’;<br>        ds.charset = ‘UTF-8’;<br>        (document.getElementsByTagName(‘head’)[0]<br>         || document.getElementsByTagName(‘body’)[0]).appendChild(ds);<br>    })();<br>    </script><br><!-- 多说公共JS代码 end --><br>现在，你可以运行看下效果了:)</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjqn6h9or000hwa38otu9w78d" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -750,6 +694,10 @@
       <ul>
         
           <li>
+            <a href="/2019/01/17/golang_cvs/">golang csv文件操作</a>
+          </li>
+        
+          <li>
             <a href="/2019/01/09/golang_map_keng/">golang  map的排序</a>
           </li>
         
@@ -763,10 +711,6 @@
         
           <li>
             <a href="/2018/12/17/golang_channel_deadlock/">Golang管道死锁调试学习</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/13/indeedsystem/chapter1/">第一章 计算机系统漫游</a>
           </li>
         
       </ul>
