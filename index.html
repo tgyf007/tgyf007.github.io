@@ -67,6 +67,51 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mysql_install" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/01/21/mysql_install/" class="article-date">
+  <time datetime="2019-01-21T07:27:48.000Z" itemprop="datePublished">2019-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/21/mysql_install/">Ubuntu 安装 mysql</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>wget <a href="https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz" target="_blank" rel="noopener">https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz</a><br>tar xvf mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz<br>mv mysql/ /usr/local/<br>useradd mysql<br>mkdir mydata<br>mkdir mydata/data<br>chown -R mysql mysql/<br>vim /etc/my.cnf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">port = 3306</span><br><span class="line">socket = /tmp/mysql.sock</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">character_set_server=utf8</span><br><span class="line">init_connect=&apos;SET NAMES utf8&apos;</span><br><span class="line">basedir=/usr/local/mysql</span><br><span class="line">datadir=/usr/local/mysql/mydata/data</span><br><span class="line">socket=/tmp/mysql.sock</span><br><span class="line">log-error=/var/log/mysqld.log</span><br><span class="line">pid-file=/usr/local/mysql/mysqld.pid</span><br><span class="line">lower_case_table_names = 1</span><br><span class="line">user=mysql</span><br><span class="line"></span><br><span class="line">sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</span><br><span class="line">max_connections=1000</span><br></pre></td></tr></table></figure></p>
+<p>这里的内容尽量不要有改变，要不然会有不可预测问题</p>
+<p>touch /var/log/mysqld.log<br>chmod 777 /var/log/mysqld.log<br>touch /var/run/mysqld/mysqld.pid<br>chmod 777 /var/run/mysqld</p>
+<p>安装 libaio<br>apt-get install libaio-dev</p>
+<p>/usr/local/mysql/bin/mysqld –initialize –user=mysql –basedir=/usr/local/mysql –datadir=/usr/local/mysql/mydata/data –lc_messages_dir=/usr/local/mysql/share –lc_messages=en_US</p>
+<p>touch mysqld.pid<br>chmod 777 mysqld.pid<br>chown mysql.mysql mysqld.pid<br>support-files/mysql.server start</p>
+<p>加入系统服务<br>cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld<br>Ubuntu<br>update-rc.d mysqld defaults<br>centOs<br>chkconfig –add mysqld<br>chkconfig –level 2345 mysqld on</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/01/21/mysql_install/" data-id="cjr63v4bx000u3u38jkkg5u40" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-golang_cvs" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/17/golang_cvs/" class="article-date">
@@ -99,7 +144,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjr01uspv0008j238nzs4kyp4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjr63v4bd000c3u3871nfqb0v" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -141,7 +186,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjr01usq3000fj238r1no3iap" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjr63v4bl000h3u38qfjvjz1p" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -184,7 +229,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjr01usqf000mj2384gvdz3rh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjr63v4br000m3u38xob2hxbc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -226,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjr01usq0000cj238qfnp0200" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjr63v4bn000j3u38kzvc7347" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -271,7 +316,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjr01uspz000aj238knzdkhj9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjr63v4b700083u38fe3caht8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -332,7 +377,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjr01usrp001rj238p0rdpsu4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjr63v4dc001w3u38o9678t11" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
@@ -372,50 +417,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjr01usqn000wj23807d6tohz" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjr63v4by000w3u38qmjh0hse" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-git_new" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/06/git_new/" class="article-date">
-  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/06/git_new/">Git服务器新建项目</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Git 服务器上新建项目操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init --bare ***.git</span><br><span class="line"></span><br><span class="line">chown -R git.git ***.git</span><br></pre></td></tr></table></figure></p>
-<p>init时需要使用 –bare， 并且需要全文件夹授权，否则无法push</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjr01usps0007j238nb5dinuy" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -456,7 +461,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjr01uspo0004j238ehbjbtsh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjr63v4b200053u38yq3anha3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
@@ -468,9 +473,9 @@
 
 
   
-    <article id="post-reset_mysql_root" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-git_new" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/12/06/reset_mysql_root/" class="article-date">
+    <a href="/2018/12/06/git_new/" class="article-date">
   <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
 </a>
     
@@ -482,7 +487,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/06/reset_mysql_root/">Mac OS MySQL重置root密码</a>
+      <a class="article-title" href="/2018/12/06/git_new/">Git服务器新建项目</a>
     </h1>
   
 
@@ -490,17 +495,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Mac 安装MySQL后root密码丢失后重置步骤：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mysql/bin/</span><br><span class="line"></span><br><span class="line">sudo su</span><br><span class="line"></span><br><span class="line">./mysqld_safe --skip-grant-tables &amp; #进制MySQL验证</span><br></pre></td></tr></table></figure></p>
-<p>可以另起终端启动MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usr/local/mysql/support-files/mysql.server start</span><br></pre></td></tr></table></figure></p>
-<p>原终端执行重置密码命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./mysql</span><br><span class="line"></span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line"></span><br><span class="line">SET PASSWORD FOR &apos;root&apos;@&apos;localhost&apos; = PASSWORD(&apos;你的新密码&apos;);</span><br></pre></td></tr></table></figure></p>
+        <p>Git 服务器上新建项目操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init --bare ***.git</span><br><span class="line"></span><br><span class="line">chown -R git.git ***.git</span><br></pre></td></tr></table></figure></p>
+<p>init时需要使用 –bare， 并且需要全文件夹授权，否则无法push</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/reset_mysql_root/" data-id="cjr01usqm000vj238ys1zdsj9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjr63v4b000043u3858c3bdeo" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -537,7 +541,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -559,6 +563,10 @@
       <ul>
         
           <li>
+            <a href="/2019/01/21/mysql_install/">Ubuntu 安装 mysql</a>
+          </li>
+        
+          <li>
             <a href="/2019/01/17/golang_cvs/">golang csv文件操作</a>
           </li>
         
@@ -572,10 +580,6 @@
         
           <li>
             <a href="/2018/12/19/golang_yinyong/">golang 调试中碰到的结构体指针和值指针使用不同</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/17/golang_channel_deadlock/">Golang管道死锁调试学习</a>
           </li>
         
       </ul>
