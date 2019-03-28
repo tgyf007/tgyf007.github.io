@@ -67,6 +67,56 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mac_proxy" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/03/28/mac_proxy/" class="article-date">
+  <time datetime="2019-03-27T16:00:00.000Z" itemprop="datePublished">2019-03-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>终端是默认不会走代理的（一直以为是会），今天网络问题始终连不上AWS的服务器，没办法找解决办法。<br>在终端试一下当前出口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl cip.cc</span><br></pre></td></tr></table></figure></p>
+<p>返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">IP	: ********</span><br><span class="line">地址	: 中国  上海</span><br><span class="line">运营商	: 联通</span><br><span class="line"></span><br><span class="line">数据二	: 上海市 | 联通</span><br><span class="line"></span><br><span class="line">数据三	: 中国上海上海市 | 联通</span><br><span class="line"></span><br><span class="line">URL	: http://www.cip.cc/**********</span><br></pre></td></tr></table></figure></p>
+<p>说明确实不走代理， 因为shadowsocks是全局模式，web看到的出口是香港<br>解决方法：（比较喜欢在当前终端解决问题，不修改全局，有问题关掉这个终端窗口就没事了）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim .bash_profile</span><br></pre></td></tr></table></figure></p>
+<p>加入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy list</span><br><span class="line">alias proxy=&apos;export all_proxy=socks5://127.0.0.1:1086&apos; #1086不是写死的端口，是根据每个人本地socks5真是端口</span><br><span class="line">alias unproxy=&apos;unset all_proxy&apos;</span><br></pre></td></tr></table></figure></p>
+<p>OK，让配置生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure></p>
+<p>这个终端proxy别名就生效了，于是开始设置代理生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy</span><br></pre></td></tr></table></figure></p>
+<p>再次查看出口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl cip.cc</span><br><span class="line"></span><br><span class="line">IP	: **********</span><br><span class="line">地址	: 中国  香港 </span><br><span class="line"></span><br><span class="line">数据二	: 香港 | 特别行政区</span><br><span class="line"></span><br><span class="line">数据三	: 中国香港香港</span><br><span class="line"></span><br><span class="line">URL	: http://www.cip.cc/***************</span><br></pre></td></tr></table></figure></p>
+<p>生效。</p>
+<p>本来以为这样就可以解决ssh连不上AWS的问题，结果当然不行，原因嘛，应该如下：<br>socks,http代理等使用的是TCP或UDP协议, 而ping命令则是ICMP协议, 所以proxychains4对ping命令无效<br>想当然这样以为吧，大致是这个方向的原因。</p>
+<p>总得解决，因为让终端走代理的最终目的是为了ssh到AWS啊<br>还是G找<br>终于发现一个最简易的问题<br>命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh myserver -o &quot;ProxyCommand=nc -X 5 -x 127.0.0.1:1086 %h %p&quot;</span><br></pre></td></tr></table></figure></p>
+<p>终于就走了代理，服气</p>
+<p>当然还有个没试过的复杂方法，也记录一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.ssh/config</span><br><span class="line"># 添加以下内容</span><br><span class="line">Host 52.* # 这里可以通配也可以指定IP</span><br><span class="line">    ProxyCommand nc -X 5 -x 127.0.0.1:1079 %h %p</span><br><span class="line">    # &quot;5&quot; 是 SOCKS 5, &quot;1079&quot; 是本地socks端口</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/03/28/mac_proxy/" data-id="cjtsgabiy000qmb38gfeuxhsr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-os/">mac os</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mysql_install" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/01/21/mysql_install/" class="article-date">
@@ -100,7 +150,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/21/mysql_install/" data-id="cjr63v4bx000u3u38jkkg5u40" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/21/mysql_install/" data-id="cjtsgabj4000xmb385m2djiyq" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
@@ -144,7 +194,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjr63v4bd000c3u3871nfqb0v" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjtsgabi30007mb38vtzmenk0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -186,7 +236,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjr63v4bl000h3u38qfjvjz1p" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjtsgabid000fmb38g4sl57zz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -229,7 +279,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjr63v4br000m3u38xob2hxbc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjtsgabiv000nmb382i2ehaon" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -271,7 +321,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjr63v4bn000j3u38kzvc7347" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjtsgabis000kmb38zurp9y7x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -316,7 +366,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjr63v4b700083u38fe3caht8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjtsgabib000cmb38y4tidkh1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -377,7 +427,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjr63v4dc001w3u38o9678t11" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjtsgabl1001zmb3838jeufmg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
@@ -417,7 +467,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjr63v4by000w3u38qmjh0hse" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjtsgabj0000smb38jrg9mg6x" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -461,50 +511,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjr63v4b200053u38yq3anha3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjtsgabhw0004mb38093hxuhs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-git_new" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/06/git_new/" class="article-date">
-  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/06/git_new/">Git服务器新建项目</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Git 服务器上新建项目操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init --bare ***.git</span><br><span class="line"></span><br><span class="line">chown -R git.git ***.git</span><br></pre></td></tr></table></figure></p>
-<p>init时需要使用 –bare， 并且需要全文件夹授权，否则无法push</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjr63v4b000043u3858c3bdeo" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -541,7 +551,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 10px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -550,7 +560,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -561,6 +571,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
+          </li>
         
           <li>
             <a href="/2019/01/21/mysql_install/">Ubuntu 安装 mysql</a>
@@ -576,10 +590,6 @@
         
           <li>
             <a href="/2018/12/20/golangerrshadow/">golang 操作符:= 造成的err is shadowed during return</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/19/golang_yinyong/">golang 调试中碰到的结构体指针和值指针使用不同</a>
           </li>
         
       </ul>
