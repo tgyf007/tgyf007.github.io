@@ -5,16 +5,20 @@
   
 
   
-  <title>Tag: git linux | 会一点PHP和Go的Junior Developer</title>
+  <title>golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="Go PHP Linux Mysql Redis">
-<meta property="og:type" content="website">
-<meta property="og:title" content="会一点PHP和Go的Junior Developer">
-<meta property="og:url" content="http://yoursite.com/tags/git-linux/index.html">
+  <meta name="description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下12345678910111213141516171819   url := &quot;&quot;client := &amp;amp;http.Client&amp;#123;&amp;#125;req, err := http.NewRequest(&quot;GET&quot;, url, nil)req.Close = true">
+<meta name="keywords" content="golang">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法">
+<meta property="og:url" content="http://yoursite.com/2019/04/01/golang_http_get_unpected/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
+<meta property="og:description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下12345678910111213141516171819   url := &quot;&quot;client := &amp;amp;http.Client&amp;#123;&amp;#125;req, err := http.NewRequest(&quot;GET&quot;, url, nil)req.Close = true">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-01T09:55:48.282Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="会一点PHP和Go的Junior Developer">
+<meta name="twitter:title" content="golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法">
+<meta name="twitter:description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下12345678910111213141516171819   url := &quot;&quot;client := &amp;amp;http.Client&amp;#123;&amp;#125;req, err := http.NewRequest(&quot;GET&quot;, url, nil)req.Close = true">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -65,40 +69,58 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/12/06/git_no_pass/" class="archive-article-date">
-  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">Dec 6</time>
+        <section id="main"><article id="post-golang_http_get_unpected" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/04/01/golang_http_get_unpected/" class="article-date">
+  <time datetime="2019-03-31T16:00:00.000Z" itemprop="datePublished">2019-04-01</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/12/06/git_no_pass/">Git服务器配置指定客户端免密</a>
+    <h1 class="article-title" itemprop="name">
+      golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">   url := <span class="string">""</span></span><br><span class="line"></span><br><span class="line">client := &amp;http.Client&#123;&#125;</span><br><span class="line"></span><br><span class="line">req, err := http.NewRequest(<span class="string">"GET"</span>, url, <span class="literal">nil</span>)</span><br><span class="line">req.Close = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">resp, err := client.Do(req)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`aaaaaa`</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, (err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line">body, err := ioutil.ReadAll(resp.Body)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`bbbbbb`</span>)</span><br><span class="line">	<span class="keyword">return</span> ms, err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当然，还是Google，最后发现返回是gzip压缩过的，而直接获取是获取不到的，所以要加设置要求接口明码返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">req.Header.Add(&quot;Accept-Encoding&quot;, &quot;identity&quot;)</span><br></pre></td></tr></table></figure></p>
+<p>注：资料来源<a href="https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client" target="_blank" rel="noopener">https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client</a></p>
+<p>It looks like the that server (Apache 1.3, wow!) is serving up a truncated gzip response. If you explicitly request the identity encoding (preventing the Go transport from adding gzip itself), you won’t get the ErrUnexpectedEOF:</p>
+<p>这句话是这么理解的吧？</p>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/04/01/golang_http_get_unpected/" data-id="cjty6g8i2000eyd38d90ps2uw" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/03/28/mac_proxy/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">macOS 终端通过代理访问网络的方法(包括ssh)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         

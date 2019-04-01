@@ -67,6 +67,37 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-add_service" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/add_service/" class="article-date">
+  <time datetime="2018-08-23T07:27:48.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>安装mysql后想使用Linux的service命令控制启动</p>
+<p>red hat 下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">#设置</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig --level 2345 mysqld on</span><br></pre></td></tr></table></figure></p>
+<p>utubun 下没有chkconfig，试了一下使用update-rc.d，好像可以了，但具体还没太了解这个命令。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjty6g8gh0001yd38vq2vktax" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-crontab_keng" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/08/23/crontab_keng/" class="article-date">
@@ -102,7 +133,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjtsgabhm0001mb38kv6dwvdc" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjty6g8hq0008yd38q27pc9ki" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -301,7 +332,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjtsgablc0022mb38xsv32hiw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjty6g8kt001xyd38fpdjm3j6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -400,7 +431,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjtsgabin000imb389hxglnl3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjty6g8if000lyd38ka98efad" class="article-share-link">Share</a>
       
       
     </footer>
@@ -447,7 +478,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -458,6 +489,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/04/01/golang_http_get_unpected/">golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法</a>
+          </li>
         
           <li>
             <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
@@ -473,10 +508,6 @@
         
           <li>
             <a href="/2019/01/09/golang_map_keng/">golang  map的排序</a>
-          </li>
-        
-          <li>
-            <a href="/2018/12/20/golangerrshadow/">golang 操作符:= 造成的err is shadowed during return</a>
           </li>
         
       </ul>
