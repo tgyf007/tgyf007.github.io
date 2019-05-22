@@ -22,8 +22,6 @@
     <link rel="icon" href="/favicon.png">
   
   
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
   <link rel="stylesheet" href="/css/style.css">
 </head>
 </html>
@@ -67,6 +65,58 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-goandphp" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/23/goandphp/" class="article-date">
+  <time datetime="2018-10-23T07:27:48.000Z" itemprop="datePublished">2018-10-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/23/goandphp/">go and php</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="运行与编译"><a href="#运行与编译" class="headerlink" title="运行与编译"></a>运行与编译</h3><hr>
+<p>PHP是解释型语言，构建在ZEND虚拟机上，运行时首先会被zend引擎编译或者解释为OPCODE（或者运行时读取已经缓存的OPCODE），再由zend引擎处理后对接机器指令。<br>所以PHP现在作为web语言有一个明显的优势，代码更新后没有重启的概念，下次执行的时候直接读取新文件解释。</p>
+<p>Go 是编译型语言，运行前需要直接编译为机器指令的二进制可执行文件。<br>所以一些数据结构造成的问题是可以在编译时检查出来的，当然调用值超下标之类的就没办法了。<br>最大的问题是每次代码更新后都需要重新编译，作为web服务支持需要停止原来的服务重启新的服务，至少我还没想到好的解决方案。好在Go的编译启动很快，现在看是毫秒级的。</p>
+<h3 id="语言类型"><a href="#语言类型" class="headerlink" title="语言类型"></a>语言类型</h3><hr>
+<p>PHP是绝对的弱类型语言<br>PHP里几乎没有类型的概念，int和string bool可以默认转换，一个数组可以有任何类型的数据结构。或者我可以理解为没有数据结构的概念，因为会在编译为OPCODE的时候根据词法分析、语法分析、语义分析和优化最终生成对应机器语言。</p>
+<p>Go是强类型语言<br>Go里的数据结构要求非常严格。不同位的int都只能强制转换。slice和数组只能包含同一类型的数据结构，在定义时基本就要指定（或者在赋值时默认定义）。要想像PHP那样一个返回一个包含各种数据结构的数组型数据，只能定义一个结构体struct。其实PHP的数组可以理解是伪数组吧，就可以理解为结构体。</p>
+<h3 id="web服务"><a href="#web服务" class="headerlink" title="web服务"></a>web服务</h3><hr>
+<p>PHP本身没有web服务的概念，虽然它就是为了web而生的。它只能对接第三方web服务（Apache Nginx）。<br>这其实也切合互联网发展历程的吧。最早的互联网是静态的，只需要web服务即可。后面随着发展肯定没法接受纯静态互联网，于是就有了动态的需求，但是web服务器自身是不能支持动态的，怎么办呢，记得以前看过印象深刻的话，在计算机领域，没有什么是加一个中间件解决不了的。CGI出现了，通用网关接口，也可以理解为一个对接web服务的规范吧，只要动态语言支持这个规范就可以接上web服务器了，PHP的诞生应该是伴随着fastcgi的吧，经常看到进程里有一个php-cgi，就是这玩意吧，当然后面因为单纯fastcgi的性能可能实在弱到没法忍受，就接着诞生了php-fpm，fastcgi process manager（以前老觉得这种fpm什么的专业术语吊炸天的样子，后来发现基本都是英文首字母的组合，就略无语）。当然fpm怎么提高性能就扯远了，也扯不出来，因为我也不太懂，总结就是一句话，PHP自己不支持web服务，靠CGI对接web服务器。</p>
+<p>Go不需要第三方web服务器，它自己就可以支持web服务。Go的net包提供了各种接口，包括TCP/IP，UDP或者Unix下的socket。基于此，还开发出了专门针对的http的包。为了兼容现在的系统，还有http还有CGI和fcgi子包，具体干嘛的我也不知道。</p>
+<h3 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="垃圾回收机制"></a>垃圾回收机制</h3><hr>
+<p>PHP的垃圾回收是靠引用计数，一个变量生成的时候自带计数，有人指向它计数就加一，所以指向它的都被unset掉了，计数变零，OK，这个内存可以释放掉了。我以前觉得PHP每个进程过来的时候生成一个新进程，然后请求结束干掉进程，那进程包含的内存肯定就自动释放掉了，但写着写着突然想到PHP是不是没有这么low每次请求是一个进程而不是一个线程，线程结束那进程还是有必须要主动释放指定的内存的吧，当然每个线程也有自己的标示，所以线程结束进程可以主动释放这个标示下的所以内存块吧。至于释放是不是靠引用计数就不知道了。反正这个请求结束相关的内存块都被干掉了是肯定的。所以PHPer不用考虑内存释放不释放的，反正请求结束全自动释放。</p>
+<p>Go的垃圾回收是不可达回收，就是一个变量在运行的过程中发现后面用不到它了，OK，放到回收池，等到一定量了一起回收掉。这个回收的过程会STW（stop the world，还是那个奇葩怪癖），所以饱受诟病。太较真了，要是这样谁都写不出来纯完美的代码吧。</p>
+<h3 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h3><p>1 引用代码<br>golang使用包的概念引用代码可以方便的让代码独立出来，一个脚本只需要import所需的脚本就行了，显得更为简洁容易。<br>PHP经过长时间的发展，基本都是框架式使用，如果要单独的开发一个小项目或者脚本比较麻烦，需要把部分代码拷贝来拷贝去。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>代码最后不要分好，引用服务调用包等其余部分感觉具体也写不出来什么，而且Go确实也还不太熟悉。先写这么多，以后想到再说吧</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjvyo01k700043a385hlmke4v" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mac_os_xcode" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/10/22/mac_os_xcode/" class="article-date">
@@ -97,7 +147,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjvqjwij1000sgb388r33ine2" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjvyo01ld000s3a384t0e9xga" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-os/">mac os</a></li></ul>
@@ -136,7 +186,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjvqjwij60011gb38jfiwg88p" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjvyo01lh000y3a380w3u8cgh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
@@ -167,7 +217,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjvqjwihq0001gb38q3q72ec0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjvyo01jz00013a388bchy47n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -214,7 +264,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjvqjwihx0003gb389y7sbj58" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjvyo01k500033a38u0xwn2co" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -413,7 +463,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjvqjwilt0029gb386lzw93f1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjvyo01o6002b3a38yv80yhqg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -512,7 +562,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjvqjwiix000ogb38zoxe21qv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjvyo01kw000h3a38ce38z3dx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -540,7 +590,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -550,7 +600,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -572,7 +622,11 @@
       <ul>
         
           <li>
-            <a href="/2019/05/16/golang_x_failed/">golang csv文件操作</a>
+            <a href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/16/golang_x_failed/">解决 golang获取 golang.org/x 包失败的方法</a>
           </li>
         
           <li>
@@ -585,10 +639,6 @@
         
           <li>
             <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/21/mysql_install/">Ubuntu 安装 mysql</a>
           </li>
         
       </ul>

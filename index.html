@@ -22,8 +22,6 @@
     <link rel="icon" href="/favicon.png">
   
   
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
   <link rel="stylesheet" href="/css/style.css">
 </head>
 </html>
@@ -67,6 +65,64 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux_s3cmd" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/05/22/linux_s3cmd/" class="article-date">
+  <time datetime="2019-05-21T16:00:00.000Z" itemprop="datePublished">2019-05-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="s3cmd是用于创建和管理数据到Amazon-S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd"><a href="#s3cmd是用于创建和管理数据到Amazon-S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd" class="headerlink" title="s3cmd是用于创建和管理数据到Amazon S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd"></a>s3cmd是用于创建和管理数据到Amazon S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd</h3><p>s3cmd 是用于创建S3桶，上传，检索和管理数据到Amazon S3存储命令行实用程序。 本文将帮助你如何在CentOS，RHEL，OpenSUSE系统，Ubuntu，Debian和LinuxMint系统上安装s3cmd，并通过简单的步骤命令行管理S3桶。 要在阅读文章Windows服务器安装s3cmd 在Windows中安装s3cmd。 我们还可以使用S3FS与FUSE在我们的系统本地驱动器安装S3存储桶。要配置阅读下一篇文章在Linux上安装S3存储 。 女将-S3-中心标志<br>安装s3cmd包<br>s3cmd是默认的RPM库针对CentOS，RHEL和Ubuntu系统上可用，您可以简单的在系统上执行以下命令进行安装。<br>在CentOS / RHEL：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum install s3cmd</span><br></pre></td></tr></table></figure></p>
+<p>在Ubuntu / Debian：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install s3cmd</span><br></pre></td></tr></table></figure></p>
+<p>在SUSE Linux Enterprise Server 11：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># zypper addrepo http://s3tools.org/repo/SLE_11/s3tools.repo</span><br><span class="line"># zypper install s3cmd</span><br></pre></td></tr></table></figure></p>
+<p>使用Source安装最新s3cmd<br>如果使用上述软件包管理器s3cmd，你没有得到最新的版本，可以使用源代码，在系统上安装最新的s3cmd版本。访问此网址或者使用下面的命令来下载最新版本的s3cmd。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://ufpr.dl.sourceforge.net/project/s3tools/s3cmd/1.6.1/s3cmd-1.6.1.tar.gz</span><br><span class="line">$ tar xzf s3cmd-1.6.1.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>现在，使用下面的命令与源文件进行安装。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd s3cmd-1.6.1</span><br><span class="line">$ sudo python setup.py install</span><br></pre></td></tr></table></figure></p>
+<p>配置s3cmd环境<br>为了配置s3cmd我们将要求有您S3 Amazon帐户访问key和钥匙。获取安全密钥AWS securityCredentials 。将提示登录到您的Amazon帐户。 获取密钥文件后，请使用以下命令来配置s3cmd。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd --configure</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Enter new values or accept defaults in brackets with Enter.</span><br><span class="line">Refer to user manual for detailed description of all options.</span><br><span class="line"></span><br><span class="line">Access key and Secret key are your identifiers for Amazon S3</span><br><span class="line">Access Key: xxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">Secret Key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line"></span><br><span class="line">Encryption password is used to protect your files from reading</span><br><span class="line">by unauthorized persons while in transfer to S3</span><br><span class="line">Encryption password: xxxxxxxxxx</span><br><span class="line">Path to GPG program [/usr/bin/gpg]:</span><br><span class="line"></span><br><span class="line">When using secure HTTPS protocol all communication with Amazon S3</span><br><span class="line">servers is protected from 3rd party eavesdropping. This method is</span><br><span class="line">slower than plain HTTP and can&apos;t be used if you&apos;re behind a proxy</span><br><span class="line">Use HTTPS protocol [No]: Yes</span><br><span class="line"></span><br><span class="line">New settings:</span><br><span class="line">  Access Key: xxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">  Secret Key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">  Encryption password: xxxxxxxxxx</span><br><span class="line">  Path to GPG program: /usr/bin/gpg</span><br><span class="line">  Use HTTPS protocol: True</span><br><span class="line">  HTTP Proxy server name:</span><br><span class="line">  HTTP Proxy server port: 0</span><br><span class="line"></span><br><span class="line">Test access with supplied credentials? [Y/n] Y</span><br><span class="line">Please wait, attempting to list all buckets...</span><br><span class="line">Success. Your access key and secret key worked fine :-)</span><br><span class="line"></span><br><span class="line">Now verifying that encryption works...</span><br><span class="line">Success. Encryption and decryption worked fine :-)</span><br><span class="line"></span><br><span class="line">Save settings? [y/N] y</span><br><span class="line">Configuration saved to &apos;/root/.s3cfg&apos;</span><br></pre></td></tr></table></figure>
+<p>s3cmd命令行的使用<br>一旦配置成功完成。现在找到下面的命令细节，如何使用命令管理S3桶。<br>1.列出全部S3桶<br>使用以下命令列出在您的AWS账户中的所有S3桶。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd ls</span><br></pre></td></tr></table></figure></p>
+<p>2.创建新桶<br>要在下面的命令Amazon S3上使用的新桶。这将创建S3帐户名为howtoing桶。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd mb s3://howtoing</span><br><span class="line">Bucket &apos;s3://howtoing/&apos; created</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li>上传文件到S3桶<br>以下命令将使用s3cmd命令上传文件file.txt的到S3桶。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd put file.txt s3://howtoing/</span><br><span class="line">file.txt -&gt; s3://howtoing/file.txt  [1 of 1]</span><br><span class="line"> 190216 of 190216   100% in    0s  1668.35 kB/s  done</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>4.上传文件夹到s3桶<br>如果我们需要上传整个目录使用-r递归上传，像下面这样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd put -r backup s3://howtoing/</span><br><span class="line"></span><br><span class="line">backup/file1.txt -&gt; s3://howtoing/backup/file1.txt  [1 of 2]</span><br><span class="line"> 9984 of 9984   100% in    0s    18.78 kB/s  done</span><br><span class="line">backup/file2.txt -&gt; s3://howtoing/backup/file2.txt  [2 of 2]</span><br><span class="line"> 0 of 0     0% in    0s     0.00 B/s  done</span><br></pre></td></tr></table></figure></p>
+<p>请确保您上传目录的结尾没有斜杠 / （如：backup/），否则将只上传备份目录中的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd put -r backup/ s3://howtoing/</span><br><span class="line"></span><br><span class="line">backup/file1.txt -&gt; s3://howtoing/file1.txt  [1 of 2]</span><br><span class="line"> 9984 of 9984   100% in    0s    21.78 kB/s  done</span><br><span class="line">backup/file2.txt -&gt; s3://howtoing/file2.txt  [2 of 2]</span><br><span class="line"> 0 of 0     0% in    0s     0.00 B/s  done</span><br></pre></td></tr></table></figure></p>
+<p>5.列出S3存储数据<br>使用 ls 与 s3cmd 切换目录S3桶的对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd ls s3://howtoing/</span><br><span class="line"></span><br><span class="line">                       DIR   s3://howtoing/backup/</span><br><span class="line">2013-09-03 10:58    190216   s3://howtoing/file.txt</span><br></pre></td></tr></table></figure></p>
+<p>6.从s3下载文件<br>有些时候，如果我们需要从S3下载文件，使用下面的命令来下载。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd get s3://howtoing/file.txt</span><br><span class="line"></span><br><span class="line">s3://howtoing/file.txt -&gt; ./file.txt  [1 of 1]</span><br><span class="line"> 4 of 4   100% in    0s    10.84 B/s  done</span><br></pre></td></tr></table></figure></p>
+<p>7.删除S3桶的数据<br>要删除的文件夹都是从S3桶使用下面的命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> Removing file from s3 bucket </span><br><span class="line"># s3cmd del s3://howtoing/file.txt</span><br><span class="line"></span><br><span class="line">File s3://howtoing/file.txt deleted</span><br><span class="line"></span><br><span class="line"> Removing directory from s3 bucket </span><br><span class="line"># s3cmd del s3://howtoing/backup</span><br><span class="line"></span><br><span class="line">File s3://howtoing/backup deleted</span><br></pre></td></tr></table></figure></p>
+<p>8.卸下S3桶<br>如果我们不需要S3存储，我们可以用下面的命令直接删除它。取出桶之前，请确保它是空的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd rb s3://howtoing</span><br><span class="line"></span><br><span class="line">ERROR: S3 error: 409 (BucketNotEmpty): The bucket you tried to delete is not empty</span><br></pre></td></tr></table></figure></p>
+<p>上面的命令失败，因为S3桶不为空 要删除s3 桶先删除里面所有对象，然后再次使用命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd rb s3://howtoing</span><br><span class="line"></span><br><span class="line">Bucket &apos;s3://howtoing/&apos; removed</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/05/22/linux_s3cmd/" data-id="cjvyo01lc000r3a38o3f6x5fp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aws/">aws</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-golang_x_failed" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/16/golang_x_failed/" class="article-date">
@@ -81,7 +137,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/16/golang_x_failed/">golang csv文件操作</a>
+      <a class="article-title" href="/2019/05/16/golang_x_failed/">解决 golang获取 golang.org/x 包失败的方法</a>
     </h1>
   
 
@@ -89,13 +145,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>git 获取golang.org/x包失败<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go get</span><br><span class="line">package golang.org/x/net/websocket: unrecognized import path </span><br><span class="line">&quot;golang.org/x/net/websocket&quot; (https fetch: Get https://golang.org/x/net/websocket?go-get=1: </span><br><span class="line">dial tcp 216.239.37.1:443: i/o timeout)</span><br></pre></td></tr></table></figure></p>
+        <h2 id="git-获取golang-org-x包失败"><a href="#git-获取golang-org-x包失败" class="headerlink" title="git 获取golang.org/x包失败"></a>git 获取golang.org/x包失败</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go get</span><br><span class="line">package golang.org/x/net/websocket: unrecognized import path </span><br><span class="line">&quot;golang.org/x/net/websocket&quot; (https fetch: Get https://golang.org/x/net/websocket?go-get=1: </span><br><span class="line">dial tcp 216.239.37.1:443: i/o timeout)</span><br></pre></td></tr></table></figure>
 <p>加上代理，还是不行<br>解决方法<br>golang 在 github 上建立了一个镜像库，如 <a href="https://github.com/golang/net" target="_blank" rel="noopener">https://github.com/golang/net</a> 即是 <a href="https://golang.org/x/net" target="_blank" rel="noopener">https://golang.org/x/net</a> 的镜像库<br>手动的去这个库拉就到指定目录就行了，没有目录就创建</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/16/golang_x_failed/" data-id="cjvqjwiij000fgb384mtcukpj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/16/golang_x_failed/" data-id="cjvyo01l3000k3a38y06mcxn5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -135,7 +191,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/06/xiaoyouxi/" data-id="cjvqjwijb0016gb386b4fvi9b" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/06/xiaoyouxi/" data-id="cjvyo01lq001a3a38o3nsl225" class="article-share-link">Share</a>
       
       
     </footer>
@@ -176,7 +232,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/01/golang_http_get_unpected/" data-id="cjvqjwiir000jgb38yzi7zid8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/01/golang_http_get_unpected/" data-id="cjvyo01kh00083a38jrqhfn7z" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -226,7 +282,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/mac_proxy/" data-id="cjvqjwij4000wgb3853n95zr8" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/28/mac_proxy/" data-id="cjvyo01lj00113a38vdhf6z97" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-os/">mac os</a></li></ul>
@@ -271,7 +327,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/21/mysql_install/" data-id="cjvqjwij80013gb38wb54c88v" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/21/mysql_install/" data-id="cjvyo01lm00163a386m2gvuf6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
@@ -315,7 +371,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjvqjwiid000agb38r1erl44j" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjvyo01kp000f3a381jq92a94" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -357,7 +413,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjvqjwiin000hgb38ugb3se2f" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjvyo01lf000u3a38dqdn1y4a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -400,7 +456,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjvqjwij0000rgb38os18cclt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjvyo01l7000m3a38qmc0j8br" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -442,52 +498,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjvqjwiiv000mgb38valwzijl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-golang_channel_deadlock" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/17/golang_channel_deadlock/" class="article-date">
-  <time datetime="2018-12-16T16:00:00.000Z" itemprop="datePublished">2018-12-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/17/golang_channel_deadlock/">Golang管道死锁调试学习</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var ch1, ch2 chan int</span><br><span class="line"></span><br><span class="line">func send() &#123;</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	go send()</span><br><span class="line"></span><br><span class="line">	fmt.Println(`ch1`, &lt;-ch1)</span><br><span class="line">	fmt.Println(`ch2`, &lt;-ch2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
-<p>想这个是顺序执行的，怎么会死锁，然后发现channel和map slice一样，需要make后才能使用<br>修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var ch1, ch2 chan int</span><br><span class="line"></span><br><span class="line">func send() &#123;</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	ch1 = make(chan int)</span><br><span class="line">	ch2 = make(chan int)</span><br><span class="line">	go send()</span><br><span class="line"></span><br><span class="line">	fmt.Println(`ch1`, &lt;-ch1)</span><br><span class="line">	fmt.Println(`ch2`, &lt;-ch2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>正常返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ch1 1</span><br><span class="line">ch2 2</span><br></pre></td></tr></table></figure></p>
-<p>替换ch1 ch2发送顺序，不改变接受顺序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func send() &#123;</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
-<p>死锁再现，因为先发送了管道ch2，先接收ch1，因为ch1没有发送，协程卡主，就导致主线程ch1 没法发送， 死循环，生成了死锁。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjvqjwii60008gb38o2883y5s" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjvyo01l9000o3a38ofj8dru3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -517,7 +528,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -527,7 +538,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -549,7 +560,11 @@
       <ul>
         
           <li>
-            <a href="/2019/05/16/golang_x_failed/">golang csv文件操作</a>
+            <a href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
+          </li>
+        
+          <li>
+            <a href="/2019/05/16/golang_x_failed/">解决 golang获取 golang.org/x 包失败的方法</a>
           </li>
         
           <li>
@@ -562,10 +577,6 @@
         
           <li>
             <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/21/mysql_install/">Ubuntu 安装 mysql</a>
           </li>
         
       </ul>
