@@ -65,6 +65,50 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-aws_es" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/16/aws_es/" class="article-date">
+  <time datetime="2019-07-15T16:00:00.000Z" itemprop="datePublished">2019-07-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/07/16/aws_es/">golang使用AWS ElasticSearch</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="用到了AWS-ElasticSearch，研究了一下，整理了一下研究过程"><a href="#用到了AWS-ElasticSearch，研究了一下，整理了一下研究过程" class="headerlink" title="用到了AWS ElasticSearch，研究了一下，整理了一下研究过程"></a>用到了AWS ElasticSearch，研究了一下，整理了一下研究过程</h3><p>AWS本身自带ElasticSearch服务，且可以方便的在本地布置Kibana，这个不需要多说，只需要去搜索文档执行即可。</p>
+<p>AWS的ES首先是新建域，这个原来已经有服务，所以在这个基础要上新建index</p>
+<p>研究了N久怎么建index，最后发现在kibana的Dev Tools用put命令即可</p>
+<p>建好后，去找golang的Elastic包，最终决定使用github.com/olivere/elastic</p>
+<p>然后推送数据，推送过程中发现并不需要先建index，在推送数据的时候如果index不存在会自动创建</p>
+<p>推送成功后发现在Discover里找不到新建的index，研究良久，最后在kibana的Management里对index pattern有了怀疑，于是试着创建一个新的index pattern并指向新的index这个indices，创建后终于成功在Discover看到数据，搞定！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/16/aws_es/" data-id="cjy5p771z0000qn38nyyz6s2k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aws/">aws</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-linux_s3cmd" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/05/22/linux_s3cmd/" class="article-date">
@@ -87,31 +131,114 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="s3cmd是用于创建和管理数据到Amazon-S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd"><a href="#s3cmd是用于创建和管理数据到Amazon-S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd" class="headerlink" title="s3cmd是用于创建和管理数据到Amazon S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd"></a>s3cmd是用于创建和管理数据到Amazon S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd</h3><p>s3cmd 是用于创建S3桶，上传，检索和管理数据到Amazon S3存储命令行实用程序。 本文将帮助你如何在CentOS，RHEL，OpenSUSE系统，Ubuntu，Debian和LinuxMint系统上安装s3cmd，并通过简单的步骤命令行管理S3桶。 要在阅读文章Windows服务器安装s3cmd 在Windows中安装s3cmd。 我们还可以使用S3FS与FUSE在我们的系统本地驱动器安装S3存储桶。要配置阅读下一篇文章在Linux上安装S3存储 。 女将-S3-中心标志<br>安装s3cmd包<br>s3cmd是默认的RPM库针对CentOS，RHEL和Ubuntu系统上可用，您可以简单的在系统上执行以下命令进行安装。<br>在CentOS / RHEL：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum install s3cmd</span><br></pre></td></tr></table></figure></p>
-<p>在Ubuntu / Debian：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install s3cmd</span><br></pre></td></tr></table></figure></p>
-<p>在SUSE Linux Enterprise Server 11：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># zypper addrepo http://s3tools.org/repo/SLE_11/s3tools.repo</span><br><span class="line"># zypper install s3cmd</span><br></pre></td></tr></table></figure></p>
-<p>使用Source安装最新s3cmd<br>如果使用上述软件包管理器s3cmd，你没有得到最新的版本，可以使用源代码，在系统上安装最新的s3cmd版本。访问此网址或者使用下面的命令来下载最新版本的s3cmd。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ wget http://ufpr.dl.sourceforge.net/project/s3tools/s3cmd/1.6.1/s3cmd-1.6.1.tar.gz</span><br><span class="line">$ tar xzf s3cmd-1.6.1.tar.gz</span><br></pre></td></tr></table></figure></p>
-<p>现在，使用下面的命令与源文件进行安装。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd s3cmd-1.6.1</span><br><span class="line">$ sudo python setup.py install</span><br></pre></td></tr></table></figure></p>
-<p>配置s3cmd环境<br>为了配置s3cmd我们将要求有您S3 Amazon帐户访问key和钥匙。获取安全密钥AWS securityCredentials 。将提示登录到您的Amazon帐户。 获取密钥文件后，请使用以下命令来配置s3cmd。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd --configure</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Enter new values or accept defaults in brackets with Enter.</span><br><span class="line">Refer to user manual for detailed description of all options.</span><br><span class="line"></span><br><span class="line">Access key and Secret key are your identifiers for Amazon S3</span><br><span class="line">Access Key: xxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">Secret Key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line"></span><br><span class="line">Encryption password is used to protect your files from reading</span><br><span class="line">by unauthorized persons while in transfer to S3</span><br><span class="line">Encryption password: xxxxxxxxxx</span><br><span class="line">Path to GPG program [/usr/bin/gpg]:</span><br><span class="line"></span><br><span class="line">When using secure HTTPS protocol all communication with Amazon S3</span><br><span class="line">servers is protected from 3rd party eavesdropping. This method is</span><br><span class="line">slower than plain HTTP and can&apos;t be used if you&apos;re behind a proxy</span><br><span class="line">Use HTTPS protocol [No]: Yes</span><br><span class="line"></span><br><span class="line">New settings:</span><br><span class="line">  Access Key: xxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">  Secret Key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span><br><span class="line">  Encryption password: xxxxxxxxxx</span><br><span class="line">  Path to GPG program: /usr/bin/gpg</span><br><span class="line">  Use HTTPS protocol: True</span><br><span class="line">  HTTP Proxy server name:</span><br><span class="line">  HTTP Proxy server port: 0</span><br><span class="line"></span><br><span class="line">Test access with supplied credentials? [Y/n] Y</span><br><span class="line">Please wait, attempting to list all buckets...</span><br><span class="line">Success. Your access key and secret key worked fine :-)</span><br><span class="line"></span><br><span class="line">Now verifying that encryption works...</span><br><span class="line">Success. Encryption and decryption worked fine :-)</span><br><span class="line"></span><br><span class="line">Save settings? [y/N] y</span><br><span class="line">Configuration saved to &apos;/root/.s3cfg&apos;</span><br></pre></td></tr></table></figure>
-<p>s3cmd命令行的使用<br>一旦配置成功完成。现在找到下面的命令细节，如何使用命令管理S3桶。<br>1.列出全部S3桶<br>使用以下命令列出在您的AWS账户中的所有S3桶。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd ls</span><br></pre></td></tr></table></figure></p>
-<p>2.创建新桶<br>要在下面的命令Amazon S3上使用的新桶。这将创建S3帐户名为howtoing桶。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd mb s3://howtoing</span><br><span class="line">Bucket &apos;s3://howtoing/&apos; created</span><br></pre></td></tr></table></figure></p>
-<ol start="3">
-<li>上传文件到S3桶<br>以下命令将使用s3cmd命令上传文件file.txt的到S3桶。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd put file.txt s3://howtoing/</span><br><span class="line">file.txt -&gt; s3://howtoing/file.txt  [1 of 1]</span><br><span class="line"> 190216 of 190216   100% in    0s  1668.35 kB/s  done</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>4.上传文件夹到s3桶<br>如果我们需要上传整个目录使用-r递归上传，像下面这样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd put -r backup s3://howtoing/</span><br><span class="line"></span><br><span class="line">backup/file1.txt -&gt; s3://howtoing/backup/file1.txt  [1 of 2]</span><br><span class="line"> 9984 of 9984   100% in    0s    18.78 kB/s  done</span><br><span class="line">backup/file2.txt -&gt; s3://howtoing/backup/file2.txt  [2 of 2]</span><br><span class="line"> 0 of 0     0% in    0s     0.00 B/s  done</span><br></pre></td></tr></table></figure></p>
-<p>请确保您上传目录的结尾没有斜杠 / （如：backup/），否则将只上传备份目录中的内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd put -r backup/ s3://howtoing/</span><br><span class="line"></span><br><span class="line">backup/file1.txt -&gt; s3://howtoing/file1.txt  [1 of 2]</span><br><span class="line"> 9984 of 9984   100% in    0s    21.78 kB/s  done</span><br><span class="line">backup/file2.txt -&gt; s3://howtoing/file2.txt  [2 of 2]</span><br><span class="line"> 0 of 0     0% in    0s     0.00 B/s  done</span><br></pre></td></tr></table></figure></p>
-<p>5.列出S3存储数据<br>使用 ls 与 s3cmd 切换目录S3桶的对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd ls s3://howtoing/</span><br><span class="line"></span><br><span class="line">                       DIR   s3://howtoing/backup/</span><br><span class="line">2013-09-03 10:58    190216   s3://howtoing/file.txt</span><br></pre></td></tr></table></figure></p>
-<p>6.从s3下载文件<br>有些时候，如果我们需要从S3下载文件，使用下面的命令来下载。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd get s3://howtoing/file.txt</span><br><span class="line"></span><br><span class="line">s3://howtoing/file.txt -&gt; ./file.txt  [1 of 1]</span><br><span class="line"> 4 of 4   100% in    0s    10.84 B/s  done</span><br></pre></td></tr></table></figure></p>
-<p>7.删除S3桶的数据<br>要删除的文件夹都是从S3桶使用下面的命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> Removing file from s3 bucket </span><br><span class="line"># s3cmd del s3://howtoing/file.txt</span><br><span class="line"></span><br><span class="line">File s3://howtoing/file.txt deleted</span><br><span class="line"></span><br><span class="line"> Removing directory from s3 bucket </span><br><span class="line"># s3cmd del s3://howtoing/backup</span><br><span class="line"></span><br><span class="line">File s3://howtoing/backup deleted</span><br></pre></td></tr></table></figure></p>
-<p>8.卸下S3桶<br>如果我们不需要S3存储，我们可以用下面的命令直接删除它。取出桶之前，请确保它是空的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd rb s3://howtoing</span><br><span class="line"></span><br><span class="line">ERROR: S3 error: 409 (BucketNotEmpty): The bucket you tried to delete is not empty</span><br></pre></td></tr></table></figure></p>
-<p>上面的命令失败，因为S3桶不为空 要删除s3 桶先删除里面所有对象，然后再次使用命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># s3cmd rb s3://howtoing</span><br><span class="line"></span><br><span class="line">Bucket &apos;s3://howtoing/&apos; removed</span><br></pre></td></tr></table></figure></p>
+        <h3 id="s3cmd是用于创建和管理数据到Amazon-S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd"><a href="#s3cmd是用于创建和管理数据到Amazon-S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd" class="headerlink" title="s3cmd是用于创建和管理数据到Amazon S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd"></a>s3cmd是用于创建和管理数据到Amazon S3存储命令行的实用程序。本文将帮助你如何在CentOS上安装s3cmd</h3><p>s3cmd 是用于创建S3桶，上传，检索和管理数据到Amazon S3存储命令行实用程序。 本文将帮助你如何在CentOS，RHEL，OpenSUSE系统，Ubuntu，Debian和LinuxMint系统上安装s3cmd，并通过简单的步骤命令行管理S3桶。 要在阅读文章Windows服务器安装s3cmd 在Windows中安装s3cmd。 我们还可以使用S3FS与FUSE在我们的系统本地驱动器安装S3存储桶。要配置阅读下一篇文章在Linux上安装S3存储 。 女将-S3-中心标志<br>安装s3cmd包<br>s3cmd是默认的RPM库针对CentOS，RHEL和Ubuntu系统上可用，您可以简单的在系统上执行以下命令进行安装。<br>在CentOS / RHEL：</p>
+<pre><code># yum install s3cmd
+</code></pre><p>在Ubuntu / Debian：</p>
+<pre><code>$ sudo apt-get install s3cmd
+</code></pre><p>在SUSE Linux Enterprise Server 11：</p>
+<pre><code># zypper addrepo http://s3tools.org/repo/SLE_11/s3tools.repo
+# zypper install s3cmd
+</code></pre><p>使用Source安装最新s3cmd<br>如果使用上述软件包管理器s3cmd，你没有得到最新的版本，可以使用源代码，在系统上安装最新的s3cmd版本。访问此网址或者使用下面的命令来下载最新版本的s3cmd。</p>
+<pre><code>$ wget http://ufpr.dl.sourceforge.net/project/s3tools/s3cmd/1.6.1/s3cmd-1.6.1.tar.gz
+$ tar xzf s3cmd-1.6.1.tar.gz 
+</code></pre><p>现在，使用下面的命令与源文件进行安装。</p>
+<pre><code>$ cd s3cmd-1.6.1
+$ sudo python setup.py install
+</code></pre><p>配置s3cmd环境<br>为了配置s3cmd我们将要求有您S3 Amazon帐户访问key和钥匙。获取安全密钥AWS securityCredentials 。将提示登录到您的Amazon帐户。 获取密钥文件后，请使用以下命令来配置s3cmd。</p>
+<pre><code># s3cmd --configure
+</code></pre><pre><code>Enter new values or accept defaults in brackets with Enter.
+Refer to user manual for detailed description of all options.
 
+Access key and Secret key are your identifiers for Amazon S3
+Access Key: xxxxxxxxxxxxxxxxxxxxxx
+Secret Key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+Encryption password is used to protect your files from reading
+by unauthorized persons while in transfer to S3
+Encryption password: xxxxxxxxxx
+Path to GPG program [/usr/bin/gpg]:
+
+When using secure HTTPS protocol all communication with Amazon S3
+servers is protected from 3rd party eavesdropping. This method is
+slower than plain HTTP and can&#39;t be used if you&#39;re behind a proxy
+Use HTTPS protocol [No]: Yes
+
+New settings:
+  Access Key: xxxxxxxxxxxxxxxxxxxxxx
+  Secret Key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  Encryption password: xxxxxxxxxx
+  Path to GPG program: /usr/bin/gpg
+  Use HTTPS protocol: True
+  HTTP Proxy server name:
+  HTTP Proxy server port: 0
+
+Test access with supplied credentials? [Y/n] Y
+Please wait, attempting to list all buckets...
+Success. Your access key and secret key worked fine :-)
+
+Now verifying that encryption works...
+Success. Encryption and decryption worked fine :-)
+
+Save settings? [y/N] y
+Configuration saved to &#39;/root/.s3cfg&#39;
+</code></pre><p>s3cmd命令行的使用<br>一旦配置成功完成。现在找到下面的命令细节，如何使用命令管理S3桶。<br>1.列出全部S3桶<br>使用以下命令列出在您的AWS账户中的所有S3桶。</p>
+<pre><code># s3cmd ls
+</code></pre><p>2.创建新桶<br>要在下面的命令Amazon S3上使用的新桶。这将创建S3帐户名为howtoing桶。</p>
+<pre><code># s3cmd mb s3://howtoing
+Bucket &#39;s3://howtoing/&#39; created
+</code></pre><ol start="3">
+<li>上传文件到S3桶<br>以下命令将使用s3cmd命令上传文件file.txt的到S3桶。<pre><code># s3cmd put file.txt s3://howtoing/
+file.txt -&gt; s3://howtoing/file.txt  [1 of 1]
+190216 of 190216   100% in    0s  1668.35 kB/s  done
+</code></pre></li>
+</ol>
+<p>4.上传文件夹到s3桶<br>如果我们需要上传整个目录使用-r递归上传，像下面这样。</p>
+<pre><code># s3cmd put -r backup s3://howtoing/
+
+backup/file1.txt -&gt; s3://howtoing/backup/file1.txt  [1 of 2]
+ 9984 of 9984   100% in    0s    18.78 kB/s  done
+backup/file2.txt -&gt; s3://howtoing/backup/file2.txt  [2 of 2]
+ 0 of 0     0% in    0s     0.00 B/s  done 
+</code></pre><p>请确保您上传目录的结尾没有斜杠 / （如：backup/），否则将只上传备份目录中的内容。</p>
+<pre><code># s3cmd put -r backup/ s3://howtoing/
+
+backup/file1.txt -&gt; s3://howtoing/file1.txt  [1 of 2]
+ 9984 of 9984   100% in    0s    21.78 kB/s  done
+backup/file2.txt -&gt; s3://howtoing/file2.txt  [2 of 2]
+ 0 of 0     0% in    0s     0.00 B/s  done
+</code></pre><p>5.列出S3存储数据<br>使用 ls 与 s3cmd 切换目录S3桶的对象。</p>
+<pre><code># s3cmd ls s3://howtoing/
+
+                       DIR   s3://howtoing/backup/
+2013-09-03 10:58    190216   s3://howtoing/file.txt
+</code></pre><p>6.从s3下载文件<br>有些时候，如果我们需要从S3下载文件，使用下面的命令来下载。</p>
+<pre><code># s3cmd get s3://howtoing/file.txt
+
+s3://howtoing/file.txt -&gt; ./file.txt  [1 of 1]
+ 4 of 4   100% in    0s    10.84 B/s  done
+</code></pre><p>7.删除S3桶的数据<br>要删除的文件夹都是从S3桶使用下面的命令。</p>
+<pre><code> Removing file from s3 bucket 
+# s3cmd del s3://howtoing/file.txt
+
+File s3://howtoing/file.txt deleted
+
+ Removing directory from s3 bucket 
+# s3cmd del s3://howtoing/backup
+
+File s3://howtoing/backup deleted
+</code></pre><p>8.卸下S3桶<br>如果我们不需要S3存储，我们可以用下面的命令直接删除它。取出桶之前，请确保它是空的。</p>
+<pre><code># s3cmd rb s3://howtoing
+
+ERROR: S3 error: 409 (BucketNotEmpty): The bucket you tried to delete is not empty
+</code></pre><p>上面的命令失败，因为S3桶不为空 要删除s3 桶先删除里面所有对象，然后再次使用命令。</p>
+<pre><code># s3cmd rb s3://howtoing
+
+Bucket &#39;s3://howtoing/&#39; removed
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/22/linux_s3cmd/" data-id="cjvyo01lc000r3a38o3f6x5fp" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/22/linux_s3cmd/" data-id="cjy5p773m0011qn38zkc1ox9s" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aws/">aws</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -145,13 +272,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="git-获取golang-org-x包失败"><a href="#git-获取golang-org-x包失败" class="headerlink" title="git 获取golang.org/x包失败"></a>git 获取golang.org/x包失败</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">go get</span><br><span class="line">package golang.org/x/net/websocket: unrecognized import path </span><br><span class="line">&quot;golang.org/x/net/websocket&quot; (https fetch: Get https://golang.org/x/net/websocket?go-get=1: </span><br><span class="line">dial tcp 216.239.37.1:443: i/o timeout)</span><br></pre></td></tr></table></figure>
-<p>加上代理，还是不行<br>解决方法<br>golang 在 github 上建立了一个镜像库，如 <a href="https://github.com/golang/net" target="_blank" rel="noopener">https://github.com/golang/net</a> 即是 <a href="https://golang.org/x/net" target="_blank" rel="noopener">https://golang.org/x/net</a> 的镜像库<br>手动的去这个库拉就到指定目录就行了，没有目录就创建</p>
+        <h2 id="git-获取golang-org-x包失败"><a href="#git-获取golang-org-x包失败" class="headerlink" title="git 获取golang.org/x包失败"></a>git 获取golang.org/x包失败</h2><pre><code>go get
+package golang.org/x/net/websocket: unrecognized import path 
+&quot;golang.org/x/net/websocket&quot; (https fetch: Get https://golang.org/x/net/websocket?go-get=1: 
+dial tcp 216.239.37.1:443: i/o timeout)
+</code></pre><p>加上代理，还是不行<br>解决方法<br>golang 在 github 上建立了一个镜像库，如 <a href="https://github.com/golang/net" target="_blank" rel="noopener">https://github.com/golang/net</a> 即是 <a href="https://golang.org/x/net" target="_blank" rel="noopener">https://golang.org/x/net</a> 的镜像库<br>手动的去这个库拉就到指定目录就行了，没有目录就创建</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/16/golang_x_failed/" data-id="cjvyo01l3000k3a38y06mcxn5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/16/golang_x_failed/" data-id="cjy5p773g000rqn38cw6cc678" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -191,7 +321,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/05/06/xiaoyouxi/" data-id="cjvyo01lq001a3a38o3nsl225" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/05/06/xiaoyouxi/" data-id="cjy5p773t001cqn388xjvxyf7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -223,16 +353,38 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">   url := <span class="string">""</span></span><br><span class="line"></span><br><span class="line">client := &amp;http.Client&#123;&#125;</span><br><span class="line"></span><br><span class="line">req, err := http.NewRequest(<span class="string">"GET"</span>, url, <span class="literal">nil</span>)</span><br><span class="line">req.Close = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">resp, err := client.Do(req)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`aaaaaa`</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, (err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line">body, err := ioutil.ReadAll(resp.Body)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`bbbbbb`</span>)</span><br><span class="line">	<span class="keyword">return</span> ms, err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>当然，还是Google，最后发现返回是gzip压缩过的，而直接获取是获取不到的，所以要加设置要求接口明码返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">req.Header.Add(&quot;Accept-Encoding&quot;, &quot;identity&quot;)</span><br></pre></td></tr></table></figure></p>
-<p>注：资料来源<a href="https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client" target="_blank" rel="noopener">https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client</a></p>
+        <p>今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下</p>
+<pre><code class="go">    url := &quot;&quot;
+
+    client := &amp;http.Client{}
+
+    req, err := http.NewRequest(&quot;GET&quot;, url, nil)
+    req.Close = true
+
+    resp, err := client.Do(req)
+    if err != nil {
+        fmt.Println(`aaaaaa`)
+        return nil, (err)
+    }
+
+    defer resp.Body.Close()
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println(`bbbbbb`)
+        return ms, err
+    }
+
+</code></pre>
+<p>当然，还是Google，最后发现返回是gzip压缩过的，而直接获取是获取不到的，所以要加设置要求接口明码返回</p>
+<pre><code>req.Header.Add(&quot;Accept-Encoding&quot;, &quot;identity&quot;)
+</code></pre><p>注：资料来源<a href="https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client" target="_blank" rel="noopener">https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client</a></p>
 <p>It looks like the that server (Apache 1.3, wow!) is serving up a truncated gzip response. If you explicitly request the identity encoding (preventing the Go transport from adding gzip itself), you won’t get the ErrUnexpectedEOF:</p>
 <p>这句话是这么理解的吧？</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/01/golang_http_get_unpected/" data-id="cjvyo01kh00083a38jrqhfn7z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/01/golang_http_get_unpected/" data-id="cjy5p7732000gqn38o9x5uvn6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -266,23 +418,55 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>终端是默认不会走代理的（一直以为是会），今天网络问题始终连不上AWS的服务器，没办法找解决办法。<br>在终端试一下当前出口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl cip.cc</span><br></pre></td></tr></table></figure></p>
-<p>返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">IP	: ********</span><br><span class="line">地址	: 中国  上海</span><br><span class="line">运营商	: 联通</span><br><span class="line"></span><br><span class="line">数据二	: 上海市 | 联通</span><br><span class="line"></span><br><span class="line">数据三	: 中国上海上海市 | 联通</span><br><span class="line"></span><br><span class="line">URL	: http://www.cip.cc/**********</span><br></pre></td></tr></table></figure></p>
-<p>说明确实不走代理， 因为shadowsocks是全局模式，web看到的出口是香港<br>解决方法：（比较喜欢在当前终端解决问题，不修改全局，有问题关掉这个终端窗口就没事了）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim .bash_profile</span><br></pre></td></tr></table></figure></p>
-<p>加入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># proxy list</span><br><span class="line">alias proxy=&apos;export all_proxy=socks5://127.0.0.1:1086&apos; #1086不是写死的端口，是根据每个人本地socks5真是端口</span><br><span class="line">alias unproxy=&apos;unset all_proxy&apos;</span><br></pre></td></tr></table></figure></p>
-<p>OK，让配置生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure></p>
-<p>这个终端proxy别名就生效了，于是开始设置代理生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy</span><br></pre></td></tr></table></figure></p>
-<p>再次查看出口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl cip.cc</span><br><span class="line"></span><br><span class="line">IP	: **********</span><br><span class="line">地址	: 中国  香港 </span><br><span class="line"></span><br><span class="line">数据二	: 香港 | 特别行政区</span><br><span class="line"></span><br><span class="line">数据三	: 中国香港香港</span><br><span class="line"></span><br><span class="line">URL	: http://www.cip.cc/***************</span><br></pre></td></tr></table></figure></p>
-<p>生效。</p>
-<p>本来以为这样就可以解决ssh连不上AWS的问题，结果当然不行，原因嘛，应该如下：<br>socks,http代理等使用的是TCP或UDP协议, 而ping命令则是ICMP协议, 所以proxychains4对ping命令无效<br>想当然这样以为吧，大致是这个方向的原因。</p>
-<p>总得解决，因为让终端走代理的最终目的是为了ssh到AWS啊<br>还是G找<br>终于发现一个最简易的问题<br>命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh myserver -o &quot;ProxyCommand=nc -X 5 -x 127.0.0.1:1086 %h %p&quot;</span><br></pre></td></tr></table></figure></p>
-<p>终于就走了代理，服气</p>
-<p>当然还有个没试过的复杂方法，也记录一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.ssh/config</span><br><span class="line"># 添加以下内容</span><br><span class="line">Host 52.* # 这里可以通配也可以指定IP</span><br><span class="line">    ProxyCommand nc -X 5 -x 127.0.0.1:1079 %h %p</span><br><span class="line">    # &quot;5&quot; 是 SOCKS 5, &quot;1079&quot; 是本地socks端口</span><br></pre></td></tr></table></figure></p>
+        <p>终端是默认不会走代理的（一直以为是会），今天网络问题始终连不上AWS的服务器，没办法找解决办法。<br>在终端试一下当前出口：</p>
+<pre><code>curl cip.cc
+</code></pre><p>返回</p>
+<pre><code>IP    : ********
+地址    : 中国  上海
+运营商    : 联通
 
+数据二    : 上海市 | 联通
+
+数据三    : 中国上海上海市 | 联通
+
+URL    : http://www.cip.cc/**********
+</code></pre><p>说明确实不走代理， 因为shadowsocks是全局模式，web看到的出口是香港<br>解决方法：（比较喜欢在当前终端解决问题，不修改全局，有问题关掉这个终端窗口就没事了）</p>
+<pre><code>vim .bash_profile
+</code></pre><p>加入</p>
+<pre><code># proxy list
+alias proxy=&#39;export all_proxy=socks5://127.0.0.1:1086&#39; #1086不是写死的端口，是根据每个人本地socks5真是端口
+alias unproxy=&#39;unset all_proxy&#39;
+</code></pre><p>OK，让配置生效</p>
+<pre><code>source ~/.bash_profile
+</code></pre><p>这个终端proxy别名就生效了，于是开始设置代理生效</p>
+<pre><code>proxy
+</code></pre><p>再次查看出口</p>
+<pre><code>curl cip.cc
+
+IP    : **********
+地址    : 中国  香港 
+
+数据二    : 香港 | 特别行政区
+
+数据三    : 中国香港香港
+
+URL    : http://www.cip.cc/***************
+</code></pre><p>生效。</p>
+<p>本来以为这样就可以解决ssh连不上AWS的问题，结果当然不行，原因嘛，应该如下：<br>socks,http代理等使用的是TCP或UDP协议, 而ping命令则是ICMP协议, 所以proxychains4对ping命令无效<br>想当然这样以为吧，大致是这个方向的原因。</p>
+<p>总得解决，因为让终端走代理的最终目的是为了ssh到AWS啊<br>还是G找<br>终于发现一个最简易的问题<br>命令</p>
+<pre><code>ssh myserver -o &quot;ProxyCommand=nc -X 5 -x 127.0.0.1:1086 %h %p&quot;
+</code></pre><p>终于就走了代理，服气</p>
+<p>当然还有个没试过的复杂方法，也记录一下</p>
+<pre><code>vim ~/.ssh/config
+# 添加以下内容
+Host 52.* # 这里可以通配也可以指定IP
+    ProxyCommand nc -X 5 -x 127.0.0.1:1079 %h %p
+    # &quot;5&quot; 是 SOCKS 5, &quot;1079&quot; 是本地socks端口
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/03/28/mac_proxy/" data-id="cjvyo01lj00113a38vdhf6z97" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/03/28/mac_proxy/" data-id="cjy5p773o0015qn38ovcpnaj7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-os/">mac os</a></li></ul>
@@ -316,8 +500,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>wget <a href="https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz" target="_blank" rel="noopener">https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz</a><br>tar xvf mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz<br>mv mysql/ /usr/local/<br>useradd mysql<br>mkdir mydata<br>mkdir mydata/data<br>chown -R mysql mysql/<br>vim /etc/my.cnf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[client]</span><br><span class="line">port = 3306</span><br><span class="line">socket = /tmp/mysql.sock</span><br><span class="line"></span><br><span class="line">[mysqld]</span><br><span class="line">character_set_server=utf8</span><br><span class="line">init_connect=&apos;SET NAMES utf8&apos;</span><br><span class="line">basedir=/usr/local/mysql</span><br><span class="line">datadir=/usr/local/mysql/mydata/data</span><br><span class="line">socket=/tmp/mysql.sock</span><br><span class="line">log-error=/var/log/mysqld.log</span><br><span class="line">pid-file=/usr/local/mysql/mysqld.pid</span><br><span class="line">lower_case_table_names = 1</span><br><span class="line">user=mysql</span><br><span class="line"></span><br><span class="line">sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</span><br><span class="line">max_connections=1000</span><br></pre></td></tr></table></figure></p>
-<p>这里的内容尽量不要有改变，要不然会有不可预测问题</p>
+        <p>wget <a href="https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz" target="_blank" rel="noopener">https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz</a><br>tar xvf mysql-5.7.25-linux-glibc2.12-x86_64.tar.gz<br>mv mysql/ /usr/local/<br>useradd mysql<br>mkdir mydata<br>mkdir mydata/data<br>chown -R mysql mysql/<br>vim /etc/my.cnf</p>
+<pre><code>[client]
+port = 3306
+socket = /tmp/mysql.sock
+
+[mysqld]
+character_set_server=utf8
+init_connect=&#39;SET NAMES utf8&#39;
+basedir=/usr/local/mysql
+datadir=/usr/local/mysql/mydata/data
+socket=/tmp/mysql.sock
+log-error=/var/log/mysqld.log
+pid-file=/usr/local/mysql/mysqld.pid
+lower_case_table_names = 1
+user=mysql
+
+sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+max_connections=1000
+</code></pre><p>这里的内容尽量不要有改变，要不然会有不可预测问题</p>
 <p>touch /var/log/mysqld.log<br>chmod 777 /var/log/mysqld.log<br>touch /var/run/mysqld/mysqld.pid<br>chmod 777 /var/run/mysqld</p>
 <p>安装 libaio<br>apt-get install libaio-dev</p>
 <p>/usr/local/mysql/bin/mysqld –initialize –user=mysql –basedir=/usr/local/mysql –datadir=/usr/local/mysql/mydata/data –lc_messages_dir=/usr/local/mysql/share –lc_messages=en_US</p>
@@ -327,7 +528,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/21/mysql_install/" data-id="cjvyo01lm00163a386m2gvuf6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/21/mysql_install/" data-id="cjy5p773q0017qn38l5a17k12" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
@@ -362,16 +563,85 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>一、写csv文件</p>
-<p>函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func NewWriter(w io.Writer) *Writer</span><br><span class="line"></span><br><span class="line">func (w *Writer) Flush()</span><br><span class="line"></span><br><span class="line">func (w *Writer) Write(record []string) (err os.Error)</span><br><span class="line"></span><br><span class="line">func (w *Writer) WriteAll(records [][]string) (err os.Error)</span><br></pre></td></tr></table></figure></p>
-<p>demo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;bytes&quot;</span><br><span class="line">	&quot;encoding/csv&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;os&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	fileName := &quot;2.csv&quot;</span><br><span class="line">	buf := new(bytes.Buffer)</span><br><span class="line">	r2 := csv.NewWriter(buf)</span><br><span class="line">	for i := 0; i &lt; 10; i++ &#123;</span><br><span class="line">		s := make([]string, 3)</span><br><span class="line">		s[0] = &quot;user id&quot;</span><br><span class="line">		s[1] = &quot;name&quot;</span><br><span class="line">		s[2] = &quot;depart&quot;</span><br><span class="line">		r2.Write(s)</span><br><span class="line">		r2.Flush()</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(buf)</span><br><span class="line">	fout, err := os.Create(fileName)</span><br><span class="line">	defer fout.Close()</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		fmt.Println(fileName, err)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	fout.WriteString(buf.String())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>二、读csv文件</p>
-<p>函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func NewReader(r io.Reader) *Reader</span><br><span class="line"></span><br><span class="line">func (r *Reader) Read() (record []string, err os.Error)</span><br><span class="line"></span><br><span class="line">func (r *Reader) ReadAll() (records [][]string, err os.Error)</span><br></pre></td></tr></table></figure></p>
-<p>demo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;encoding/csv&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;io/ioutil&quot;</span><br><span class="line">	&quot;strings&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	//fileName := &quot;1.csv&quot;</span><br><span class="line">	fmt.Printf(&quot;Input file name : &quot;)</span><br><span class="line">	var fileName string</span><br><span class="line">	fmt.Scanf(&quot;%s&quot;, &amp;fileName)</span><br><span class="line">	cntb, err := ioutil.ReadFile(fileName)</span><br><span class="line">	if err != nil &#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">	r2 := csv.NewReader(strings.NewReader(string(cntb)))</span><br><span class="line">	ss, _ := r2.ReadAll()</span><br><span class="line">	//fmt.Println(ss)</span><br><span class="line">	sz := len(ss)</span><br><span class="line">	for i := 0; i &lt; sz; i++ &#123;</span><br><span class="line">		fmt.Println(ss[i])</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>函数：</p>
+<pre><code>func NewWriter(w io.Writer) *Writer
 
+func (w *Writer) Flush()
+
+func (w *Writer) Write(record []string) (err os.Error)
+
+func (w *Writer) WriteAll(records [][]string) (err os.Error)
+</code></pre><p>demo</p>
+<pre><code>package main
+
+import (
+    &quot;bytes&quot;
+    &quot;encoding/csv&quot;
+    &quot;fmt&quot;
+    &quot;os&quot;
+)
+
+func main() {
+    fileName := &quot;2.csv&quot;
+    buf := new(bytes.Buffer)
+    r2 := csv.NewWriter(buf)
+    for i := 0; i &lt; 10; i++ {
+        s := make([]string, 3)
+        s[0] = &quot;user id&quot;
+        s[1] = &quot;name&quot;
+        s[2] = &quot;depart&quot;
+        r2.Write(s)
+        r2.Flush()
+    }
+    fmt.Println(buf)
+    fout, err := os.Create(fileName)
+    defer fout.Close()
+    if err != nil {
+        fmt.Println(fileName, err)
+        return
+    }
+    fout.WriteString(buf.String())
+}
+
+</code></pre><p>二、读csv文件</p>
+<p>函数：</p>
+<pre><code>func NewReader(r io.Reader) *Reader
+
+func (r *Reader) Read() (record []string, err os.Error)
+
+func (r *Reader) ReadAll() (records [][]string, err os.Error)
+</code></pre><p>demo</p>
+<pre><code>package main
+
+import (
+    &quot;encoding/csv&quot;
+    &quot;fmt&quot;
+    &quot;io/ioutil&quot;
+    &quot;strings&quot;
+)
+
+func main() {
+    //fileName := &quot;1.csv&quot;
+    fmt.Printf(&quot;Input file name : &quot;)
+    var fileName string
+    fmt.Scanf(&quot;%s&quot;, &amp;fileName)
+    cntb, err := ioutil.ReadFile(fileName)
+    if err != nil {
+        panic(err)
+    }
+    r2 := csv.NewReader(strings.NewReader(string(cntb)))
+    ss, _ := r2.ReadAll()
+    //fmt.Println(ss)
+    sz := len(ss)
+    for i := 0; i &lt; sz; i++ {
+        fmt.Println(ss[i])
+    }
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjvyo01kp000f3a381jq92a94" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/17/golang_cvs/" data-id="cjy5p772t000aqn381iw89lu8" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -406,14 +676,122 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>老是掉进golang数据结构map的坑里，PHP习惯了只有数组一种结构，老是会把map想成PHP不是默认key的数组，其实最大的不同就是map是随机排序的，以后用map的时候要提醒自己是不是有排序需求</p>
-<h2 id="golang-map按key排序"><a href="#golang-map按key排序" class="headerlink" title="golang map按key排序"></a>golang map按key排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">//golang的map不保证有序性，所以按key排序需要取出key，对key排序，再遍历输出value</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;sort&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    // To create a map as input</span><br><span class="line">    m := make(map[int]string)</span><br><span class="line">    m[1] = &quot;a&quot;</span><br><span class="line">    m[2] = &quot;c&quot;</span><br><span class="line">    m[0] = &quot;b&quot;</span><br><span class="line"></span><br><span class="line">    // To store the keys in slice in sorted order</span><br><span class="line">    var keys []int</span><br><span class="line">    for k := range m &#123;</span><br><span class="line">        keys = append(keys, k)</span><br><span class="line">    &#125;</span><br><span class="line">    sort.Ints(keys)</span><br><span class="line"></span><br><span class="line">    // To perform the opertion you want</span><br><span class="line">    for _, k := range keys &#123;</span><br><span class="line">        fmt.Println(&quot;Key:&quot;, k, &quot;Value:&quot;, m[k])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="golang-map按value排序"><a href="#golang-map按value排序" class="headerlink" title="golang map按value排序"></a>golang map按value排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//要对golang map按照value进行排序，思路是直接不用map，用struct存放key和value，实现sort接口，就可以调用sort.Sort进行排序了。</span><br><span class="line">// A data structure to hold a key/value pair.</span><br><span class="line">type Pair struct &#123;</span><br><span class="line">    Key   string</span><br><span class="line">    Value int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// A slice of Pairs that implements sort.Interface to sort by Value.</span><br><span class="line">type PairList []Pair</span><br><span class="line"></span><br><span class="line">func (p PairList) Swap(i, j int)      &#123; p[i], p[j] = p[j], p[i] &#125;</span><br><span class="line">func (p PairList) Len() int           &#123; return len(p) &#125;</span><br><span class="line">func (p PairList) Less(i, j int) bool &#123; return p[i].Value &lt; p[j].Value &#125;</span><br><span class="line"></span><br><span class="line">// A function to turn a map into a PairList, then sort and return it.</span><br><span class="line">func sortMapByValue(m map[string]int) PairList &#123;</span><br><span class="line">    p := make(PairList, len(m))</span><br><span class="line">    i := 0</span><br><span class="line">    for k, v := range m &#123;</span><br><span class="line">        p[i] = Pair&#123;k, v&#125;</span><br><span class="line">        i ++</span><br><span class="line">    &#125;</span><br><span class="line">    sort.Sort(p)</span><br><span class="line">    return p</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="golang-map递增排序"><a href="#golang-map递增排序" class="headerlink" title="golang map递增排序"></a>golang map递增排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//sort.Sort是递增排序，如果要实现递减排序，用sort.Reverse</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;sort&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    a := []int&#123;4,3,2,1,5,9,8,7,6&#125;</span><br><span class="line">    sort.Sort(sort.Reverse(sort.IntSlice(a)))</span><br><span class="line">    fmt.Println(&quot;After reversed: &quot;, a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="golang-map-排序的稳定性"><a href="#golang-map-排序的稳定性" class="headerlink" title="golang map 排序的稳定性"></a>golang map 排序的稳定性</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">//sort不保证排序的稳定性（两个相同的值，排序之后相对位置不变），排序的稳定性由sort.Stable来保证。</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;sort&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type person struct &#123;</span><br><span class="line">  Name string</span><br><span class="line">  Age int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type personSlice []person</span><br><span class="line"></span><br><span class="line">func (s personSlice) Len() int &#123; return len(s) &#125;</span><br><span class="line">func (s personSlice) Swap(i, j int) &#123; s[i], s[j] = s[j], s[i] &#125;</span><br><span class="line">func (s personSlice) Less(i, j int) bool &#123; return s[i].Age &lt; s[j].Age &#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    a := personSlice &#123;</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;AAA&quot;,</span><br><span class="line">        Age: 55,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;BBB&quot;,</span><br><span class="line">        Age: 22,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;CCC&quot;,</span><br><span class="line">        Age: 0,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;DDD&quot;,</span><br><span class="line">        Age: 22,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;EEE&quot;,</span><br><span class="line">        Age: 11,</span><br><span class="line">      &#125;,  </span><br><span class="line">    &#125;</span><br><span class="line">    sort.Stable(a)</span><br><span class="line">    fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="golang-map按key排序"><a href="#golang-map按key排序" class="headerlink" title="golang map按key排序"></a>golang map按key排序</h2><pre><code>//golang的map不保证有序性，所以按key排序需要取出key，对key排序，再遍历输出value
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sort&quot;
+)
+
+func main() {
+    // To create a map as input
+    m := make(map[int]string)
+    m[1] = &quot;a&quot;
+    m[2] = &quot;c&quot;
+    m[0] = &quot;b&quot;
+
+    // To store the keys in slice in sorted order
+    var keys []int
+    for k := range m {
+        keys = append(keys, k)
+    }
+    sort.Ints(keys)
+
+    // To perform the opertion you want
+    for _, k := range keys {
+        fmt.Println(&quot;Key:&quot;, k, &quot;Value:&quot;, m[k])
+    }
+}
+</code></pre><h2 id="golang-map按value排序"><a href="#golang-map按value排序" class="headerlink" title="golang map按value排序"></a>golang map按value排序</h2><pre><code>//要对golang map按照value进行排序，思路是直接不用map，用struct存放key和value，实现sort接口，就可以调用sort.Sort进行排序了。
+// A data structure to hold a key/value pair.
+type Pair struct {
+    Key   string
+    Value int
+}
+
+// A slice of Pairs that implements sort.Interface to sort by Value.
+type PairList []Pair
+
+func (p PairList) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+func (p PairList) Len() int           { return len(p) }
+func (p PairList) Less(i, j int) bool { return p[i].Value &lt; p[j].Value }
+
+// A function to turn a map into a PairList, then sort and return it.
+func sortMapByValue(m map[string]int) PairList {
+    p := make(PairList, len(m))
+    i := 0
+    for k, v := range m {
+        p[i] = Pair{k, v}
+        i ++
+    }
+    sort.Sort(p)
+    return p
+}
+
+</code></pre><h2 id="golang-map递增排序"><a href="#golang-map递增排序" class="headerlink" title="golang map递增排序"></a>golang map递增排序</h2><pre><code>//sort.Sort是递增排序，如果要实现递减排序，用sort.Reverse
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sort&quot;
+)
+
+func main() {
+    a := []int{4,3,2,1,5,9,8,7,6}
+    sort.Sort(sort.Reverse(sort.IntSlice(a)))
+    fmt.Println(&quot;After reversed: &quot;, a)
+}
+</code></pre><h2 id="golang-map-排序的稳定性"><a href="#golang-map-排序的稳定性" class="headerlink" title="golang map 排序的稳定性"></a>golang map 排序的稳定性</h2><pre><code>//sort不保证排序的稳定性（两个相同的值，排序之后相对位置不变），排序的稳定性由sort.Stable来保证。
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sort&quot;
+)
+
+type person struct {
+  Name string
+  Age int
+}
+
+type personSlice []person
+
+func (s personSlice) Len() int { return len(s) }
+func (s personSlice) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+func (s personSlice) Less(i, j int) bool { return s[i].Age &lt; s[j].Age }
+
+func main() {
+    a := personSlice {
+      {
+        Name: &quot;AAA&quot;,
+        Age: 55,
+      },
+      {
+        Name: &quot;BBB&quot;,
+        Age: 22,
+      },
+      {
+        Name: &quot;CCC&quot;,
+        Age: 0,
+      },
+      {
+        Name: &quot;DDD&quot;,
+        Age: 22,
+      },
+      {
+        Name: &quot;EEE&quot;,
+        Age: 11,
+      },  
+    }
+    sort.Stable(a)
+    fmt.Println(a)
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjvyo01lf000u3a38dqdn1y4a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjy5p772x000fqn38gtc9tigi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -447,58 +825,28 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>今天在编译代码时发生了一个错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">221:4: err is shadowed during return</span><br></pre></td></tr></table></figure></p>
-<p>错误范围代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for _, v := range scontent &#123;</span><br><span class="line">		tmp := strings.Split(v, `;`)</span><br><span class="line">		labels = append(labels, tmp[0])</span><br><span class="line">		g, err := strconv.Atoi(tmp[3])</span><br><span class="line">		if len(tmp[0]) == 0 || len(tmp[1]) == 0 || len(tmp[2]) == 0 || err != nil || g &lt;= 2010 &#123;</span><br><span class="line">			err = err_student_data</span><br><span class="line">			return</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
-<p>从错误本身理解是返回值err 被遮盖重新定义了，不再是方法的返回值了。<br>根据错误提示肯定是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g, err := strconv.Atoi(tmp[3])</span><br></pre></td></tr></table></figure></p>
-<p>发生了错误， 提示既是err被重新定义了，  那就是操作符 := 的问题了<br>Golang的:=操作符理解为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">是声明并赋值，并且系统自动推断类型，不需要var关键字</span><br></pre></td></tr></table></figure></p>
-<p>另外Golang的for是独立的作用域，所以for里面用了  := ， err本来是希望继承外面变量的作用域的， 但是在这里被重新定义为了一个新的变量造成了错误，  看来Golang还不够智能。</p>
+        <p>今天在编译代码时发生了一个错误</p>
+<pre><code>221:4: err is shadowed during return
+</code></pre><p>错误范围代码</p>
+<pre><code>for _, v := range scontent {
+        tmp := strings.Split(v, `;`)
+        labels = append(labels, tmp[0])
+        g, err := strconv.Atoi(tmp[3])
+        if len(tmp[0]) == 0 || len(tmp[1]) == 0 || len(tmp[2]) == 0 || err != nil || g &lt;= 2010 {
+            err = err_student_data
+            return
+        }
+    }
+</code></pre><p>从错误本身理解是返回值err 被遮盖重新定义了，不再是方法的返回值了。<br>根据错误提示肯定是</p>
+<pre><code>g, err := strconv.Atoi(tmp[3])
+</code></pre><p>发生了错误， 提示既是err被重新定义了，  那就是操作符 := 的问题了<br>Golang的:=操作符理解为 </p>
+<pre><code>是声明并赋值，并且系统自动推断类型，不需要var关键字
+</code></pre><p>另外Golang的for是独立的作用域，所以for里面用了  := ， err本来是希望继承外面变量的作用域的， 但是在这里被重新定义为了一个新的变量造成了错误，  看来Golang还不够智能。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjvyo01l7000m3a38qmc0j8br" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-golang_yinyong" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/19/golang_yinyong/" class="article-date">
-  <time datetime="2018-12-18T16:00:00.000Z" itemprop="datePublished">2018-12-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/19/golang_yinyong/">golang 调试中碰到的结构体指针和值指针使用不同</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Golang结构体的值在引用变量和之变量都可以用a.b这样使用，所以在使用的时候这样写了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func test(u string) (bi *Str) &#123;</span><br><span class="line">	bi.Em = ui.em</span><br><span class="line">	bi.E2 = ui.E2</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>然后返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invalid memory address or nil pointer dereference</span><br></pre></td></tr></table></figure></p>
-<p>百思不解后突然想是不是只改了只想值指针的值内容，结构体本身还是一个空指针，于是这样写<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func test(u string) (bi *Str) &#123;</span><br><span class="line">	bi = &amp;Str&#123;</span><br><span class="line">		Em:ui.em,</span><br><span class="line">		E2:ui.E2</span><br><span class="line">	&#125;</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>成功</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjvyo01l9000o3a38ofj8dru3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/20/golangerrshadow/" data-id="cjy5p773e000pqn38ryf1mn0c" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -528,7 +876,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -538,7 +886,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/aws/" style="font-size: 13.33px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -547,7 +895,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -558,6 +906,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/07/16/aws_es/">golang使用AWS ElasticSearch</a>
+          </li>
         
           <li>
             <a href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
@@ -573,10 +925,6 @@
         
           <li>
             <a href="/2019/04/01/golang_http_get_unpected/">golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
           </li>
         
       </ul>

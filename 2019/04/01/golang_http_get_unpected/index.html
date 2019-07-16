@@ -7,18 +7,18 @@
   
   <title>golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下12345678910111213141516171819   url := &quot;&quot;client := &amp;amp;http.Client&amp;#123;&amp;#125;req, err := http.NewRequest(&quot;GET&quot;, url, nil)req.Close = true">
+  <meta name="description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下     url := &amp;quot;&amp;quot;      client := &amp;amp;http.Client{}      req, err := http.NewRequest(&amp;quot;GET&amp;quot;, url, nil)     req.Close = true">
 <meta name="keywords" content="golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法">
 <meta property="og:url" content="http://yoursite.com/2019/04/01/golang_http_get_unpected/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
-<meta property="og:description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下12345678910111213141516171819   url := &quot;&quot;client := &amp;amp;http.Client&amp;#123;&amp;#125;req, err := http.NewRequest(&quot;GET&quot;, url, nil)req.Close = true">
+<meta property="og:description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下     url := &amp;quot;&amp;quot;      client := &amp;amp;http.Client{}      req, err := http.NewRequest(&amp;quot;GET&amp;quot;, url, nil)     req.Close = true">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-04-01T09:55:48.282Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法">
-<meta name="twitter:description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下12345678910111213141516171819   url := &quot;&quot;client := &amp;amp;http.Client&amp;#123;&amp;#125;req, err := http.NewRequest(&quot;GET&quot;, url, nil)req.Close = true">
+<meta name="twitter:description" content="今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下     url := &amp;quot;&amp;quot;      client := &amp;amp;http.Client{}      req, err := http.NewRequest(&amp;quot;GET&amp;quot;, url, nil)     req.Close = true">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -89,16 +89,38 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">   url := <span class="string">""</span></span><br><span class="line"></span><br><span class="line">client := &amp;http.Client&#123;&#125;</span><br><span class="line"></span><br><span class="line">req, err := http.NewRequest(<span class="string">"GET"</span>, url, <span class="literal">nil</span>)</span><br><span class="line">req.Close = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">resp, err := client.Do(req)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`aaaaaa`</span>)</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span>, (err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">defer</span> resp.Body.Close()</span><br><span class="line">body, err := ioutil.ReadAll(resp.Body)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`bbbbbb`</span>)</span><br><span class="line">	<span class="keyword">return</span> ms, err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>当然，还是Google，最后发现返回是gzip压缩过的，而直接获取是获取不到的，所以要加设置要求接口明码返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">req.Header.Add(&quot;Accept-Encoding&quot;, &quot;identity&quot;)</span><br></pre></td></tr></table></figure></p>
-<p>注：资料来源<a href="https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client" target="_blank" rel="noopener">https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client</a></p>
+        <p>今天用Golang 读取Get请求接口在走到 ioutil.ReadAll 碰到 Unexpected EOF，原代码如下</p>
+<pre><code class="go">    url := &quot;&quot;
+
+    client := &amp;http.Client{}
+
+    req, err := http.NewRequest(&quot;GET&quot;, url, nil)
+    req.Close = true
+
+    resp, err := client.Do(req)
+    if err != nil {
+        fmt.Println(`aaaaaa`)
+        return nil, (err)
+    }
+
+    defer resp.Body.Close()
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        fmt.Println(`bbbbbb`)
+        return ms, err
+    }
+
+</code></pre>
+<p>当然，还是Google，最后发现返回是gzip压缩过的，而直接获取是获取不到的，所以要加设置要求接口明码返回</p>
+<pre><code>req.Header.Add(&quot;Accept-Encoding&quot;, &quot;identity&quot;)
+</code></pre><p>注：资料来源<a href="https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client" target="_blank" rel="noopener">https://stackoverflow.com/questions/21147562/unexpected-eof-using-go-http-client</a></p>
 <p>It looks like the that server (Apache 1.3, wow!) is serving up a truncated gzip response. If you explicitly request the identity encoding (preventing the Go transport from adding gzip itself), you won’t get the ErrUnexpectedEOF:</p>
 <p>这句话是这么理解的吧？</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/04/01/golang_http_get_unpected/" data-id="cjvyo01kh00083a38jrqhfn7z" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/04/01/golang_http_get_unpected/" data-id="cjy5p7732000gqn38o9x5uvn6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -140,7 +162,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -150,7 +172,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/aws/" style="font-size: 13.33px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -159,7 +181,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -170,6 +192,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/07/16/aws_es/">golang使用AWS ElasticSearch</a>
+          </li>
         
           <li>
             <a href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
@@ -185,10 +211,6 @@
         
           <li>
             <a href="/2019/04/01/golang_http_get_unpected/">golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
           </li>
         
       </ul>

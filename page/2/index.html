@@ -65,6 +65,61 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-golang_yinyong" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/19/golang_yinyong/" class="article-date">
+  <time datetime="2018-12-18T16:00:00.000Z" itemprop="datePublished">2018-12-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/19/golang_yinyong/">golang 调试中碰到的结构体指针和值指针使用不同</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Golang结构体的值在引用变量和之变量都可以用a.b这样使用，所以在使用的时候这样写了</p>
+<pre><code>func test(u string) (bi *Str) {
+    bi.Em = ui.em
+    bi.E2 = ui.E2
+    return
+}
+</code></pre><p>然后返回</p>
+<pre><code>invalid memory address or nil pointer dereference
+</code></pre><p>百思不解后突然想是不是只改了只想值指针的值内容，结构体本身还是一个空指针，于是这样写</p>
+<pre><code>func test(u string) (bi *Str) {
+    bi = &amp;Str{
+        Em:ui.em,
+        E2:ui.E2
+    }
+    return
+}
+</code></pre><p>成功</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/19/golang_yinyong/" data-id="cjy5p773h000sqn387amid00s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-golang_channel_deadlock" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/12/17/golang_channel_deadlock/" class="article-date">
@@ -87,18 +142,67 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var ch1, ch2 chan int</span><br><span class="line"></span><br><span class="line">func send() &#123;</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	go send()</span><br><span class="line"></span><br><span class="line">	fmt.Println(`ch1`, &lt;-ch1)</span><br><span class="line">	fmt.Println(`ch2`, &lt;-ch2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
-<p>想这个是顺序执行的，怎么会死锁，然后发现channel和map slice一样，需要make后才能使用<br>修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var ch1, ch2 chan int</span><br><span class="line"></span><br><span class="line">func send() &#123;</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	ch1 = make(chan int)</span><br><span class="line">	ch2 = make(chan int)</span><br><span class="line">	go send()</span><br><span class="line"></span><br><span class="line">	fmt.Println(`ch1`, &lt;-ch1)</span><br><span class="line">	fmt.Println(`ch2`, &lt;-ch2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>正常返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ch1 1</span><br><span class="line">ch2 2</span><br></pre></td></tr></table></figure></p>
-<p>替换ch1 ch2发送顺序，不改变接受顺序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func send() &#123;</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
-<p>死锁再现，因为先发送了管道ch2，先接收ch1，因为ch1没有发送，协程卡主，就导致主线程ch1 没法发送， 死循环，生成了死锁。</p>
+        <p>Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+var ch1, ch2 chan int
+
+func send() {
+    ch1 &lt;- 1
+    ch2 &lt;- 2
+}
+
+func main() {
+    go send()
+
+    fmt.Println(`ch1`, &lt;-ch1)
+    fmt.Println(`ch2`, &lt;-ch2)
+}
+</code></pre><p>执行</p>
+<pre><code>fatal error: all goroutines are asleep - deadlock!
+</code></pre><p>想这个是顺序执行的，怎么会死锁，然后发现channel和map slice一样，需要make后才能使用<br>修改：</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+var ch1, ch2 chan int
+
+func send() {
+    ch1 &lt;- 1
+    ch2 &lt;- 2
+}
+
+func main() {
+    ch1 = make(chan int)
+    ch2 = make(chan int)
+    go send()
+
+    fmt.Println(`ch1`, &lt;-ch1)
+    fmt.Println(`ch2`, &lt;-ch2)
+}
+
+</code></pre><p>正常返回</p>
+<pre><code>ch1 1
+ch2 2
+</code></pre><p>替换ch1 ch2发送顺序，不改变接受顺序</p>
+<pre><code>func send() {
+    ch2 &lt;- 2
+    ch1 &lt;- 1
+}
+</code></pre><p>执行</p>
+<pre><code>fatal error: all goroutines are asleep - deadlock!
+</code></pre><p>死锁再现，因为先发送了管道ch2，先接收ch1，因为ch1没有发送，协程卡主，就导致主线程ch1 没法发送， 死循环，生成了死锁。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjvyo01kl000a3a380rvn5hcs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjy5p772v000cqn38df3a3m8a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -159,7 +263,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjvyo01ne00283a38z0wtzn0n" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/13/indeedsystem/chapter1/" data-id="cjy5p7756002eqn38v2u2hwqb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
@@ -194,100 +298,29 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="Linux-命令行常用编辑快捷键"><a href="#Linux-命令行常用编辑快捷键" class="headerlink" title="Linux 命令行常用编辑快捷键"></a>Linux 命令行常用编辑快捷键</h2><p>ctrl + ? 撤消前一次输入<br>ctrl + c 另起一行<br>ctrl + r 输入单词搜索历史命令<br>ctrl + u 删除光标前面所有字符相当于VIM里d shift+^<br>ctrl + k 删除光标后面所有字符相当于VIM里d shift+$ <br>删除 ctrl + d 删除光标所在位置上的字符相当于VIM里x或者dl ctrl + h 删除光标所在位置前的字符相当于VIM里hx或者dh ctrl + k 删除光标后面所有字符相当于VIM里d shift+$ ctrl + u 删除光标前面所有字符相当于VIM里d shift+^ ctrl + w 删除光标前一个单词相当于VIM里db ctrl + y 恢复ctrl+u上次执行时删除的字符 ctrl + ? 撤消前一次输入 alt + r 撤消前一次动作 alt + d 删除光标所在位置的后单词<br>移动 ctrl + a 将光标移动到命令行开头相当于VIM里shift+^ ctrl + e 将光标移动到命令行结尾处相当于VIM里shift+$ ctrl + f 光标向后移动一个字符相当于VIM里l ctrl + b 光标向前移动一个字符相当于VIM里h ctrl + 方向键左键 光标移动到前一个单词开头 ctrl + 方向键右键 光标移动到后一个单词结尾 ctrl + x 在上次光标所在字符和当前光标所在字符之间跳转 alt + f 跳到光标所在位置单词尾部<br>替换 ctrl + t 将光标当前字符与前面一个字符替换 alt + t 交换两个光标当前所处位置单词和光标前一个单词 alt + u 把光标当前位置单词变为大写 alt + l 把光标当前位置单词变为小写 alt + c 把光标当前位置单词头一个字母变为大写 ^oldstr^newstr 替换前一次命令中字符串<br>历史命令编辑 ctrl + p 返回上一次输入命令字符 ctrl + r 输入单词搜索历史命令 alt + p 输入字符查找与字符相接近的历史命令 alt + &gt; 返回上一次执行命令<br>其它 ctrl + s 锁住终端 ctrl + q 解锁终端 ctrl + l 清屏相当于命令clear ctrl + c 另起一行 ctrl + i 类似TAB健补全功能 ctrl + o 重复执行命令 alt + 数字键 操作的次数<br>搜索操作快捷键<br>搜索历史命令的快捷键：Ctrl + r 它是通过关键字去匹配历史记录，执行后会提示：(reverse-i-search)`’:<br>输入你记得的关键字去匹配，如果出现你需要的命令，按Enter就可以选择命令；如果不是请输入更精确的关键字去匹配。<br>移动操作快捷键<br>Ctrl + f– 向右移动一个字符，当然多数人用→ Ctrl + b– 向左移动一个字符， 多数人用← ESC + f– 向右移动一个单词，MAC下建议用ALT + → ESC + b– 向左移动一个单词，MAC下建议用ALT + ← Ctrl + a– 跳到行首 Ctrl + e– 跳到行尾<br>删除操作快捷键<br>Ctrl + d– 向右删除一个字符 Ctrl + h– 向左删除一个字符 Ctrl + u– 删除当前位置字符至行首（输入密码错误的时候多用下这个） Ctrl + k– 删除当前位置字符至行尾 Ctrl + w– 删除从光标到当前单词开头<br>命令切换操作快捷键<br>Ctrl + p– 上一个命令，也可以用↑ Ctrl + n– 下一个命令，也可以用↓<br>其他操作快捷键<br>Ctrl + y– 插入最近删除的单词 Ctrl + c– 终止操作 Ctrl + d– 当前操作转到后台 Ctrl + l– 清屏 （有时候为了好看）</p>
-<p>部分命令记录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">netstat -nat|grep -i &quot;80&quot;|wc -l</span><br><span class="line"></span><br><span class="line">kill -9 `ps -ef |grep cli|awk &apos;&#123;print $2&#125;’`</span><br><span class="line"></span><br><span class="line">vim 查看第n行   :n</span><br><span class="line"></span><br><span class="line">bg命令后台执行</span><br><span class="line">fg命令前台执行</span><br><span class="line"></span><br><span class="line">ps -aux | grep</span><br><span class="line">ps -ef | grep</span><br><span class="line"></span><br><span class="line">ln -s f1 f3  f1源文件</span><br></pre></td></tr></table></figure></p>
+<p>部分命令记录</p>
+<pre><code>
+netstat -nat|grep -i &quot;80&quot;|wc -l
 
+kill -9 `ps -ef |grep cli|awk &#39;{print $2}’`
+
+vim 查看第n行   :n
+
+bg命令后台执行
+fg命令前台执行
+
+ps -aux | grep
+ps -ef | grep
+
+ln -s f1 f3  f1源文件
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjvyo01lg000w3a38e0qw043u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/07/linux_quick/" data-id="cjy5p773i000uqn38bvjkc8rm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-reset_mysql_root" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/06/reset_mysql_root/" class="article-date">
-  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/06/reset_mysql_root/">Mac OS MySQL重置root密码</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Mac 安装MySQL后root密码丢失后重置步骤：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mysql/bin/</span><br><span class="line"></span><br><span class="line">sudo su</span><br><span class="line"></span><br><span class="line">./mysqld_safe --skip-grant-tables &amp; #进制MySQL验证</span><br></pre></td></tr></table></figure></p>
-<p>可以另起终端启动MySQL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usr/local/mysql/support-files/mysql.server start</span><br></pre></td></tr></table></figure></p>
-<p>原终端执行重置密码命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./mysql</span><br><span class="line"></span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line"></span><br><span class="line">SET PASSWORD FOR &apos;root&apos;@&apos;localhost&apos; = PASSWORD(&apos;你的新密码&apos;);</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/reset_mysql_root/" data-id="cjvyo01lk00133a38rkjp5ubv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-git_no_pass" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/12/06/git_no_pass/" class="article-date">
-  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/12/06/git_no_pass/">Git服务器配置指定客户端免密</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>服务器上切换到git账号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su git</span><br></pre></td></tr></table></figure></p>
-<p>设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh</span><br><span class="line">vim authorized_keys</span><br></pre></td></tr></table></figure></p>
-<p>把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中</p>
-<p>附1·上本地生成秘钥方法<br>二、生成SSH密钥过程：<br>1.查看是否已经有了ssh密钥：cd ~/.ssh<br>如果没有密钥则不会有此文件夹，有则备份删除<br>2.生存密钥：<br>$ ssh-keygen -t rsa -C “<a href="mailto:haiyan.xu.vip@gmail.com" target="_blank" rel="noopener">haiyan.xu.vip@gmail.com</a>” 按3个回车，密码为空。<br> Your identification has been saved in /home/tekkub/.ssh/id_rsa. Your public key has been saved in /home/tekkub/.ssh/id_rsa.pub. The key fingerprint is: ………………</p>
-<p>最后得到了两个文件：id_rsa和id_rsa.pub<br> 3.添加密钥到ssh：ssh-add 文件名 需要之前输入密码。 4.在github上添加ssh密钥，这要添加的是“id_rsa.pub”里面的公钥。</p>
-<p>附2·<br>设置Git的user name和email：<br>$ git config –global user.name “xuhaiyan”<br>$ git config –global user.email “<a href="mailto:haiyan.xu.vip@gmail.com" target="_blank" rel="noopener">haiyan.xu.vip@gmail.com</a>“</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjvyo01kd00073a38r8ll64wn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
 
     </footer>
   </div>
@@ -318,16 +351,120 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Git 服务器上新建项目操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init --bare ***.git</span><br><span class="line"></span><br><span class="line">chown -R git.git ***.git</span><br></pre></td></tr></table></figure></p>
-<p>init时需要使用 –bare， 并且需要全文件夹授权，否则无法push</p>
+        <p>Git 服务器上新建项目操作</p>
+<pre><code>git init --bare ***.git
+
+chown -R git.git ***.git
+</code></pre><p>init时需要使用 –bare， 并且需要全文件夹授权，否则无法push</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjvyo01ka00053a38hznz98xu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/06/git_new/" data-id="cjy5p772r0008qn38s2d939qz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-git_no_pass" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/06/git_no_pass/" class="article-date">
+  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/06/git_no_pass/">Git服务器配置指定客户端免密</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>服务器上切换到git账号</p>
+<pre><code>su git
+</code></pre><p>设置</p>
+<pre><code>cd ~/.ssh
+vim authorized_keys
+</code></pre><p>把客户端.ssh/id_rsa.pub  的密钥复制到上面的文件中</p>
+<p>附1·上本地生成秘钥方法<br>二、生成SSH密钥过程：<br>1.查看是否已经有了ssh密钥：cd ~/.ssh<br>如果没有密钥则不会有此文件夹，有则备份删除<br>2.生存密钥：<br>$ ssh-keygen -t rsa -C “<a href="mailto:haiyan.xu.vip@gmail.com" target="_blank" rel="noopener">haiyan.xu.vip@gmail.com</a>” 按3个回车，密码为空。<br> Your identification has been saved in /home/tekkub/.ssh/id_rsa. Your public key has been saved in /home/tekkub/.ssh/id_rsa.pub. The key fingerprint is: ………………</p>
+<p>最后得到了两个文件：id_rsa和id_rsa.pub<br> 3.添加密钥到ssh：ssh-add 文件名 需要之前输入密码。 4.在github上添加ssh密钥，这要添加的是“id_rsa.pub”里面的公钥。</p>
+<p>附2·<br>设置Git的user name和email：<br>$ git config –global user.name “xuhaiyan”<br>$ git config –global user.email “<a href="mailto:haiyan.xu.vip@gmail.com" target="_blank" rel="noopener">haiyan.xu.vip@gmail.com</a>“</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/06/git_no_pass/" data-id="cjy5p772p0007qn3884otoy90" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git-linux/">git linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-reset_mysql_root" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/12/06/reset_mysql_root/" class="article-date">
+  <time datetime="2018-12-05T16:00:00.000Z" itemprop="datePublished">2018-12-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/06/reset_mysql_root/">Mac OS MySQL重置root密码</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Mac 安装MySQL后root密码丢失后重置步骤：</p>
+<pre><code>cd /usr/local/mysql/bin/
+
+sudo su
+
+./mysqld_safe --skip-grant-tables &amp; #进制MySQL验证
+
+</code></pre><p>可以另起终端启动MySQL</p>
+<pre><code>usr/local/mysql/support-files/mysql.server start
+
+</code></pre><p>原终端执行重置密码命令</p>
+<pre><code>./mysql
+
+FLUSH PRIVILEGES;
+
+SET PASSWORD FOR &#39;root&#39;@&#39;localhost&#39; = PASSWORD(&#39;你的新密码&#39;);
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/12/06/reset_mysql_root/" data-id="cjy5p773r001aqn385xmlk1zt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li></ul>
 
     </footer>
   </div>
@@ -359,13 +496,19 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>使用node.js搜索数据库，发现每次搜到的bigint字段的值都会被处理，因为db包上面包了一层knex.js，还以为是knex.js的问题。查看文档：<br><a href="https://knexjs.org/" title="knex官方文档" target="_blank" rel="noopener">knex官方文档</a><br>没有发现有说明这个问题，咨询同事，被提醒可能是MySQL包的问题。<br>搜索后发现<br>supportBigNumbers－处理大数字（BIGINT和DECIMAL）时需要启动此项（默认false）<br>bigNumberStrings－使用supportbignumbers和bignumberstrings时总是返回JavaScript字符串对象（默认false）</p>
-<p>于是配置调整加上了supportBigNumbers:true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">config = &#123;</span><br><span class="line">        &quot;host&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;user&quot;:     &quot;&quot;,</span><br><span class="line">        &quot;password&quot;: &quot;&quot;,</span><br><span class="line">        &quot;supportBigNumbers&quot; : true</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://itbilu.com/nodejs/npm/NyPG8LhlW.html" title="node-mysql 模块介绍资料地址" target="_blank" rel="noopener">node-mysql 模块介绍资料地址</a></p>
+<p>于是配置调整加上了supportBigNumbers:true</p>
+<pre><code>config = {
+        &quot;host&quot;:     &quot;&quot;,
+        &quot;user&quot;:     &quot;&quot;,
+        &quot;password&quot;: &quot;&quot;,
+        &quot;supportBigNumbers&quot; : true
+    }
+</code></pre><p><a href="https://itbilu.com/nodejs/npm/NyPG8LhlW.html" title="node-mysql 模块介绍资料地址" target="_blank" rel="noopener">node-mysql 模块介绍资料地址</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjvyo01lo00183a38rlax8ei3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/03/mysql_support_bignum/" data-id="cjy5p773n0012qn38qc3lfx4g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li></ul>
@@ -402,12 +545,20 @@
         <p>   有些脚本因为要循环的执行，比如每天执行一次，或者执行完后重新执行一次，使用crontab设置定时任务指定每天执行时间。</p>
 <p>   但是这样存在一个问题，如果一个脚本一天执行不完，这样第二天到了时间会开启第二个脚本执行，会有重叠执行的情况，而其实可能需要的情况只是第一次执行完后执行第二次，不一定需要指定时间执行。</p>
 <p>   仔细想了一下发现其实被crontab的定时指定给局限了思路，另外的思路是写一个脚本监听进程，使用crontab每隔一段时间监听，看进程是否还存在，不存在则重新启动。</p>
-<p>   脚本可以如下：<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> #!/bin/bash</span><br><span class="line">PID=$(ps aux|grep &quot;进程特殊标示（最好奇怪一点不要用通用的脚本名，负责监听无效）&quot;| grep -v grep | awk &apos;&#123;printf $2&#125;&apos;)</span><br><span class="line">if [ $PID &gt; 0 ]; then</span><br><span class="line">	echo $PID</span><br><span class="line">    exit</span><br><span class="line">fi</span><br><span class="line"># 重启脚本命令</span><br></pre></td></tr></table></figure></p>
+<p>   脚本可以如下：</p>
+<pre><code class="linux"> #!/bin/bash
+PID=$(ps aux|grep &quot;进程特殊标示（最好奇怪一点不要用通用的脚本名，负责监听无效）&quot;| grep -v grep | awk &#39;{printf $2}&#39;)
+if [ $PID &gt; 0 ]; then
+    echo $PID
+    exit
+fi
+# 重启脚本命令
+</code></pre>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjvyo01jp00003a384ojc2wps" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/11/19/crontab_auto/" data-id="cjy5p772c0001qn38iz5inelo" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -441,60 +592,81 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>因为今日头条的开放品台不能进行开发者资质认证了，所以只能抓包看一下发表文章的接口，因为肯定是要登录才能正常请求的，所以必须要传cookie等一些header信息的<br>就以存草稿为例：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	param := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">`article_type`</span>:           <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`title`</span>:                  <span class="string">``</span>,</span><br><span class="line">		<span class="string">`content`</span>:                <span class="string">``</span>,</span><br><span class="line">		<span class="string">`activity_tag`</span>:           <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`title_id`</span>:               <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`claim_origin`</span>:           <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`article_ad_type`</span>:        <span class="string">`3`</span>,</span><br><span class="line">		<span class="string">`add_third_title`</span>:        <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`recommend_auto_analyse`</span>: <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`tag`</span>:                    <span class="string">`news`</span>,</span><br><span class="line">		<span class="string">`article_label`</span>:          <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`is_fans_article`</span>:        <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`quote_hot_spot`</span>:         <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`govern_forward`</span>:         <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`push_status`</span>:            <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`push_android_title`</span>:     <span class="string">``</span>,</span><br><span class="line">		<span class="string">`push_android_summary`</span>:   <span class="string">``</span>,</span><br><span class="line">		<span class="string">`push_ios_summary`</span>:       <span class="string">``</span>,</span><br><span class="line">		<span class="string">`timer_time`</span>:             <span class="string">`2018-11-01 03:21`</span>,</span><br><span class="line">		<span class="string">`column_chosen`</span>:          <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`pgc_id`</span>:                 <span class="string">``</span>, <span class="comment">//article_id</span></span><br><span class="line">		<span class="string">`qy_self_recommendation`</span>: <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`pgc_feed_covers`</span>:        <span class="string">``</span>,</span><br><span class="line">		<span class="string">`need_pay`</span>:               <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`from_diagnosis`</span>:         <span class="string">`0`</span>,</span><br><span class="line">		<span class="string">`save`</span>:                   <span class="string">`0`</span>,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> paramString <span class="keyword">string</span></span><br><span class="line">	<span class="keyword">for</span> k, v := <span class="keyword">range</span> param &#123;</span><br><span class="line">		paramString += k + <span class="string">`=`</span> + v + <span class="string">`&amp;`</span></span><br><span class="line">	&#125;</span><br><span class="line">	paramString = strings.TrimSuffix(paramString, <span class="string">`&amp;`</span>)</span><br><span class="line">	fmt.Println(paramString)</span><br><span class="line">	url := <span class="string">"https://mp.toutiao.com/core/article/edit_article_post/?source=mp&amp;type=article"</span></span><br><span class="line">	client := &amp;http.Client&#123;&#125;</span><br><span class="line">	req, err := http.NewRequest(<span class="string">"POST"</span>, url, strings.NewReader(paramString))</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">print</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	req.Header.Set(<span class="string">"Cookie"</span>, <span class="string">``</span>)</span><br><span class="line">	req.Header.Set(<span class="string">"Pragma"</span>, <span class="string">"no-cache"</span>)</span><br><span class="line">	<span class="comment">// req.Header.Set("Accept-Encoding", "gzip, deflate, br")</span></span><br><span class="line">	req.Header.Set(<span class="string">"Accept-Language"</span>, <span class="string">"zh-CN,zh;q=0.8"</span>)</span><br><span class="line">	req.Header.Set(<span class="string">"Upgrade-Insecure-Requests"</span>, <span class="string">"1"</span>)</span><br><span class="line">	req.Header.Set(<span class="string">"User-Agent"</span>, <span class="string">"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"</span>)</span><br><span class="line">	req.Header.Set(<span class="string">"Accept"</span>, <span class="string">"text/javascript, text/html, application/xml, text/xml, */*"</span>)</span><br><span class="line">	req.Header.Set(<span class="string">"Connection"</span>, <span class="string">"keep-alive"</span>)</span><br><span class="line">	req.Header.Set(<span class="string">"Content-Type"</span>, <span class="string">"application/x-www-form-urlencoded; charset=UTF-8"</span>)</span><br><span class="line">	req.Header.Set(<span class="string">"Cache-Control"</span>, <span class="string">"no-cache"</span>)</span><br><span class="line"></span><br><span class="line">	resp2, err := client.Do(req)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">`http error`</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	body, err := ioutil.ReadAll(resp2.Body)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">`get data error`</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">`body`</span>, <span class="keyword">string</span>(body))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>因为今日头条的开放品台不能进行开发者资质认证了，所以只能抓包看一下发表文章的接口，因为肯定是要登录才能正常请求的，所以必须要传cookie等一些header信息的<br>就以存草稿为例：</p>
+<pre><code class="go">func main() {
+    param := map[string]string{
+        `article_type`:           `0`,
+        `title`:                  ``,
+        `content`:                ``,
+        `activity_tag`:           `0`,
+        `title_id`:               `0`,
+        `claim_origin`:           `0`,
+        `article_ad_type`:        `3`,
+        `add_third_title`:        `0`,
+        `recommend_auto_analyse`: `0`,
+        `tag`:                    `news`,
+        `article_label`:          `0`,
+        `is_fans_article`:        `0`,
+        `quote_hot_spot`:         `0`,
+        `govern_forward`:         `0`,
+        `push_status`:            `0`,
+        `push_android_title`:     ``,
+        `push_android_summary`:   ``,
+        `push_ios_summary`:       ``,
+        `timer_time`:             `2018-11-01 03:21`,
+        `column_chosen`:          `0`,
+        `pgc_id`:                 ``, //article_id
+        `qy_self_recommendation`: `0`,
+        `pgc_feed_covers`:        ``,
+        `need_pay`:               `0`,
+        `from_diagnosis`:         `0`,
+        `save`:                   `0`,
+    }
+
+    var paramString string
+    for k, v := range param {
+        paramString += k + `=` + v + `&amp;`
+    }
+    paramString = strings.TrimSuffix(paramString, `&amp;`)
+    fmt.Println(paramString)
+    url := &quot;https://mp.toutiao.com/core/article/edit_article_post/?source=mp&amp;type=article&quot;
+    client := &amp;http.Client{}
+    req, err := http.NewRequest(&quot;POST&quot;, url, strings.NewReader(paramString))
+    if err != nil {
+        print(err)
+    }
+    req.Header.Set(&quot;Cookie&quot;, ``)
+    req.Header.Set(&quot;Pragma&quot;, &quot;no-cache&quot;)
+    // req.Header.Set(&quot;Accept-Encoding&quot;, &quot;gzip, deflate, br&quot;)
+    req.Header.Set(&quot;Accept-Language&quot;, &quot;zh-CN,zh;q=0.8&quot;)
+    req.Header.Set(&quot;Upgrade-Insecure-Requests&quot;, &quot;1&quot;)
+    req.Header.Set(&quot;User-Agent&quot;, &quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36&quot;)
+    req.Header.Set(&quot;Accept&quot;, &quot;text/javascript, text/html, application/xml, text/xml, */*&quot;)
+    req.Header.Set(&quot;Connection&quot;, &quot;keep-alive&quot;)
+    req.Header.Set(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded; charset=UTF-8&quot;)
+    req.Header.Set(&quot;Cache-Control&quot;, &quot;no-cache&quot;)
+
+    resp2, err := client.Do(req)
+    if err != nil {
+        fmt.Println(`http error`, err)
+    }
+
+    body, err := ioutil.ReadAll(resp2.Body)
+    if err != nil {
+        fmt.Println(`get data error`, err)
+    }
+    fmt.Println(`body`, string(body))
+}
+</code></pre>
 <p>中间文章内容格式需要根据页面操作结果慢慢调试一下的</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjvyo01l0000j3a380e2qddnb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/31/golang_post_cookie/" data-id="cjy5p7734000iqn3838dup3kp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-golang_json" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/10/30/golang_json/" class="article-date">
-  <time datetime="2018-10-30T07:27:48.000Z" itemprop="datePublished">2018-10-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/30/golang_json/">golang 解析 json 文件的无解情况</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>拿到一个json文件，格式如下<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="string">"ss1"</span>, <span class="string">"ss2"</span>, <span class="number">3</span>, <span class="string">"ss4"</span>],[<span class="string">"tt1"</span>, <span class="string">"tt2"</span>, <span class="number">3</span>, <span class="string">"tt4"</span>]]</span><br></pre></td></tr></table></figure></p>
-<p>代码<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">data, err := ioutil.ReadFile(os.Args[<span class="number">2</span>])</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`read file`</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> v [][]<span class="keyword">string</span></span><br><span class="line">err = json.Unmarshal(data, &amp;v)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`json unmeshal error:`</span>, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json unmeshal error: json: cannot unmarshal number into Go value of type string</span><br></pre></td></tr></table></figure></p>
-<p>数据格式对应不上，想了一下这样写<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> dataFormat <span class="keyword">struct</span> &#123;</span><br><span class="line">	S1     <span class="keyword">string</span></span><br><span class="line">	S2     <span class="keyword">string</span></span><br><span class="line">	I1     <span class="keyword">int</span></span><br><span class="line">	S3     <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> v []dataFormat</span><br><span class="line">err = json.Unmarshal(data, &amp;v)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">`json unmeshal error:`</span>, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">json unmeshal error: json: cannot unmarshal array into Go value of type main.dataFormat</span><br></pre></td></tr></table></figure></p>
-<p>正常，因为本身json文件的格式确实是一个数组</p>
-<h2 id="所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。"><a href="#所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。" class="headerlink" title="所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。"></a>所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。</h2><h3 id="最后还是写了个PHP脚本解决。。。。"><a href="#最后还是写了个PHP脚本解决。。。。" class="headerlink" title="最后还是写了个PHP脚本解决。。。。"></a>最后还是写了个PHP脚本解决。。。。</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjvyo01kn000c3a38fa3a3epc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
 
     </footer>
   </div>
@@ -521,7 +693,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -531,7 +703,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/aws/" style="font-size: 13.33px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -540,7 +712,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -551,6 +723,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/07/16/aws_es/">golang使用AWS ElasticSearch</a>
+          </li>
         
           <li>
             <a href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
@@ -566,10 +742,6 @@
         
           <li>
             <a href="/2019/04/01/golang_http_get_unpected/">golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
           </li>
         
       </ul>

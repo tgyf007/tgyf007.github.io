@@ -5,16 +5,20 @@
   
 
   
-  <title>Tag: aws | 会一点PHP和Go的Junior Developer</title>
+  <title>golang使用AWS ElasticSearch | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="Go PHP Linux Mysql Redis">
-<meta property="og:type" content="website">
-<meta property="og:title" content="会一点PHP和Go的Junior Developer">
-<meta property="og:url" content="http://yoursite.com/tags/aws/index.html">
+  <meta name="description" content="用到了AWS ElasticSearch，研究了一下，整理了一下研究过程AWS本身自带ElasticSearch服务，且可以方便的在本地布置Kibana，这个不需要多说，只需要去搜索文档执行即可。 AWS的ES首先是新建域，这个原来已经有服务，所以在这个基础要上新建index 研究了N久怎么建index，最后发现在kibana的Dev Tools用put命令即可 建好后，去找golang的Elas">
+<meta name="keywords" content="elasticsearch,aws">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang使用AWS ElasticSearch">
+<meta property="og:url" content="http://yoursite.com/2019/07/16/aws_es/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
+<meta property="og:description" content="用到了AWS ElasticSearch，研究了一下，整理了一下研究过程AWS本身自带ElasticSearch服务，且可以方便的在本地布置Kibana，这个不需要多说，只需要去搜索文档执行即可。 AWS的ES首先是新建域，这个原来已经有服务，所以在这个基础要上新建index 研究了N久怎么建index，最后发现在kibana的Dev Tools用put命令即可 建好后，去找golang的Elas">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-07-16T10:53:09.914Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="会一点PHP和Go的Junior Developer">
+<meta name="twitter:title" content="golang使用AWS ElasticSearch">
+<meta name="twitter:description" content="用到了AWS ElasticSearch，研究了一下，整理了一下研究过程AWS本身自带ElasticSearch服务，且可以方便的在本地布置Kibana，这个不需要多说，只需要去搜索文档执行即可。 AWS的ES首先是新建域，这个原来已经有服务，所以在这个基础要上新建index 研究了N久怎么建index，最后发现在kibana的Dev Tools用put命令即可 建好后，去找golang的Elas">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -63,59 +67,59 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/07/16/aws_es/" class="archive-article-date">
-  <time datetime="2019-07-15T16:00:00.000Z" itemprop="datePublished">Jul 16</time>
+        <section id="main"><article id="post-aws_es" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/07/16/aws_es/" class="article-date">
+  <time datetime="2019-07-15T16:00:00.000Z" itemprop="datePublished">2019-07-16</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/07/16/aws_es/">golang使用AWS ElasticSearch</a>
+    <h1 class="article-title" itemprop="name">
+      golang使用AWS ElasticSearch
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2019/05/22/linux_s3cmd/" class="archive-article-date">
-  <time datetime="2019-05-21T16:00:00.000Z" itemprop="datePublished">May 22</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
-    </h1>
-  
+        <h3 id="用到了AWS-ElasticSearch，研究了一下，整理了一下研究过程"><a href="#用到了AWS-ElasticSearch，研究了一下，整理了一下研究过程" class="headerlink" title="用到了AWS ElasticSearch，研究了一下，整理了一下研究过程"></a>用到了AWS ElasticSearch，研究了一下，整理了一下研究过程</h3><p>AWS本身自带ElasticSearch服务，且可以方便的在本地布置Kibana，这个不需要多说，只需要去搜索文档执行即可。</p>
+<p>AWS的ES首先是新建域，这个原来已经有服务，所以在这个基础要上新建index</p>
+<p>研究了N久怎么建index，最后发现在kibana的Dev Tools用put命令即可</p>
+<p>建好后，去找golang的Elastic包，最终决定使用github.com/olivere/elastic</p>
+<p>然后推送数据，推送过程中发现并不需要先建index，在推送数据的时候如果index不存在会自动创建</p>
+<p>推送成功后发现在Discover里找不到新建的index，研究良久，最后在kibana的Management里对index pattern有了怀疑，于是试着创建一个新的index pattern并指向新的index这个indices，创建后终于成功在Discover看到数据，搞定！</p>
 
-    </header>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/07/16/aws_es/" data-id="cjy5p771z0000qn38nyyz6s2k" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aws/">aws</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li></ul>
+
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2019/05/22/linux_s3cmd/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在Linux安装s3cmd</div>
+    </a>
   
+</nav>
 
+  
+</article>
 
 </section>
         

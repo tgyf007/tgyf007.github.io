@@ -7,18 +7,18 @@
   
   <title>Golang管道死锁调试学习 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
+  <meta name="description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下 package main  import (     &amp;quot;fmt&amp;quot; )  var ch1, ch2 chan int  func send() {     ch1 &amp;lt;- 1     ch2 &amp;lt;- 2 }  func main() {     go send()      fmt.Println(">
 <meta name="keywords" content="golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang管道死锁调试学习">
 <meta property="og:url" content="http://yoursite.com/2018/12/17/golang_channel_deadlock/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
-<meta property="og:description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
+<meta property="og:description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下 package main  import (     &amp;quot;fmt&amp;quot; )  var ch1, ch2 chan int  func send() {     ch1 &amp;lt;- 1     ch2 &amp;lt;- 2 }  func main() {     go send()      fmt.Println(">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2018-12-20T08:45:44.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang管道死锁调试学习">
-<meta name="twitter:description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下12345678910111213141516171819package mainimport (	&amp;quot;fmt&amp;quot;)var ch1, ch2 chan intfunc send() &amp;#123;	ch1 &amp;lt;- 1	ch2 &amp;lt;- 2&amp;#125;func main() &amp;#123;	go send()">
+<meta name="twitter:description" content="Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下 package main  import (     &amp;quot;fmt&amp;quot; )  var ch1, ch2 chan int  func send() {     ch1 &amp;lt;- 1     ch2 &amp;lt;- 2 }  func main() {     go send()      fmt.Println(">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -89,18 +89,67 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var ch1, ch2 chan int</span><br><span class="line"></span><br><span class="line">func send() &#123;</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	go send()</span><br><span class="line"></span><br><span class="line">	fmt.Println(`ch1`, &lt;-ch1)</span><br><span class="line">	fmt.Println(`ch2`, &lt;-ch2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
-<p>想这个是顺序执行的，怎么会死锁，然后发现channel和map slice一样，需要make后才能使用<br>修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var ch1, ch2 chan int</span><br><span class="line"></span><br><span class="line">func send() &#123;</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	ch1 = make(chan int)</span><br><span class="line">	ch2 = make(chan int)</span><br><span class="line">	go send()</span><br><span class="line"></span><br><span class="line">	fmt.Println(`ch1`, &lt;-ch1)</span><br><span class="line">	fmt.Println(`ch2`, &lt;-ch2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>正常返回<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ch1 1</span><br><span class="line">ch2 2</span><br></pre></td></tr></table></figure></p>
-<p>替换ch1 ch2发送顺序，不改变接受顺序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func send() &#123;</span><br><span class="line">	ch2 &lt;- 2</span><br><span class="line">	ch1 &lt;- 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: all goroutines are asleep - deadlock!</span><br></pre></td></tr></table></figure></p>
-<p>死锁再现，因为先发送了管道ch2，先接收ch1，因为ch1没有发送，协程卡主，就导致主线程ch1 没法发送， 死循环，生成了死锁。</p>
+        <p>Golang没有缓冲的管道是会等待输出才能输入，看到一个案例想调试了一下</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+var ch1, ch2 chan int
+
+func send() {
+    ch1 &lt;- 1
+    ch2 &lt;- 2
+}
+
+func main() {
+    go send()
+
+    fmt.Println(`ch1`, &lt;-ch1)
+    fmt.Println(`ch2`, &lt;-ch2)
+}
+</code></pre><p>执行</p>
+<pre><code>fatal error: all goroutines are asleep - deadlock!
+</code></pre><p>想这个是顺序执行的，怎么会死锁，然后发现channel和map slice一样，需要make后才能使用<br>修改：</p>
+<pre><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+var ch1, ch2 chan int
+
+func send() {
+    ch1 &lt;- 1
+    ch2 &lt;- 2
+}
+
+func main() {
+    ch1 = make(chan int)
+    ch2 = make(chan int)
+    go send()
+
+    fmt.Println(`ch1`, &lt;-ch1)
+    fmt.Println(`ch2`, &lt;-ch2)
+}
+
+</code></pre><p>正常返回</p>
+<pre><code>ch1 1
+ch2 2
+</code></pre><p>替换ch1 ch2发送顺序，不改变接受顺序</p>
+<pre><code>func send() {
+    ch2 &lt;- 2
+    ch1 &lt;- 1
+}
+</code></pre><p>执行</p>
+<pre><code>fatal error: all goroutines are asleep - deadlock!
+</code></pre><p>死锁再现，因为先发送了管道ch2，先接收ch1，因为ch1没有发送，协程卡主，就导致主线程ch1 没法发送， 死循环，生成了死锁。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjvyo01kl000a3a380rvn5hcs" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/12/17/golang_channel_deadlock/" data-id="cjy5p772v000cqn38df3a3m8a" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -142,7 +191,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -152,7 +201,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/aws/" style="font-size: 13.33px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -161,7 +210,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -172,6 +221,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/07/16/aws_es/">golang使用AWS ElasticSearch</a>
+          </li>
         
           <li>
             <a href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
@@ -187,10 +240,6 @@
         
           <li>
             <a href="/2019/04/01/golang_http_get_unpected/">golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
           </li>
         
       </ul>

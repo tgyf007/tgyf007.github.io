@@ -7,18 +7,18 @@
   
   <title>golang  map的排序 | 会一点PHP和Go的Junior Developer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="老是掉进golang数据结构map的坑里，PHP习惯了只有数组一种结构，老是会把map想成PHP不是默认key的数组，其实最大的不同就是map是随机排序的，以后用map的时候要提醒自己是不是有排序需求 golang map按key排序123456789101112131415161718192021222324252627//golang的map不保证有序性，所以按key排序需要取出key，对ke">
+  <meta name="description" content="老是掉进golang数据结构map的坑里，PHP习惯了只有数组一种结构，老是会把map想成PHP不是默认key的数组，其实最大的不同就是map是随机排序的，以后用map的时候要提醒自己是不是有排序需求 golang map按key排序//golang的map不保证有序性，所以按key排序需要取出key，对key排序，再遍历输出value package main  import (     &amp;qu">
 <meta name="keywords" content="golang">
 <meta property="og:type" content="article">
 <meta property="og:title" content="golang  map的排序">
 <meta property="og:url" content="http://yoursite.com/2019/01/09/golang_map_keng/index.html">
 <meta property="og:site_name" content="会一点PHP和Go的Junior Developer">
-<meta property="og:description" content="老是掉进golang数据结构map的坑里，PHP习惯了只有数组一种结构，老是会把map想成PHP不是默认key的数组，其实最大的不同就是map是随机排序的，以后用map的时候要提醒自己是不是有排序需求 golang map按key排序123456789101112131415161718192021222324252627//golang的map不保证有序性，所以按key排序需要取出key，对ke">
+<meta property="og:description" content="老是掉进golang数据结构map的坑里，PHP习惯了只有数组一种结构，老是会把map想成PHP不是默认key的数组，其实最大的不同就是map是随机排序的，以后用map的时候要提醒自己是不是有排序需求 golang map按key排序//golang的map不保证有序性，所以按key排序需要取出key，对key排序，再遍历输出value package main  import (     &amp;qu">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-01-09T09:01:37.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="golang  map的排序">
-<meta name="twitter:description" content="老是掉进golang数据结构map的坑里，PHP习惯了只有数组一种结构，老是会把map想成PHP不是默认key的数组，其实最大的不同就是map是随机排序的，以后用map的时候要提醒自己是不是有排序需求 golang map按key排序123456789101112131415161718192021222324252627//golang的map不保证有序性，所以按key排序需要取出key，对ke">
+<meta name="twitter:description" content="老是掉进golang数据结构map的坑里，PHP习惯了只有数组一种结构，老是会把map想成PHP不是默认key的数组，其实最大的不同就是map是随机排序的，以后用map的时候要提醒自己是不是有排序需求 golang map按key排序//golang的map不保证有序性，所以按key排序需要取出key，对key排序，再遍历输出value package main  import (     &amp;qu">
   
     <link rel="alternate" href="/atom.xml" title="会一点PHP和Go的Junior Developer" type="application/atom+xml">
   
@@ -90,14 +90,122 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>老是掉进golang数据结构map的坑里，PHP习惯了只有数组一种结构，老是会把map想成PHP不是默认key的数组，其实最大的不同就是map是随机排序的，以后用map的时候要提醒自己是不是有排序需求</p>
-<h2 id="golang-map按key排序"><a href="#golang-map按key排序" class="headerlink" title="golang map按key排序"></a>golang map按key排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">//golang的map不保证有序性，所以按key排序需要取出key，对key排序，再遍历输出value</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;sort&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    // To create a map as input</span><br><span class="line">    m := make(map[int]string)</span><br><span class="line">    m[1] = &quot;a&quot;</span><br><span class="line">    m[2] = &quot;c&quot;</span><br><span class="line">    m[0] = &quot;b&quot;</span><br><span class="line"></span><br><span class="line">    // To store the keys in slice in sorted order</span><br><span class="line">    var keys []int</span><br><span class="line">    for k := range m &#123;</span><br><span class="line">        keys = append(keys, k)</span><br><span class="line">    &#125;</span><br><span class="line">    sort.Ints(keys)</span><br><span class="line"></span><br><span class="line">    // To perform the opertion you want</span><br><span class="line">    for _, k := range keys &#123;</span><br><span class="line">        fmt.Println(&quot;Key:&quot;, k, &quot;Value:&quot;, m[k])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="golang-map按value排序"><a href="#golang-map按value排序" class="headerlink" title="golang map按value排序"></a>golang map按value排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//要对golang map按照value进行排序，思路是直接不用map，用struct存放key和value，实现sort接口，就可以调用sort.Sort进行排序了。</span><br><span class="line">// A data structure to hold a key/value pair.</span><br><span class="line">type Pair struct &#123;</span><br><span class="line">    Key   string</span><br><span class="line">    Value int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// A slice of Pairs that implements sort.Interface to sort by Value.</span><br><span class="line">type PairList []Pair</span><br><span class="line"></span><br><span class="line">func (p PairList) Swap(i, j int)      &#123; p[i], p[j] = p[j], p[i] &#125;</span><br><span class="line">func (p PairList) Len() int           &#123; return len(p) &#125;</span><br><span class="line">func (p PairList) Less(i, j int) bool &#123; return p[i].Value &lt; p[j].Value &#125;</span><br><span class="line"></span><br><span class="line">// A function to turn a map into a PairList, then sort and return it.</span><br><span class="line">func sortMapByValue(m map[string]int) PairList &#123;</span><br><span class="line">    p := make(PairList, len(m))</span><br><span class="line">    i := 0</span><br><span class="line">    for k, v := range m &#123;</span><br><span class="line">        p[i] = Pair&#123;k, v&#125;</span><br><span class="line">        i ++</span><br><span class="line">    &#125;</span><br><span class="line">    sort.Sort(p)</span><br><span class="line">    return p</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="golang-map递增排序"><a href="#golang-map递增排序" class="headerlink" title="golang map递增排序"></a>golang map递增排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//sort.Sort是递增排序，如果要实现递减排序，用sort.Reverse</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;sort&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    a := []int&#123;4,3,2,1,5,9,8,7,6&#125;</span><br><span class="line">    sort.Sort(sort.Reverse(sort.IntSlice(a)))</span><br><span class="line">    fmt.Println(&quot;After reversed: &quot;, a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="golang-map-排序的稳定性"><a href="#golang-map-排序的稳定性" class="headerlink" title="golang map 排序的稳定性"></a>golang map 排序的稳定性</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">//sort不保证排序的稳定性（两个相同的值，排序之后相对位置不变），排序的稳定性由sort.Stable来保证。</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line">    &quot;sort&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type person struct &#123;</span><br><span class="line">  Name string</span><br><span class="line">  Age int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">type personSlice []person</span><br><span class="line"></span><br><span class="line">func (s personSlice) Len() int &#123; return len(s) &#125;</span><br><span class="line">func (s personSlice) Swap(i, j int) &#123; s[i], s[j] = s[j], s[i] &#125;</span><br><span class="line">func (s personSlice) Less(i, j int) bool &#123; return s[i].Age &lt; s[j].Age &#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    a := personSlice &#123;</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;AAA&quot;,</span><br><span class="line">        Age: 55,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;BBB&quot;,</span><br><span class="line">        Age: 22,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;CCC&quot;,</span><br><span class="line">        Age: 0,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;DDD&quot;,</span><br><span class="line">        Age: 22,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        Name: &quot;EEE&quot;,</span><br><span class="line">        Age: 11,</span><br><span class="line">      &#125;,  </span><br><span class="line">    &#125;</span><br><span class="line">    sort.Stable(a)</span><br><span class="line">    fmt.Println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="golang-map按key排序"><a href="#golang-map按key排序" class="headerlink" title="golang map按key排序"></a>golang map按key排序</h2><pre><code>//golang的map不保证有序性，所以按key排序需要取出key，对key排序，再遍历输出value
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sort&quot;
+)
+
+func main() {
+    // To create a map as input
+    m := make(map[int]string)
+    m[1] = &quot;a&quot;
+    m[2] = &quot;c&quot;
+    m[0] = &quot;b&quot;
+
+    // To store the keys in slice in sorted order
+    var keys []int
+    for k := range m {
+        keys = append(keys, k)
+    }
+    sort.Ints(keys)
+
+    // To perform the opertion you want
+    for _, k := range keys {
+        fmt.Println(&quot;Key:&quot;, k, &quot;Value:&quot;, m[k])
+    }
+}
+</code></pre><h2 id="golang-map按value排序"><a href="#golang-map按value排序" class="headerlink" title="golang map按value排序"></a>golang map按value排序</h2><pre><code>//要对golang map按照value进行排序，思路是直接不用map，用struct存放key和value，实现sort接口，就可以调用sort.Sort进行排序了。
+// A data structure to hold a key/value pair.
+type Pair struct {
+    Key   string
+    Value int
+}
+
+// A slice of Pairs that implements sort.Interface to sort by Value.
+type PairList []Pair
+
+func (p PairList) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+func (p PairList) Len() int           { return len(p) }
+func (p PairList) Less(i, j int) bool { return p[i].Value &lt; p[j].Value }
+
+// A function to turn a map into a PairList, then sort and return it.
+func sortMapByValue(m map[string]int) PairList {
+    p := make(PairList, len(m))
+    i := 0
+    for k, v := range m {
+        p[i] = Pair{k, v}
+        i ++
+    }
+    sort.Sort(p)
+    return p
+}
+
+</code></pre><h2 id="golang-map递增排序"><a href="#golang-map递增排序" class="headerlink" title="golang map递增排序"></a>golang map递增排序</h2><pre><code>//sort.Sort是递增排序，如果要实现递减排序，用sort.Reverse
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sort&quot;
+)
+
+func main() {
+    a := []int{4,3,2,1,5,9,8,7,6}
+    sort.Sort(sort.Reverse(sort.IntSlice(a)))
+    fmt.Println(&quot;After reversed: &quot;, a)
+}
+</code></pre><h2 id="golang-map-排序的稳定性"><a href="#golang-map-排序的稳定性" class="headerlink" title="golang map 排序的稳定性"></a>golang map 排序的稳定性</h2><pre><code>//sort不保证排序的稳定性（两个相同的值，排序之后相对位置不变），排序的稳定性由sort.Stable来保证。
+package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sort&quot;
+)
+
+type person struct {
+  Name string
+  Age int
+}
+
+type personSlice []person
+
+func (s personSlice) Len() int { return len(s) }
+func (s personSlice) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+func (s personSlice) Less(i, j int) bool { return s[i].Age &lt; s[j].Age }
+
+func main() {
+    a := personSlice {
+      {
+        Name: &quot;AAA&quot;,
+        Age: 55,
+      },
+      {
+        Name: &quot;BBB&quot;,
+        Age: 22,
+      },
+      {
+        Name: &quot;CCC&quot;,
+        Age: 0,
+      },
+      {
+        Name: &quot;DDD&quot;,
+        Age: 22,
+      },
+      {
+        Name: &quot;EEE&quot;,
+        Age: 11,
+      },  
+    }
+    sort.Stable(a)
+    fmt.Println(a)
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjvyo01lf000u3a38dqdn1y4a" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2019/01/09/golang_map_keng/" data-id="cjy5p772x000fqn38gtc9tigi" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li></ul>
@@ -139,7 +247,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -149,7 +257,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/aws/" style="font-size: 13.33px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -158,7 +266,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -169,6 +277,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/07/16/aws_es/">golang使用AWS ElasticSearch</a>
+          </li>
         
           <li>
             <a href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
@@ -184,10 +296,6 @@
         
           <li>
             <a href="/2019/04/01/golang_http_get_unpected/">golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
           </li>
         
       </ul>

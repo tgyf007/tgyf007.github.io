@@ -65,6 +65,79 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-golang_json" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/10/30/golang_json/" class="article-date">
+  <time datetime="2018-10-30T07:27:48.000Z" itemprop="datePublished">2018-10-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/30/golang_json/">golang 解析 json 文件的无解情况</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>拿到一个json文件，格式如下</p>
+<pre><code class="json">[[&quot;ss1&quot;, &quot;ss2&quot;, 3, &quot;ss4&quot;],[&quot;tt1&quot;, &quot;tt2&quot;, 3, &quot;tt4&quot;]]
+</code></pre>
+<p>代码</p>
+<pre><code class="go">data, err := ioutil.ReadFile(os.Args[2])
+if err != nil {
+    fmt.Println(`read file`, err)
+}
+
+var v [][]string
+err = json.Unmarshal(data, &amp;v)
+if err != nil {
+    fmt.Println(`json unmeshal error:`, err)
+}
+</code></pre>
+<p>执行返回</p>
+<pre><code class="linux">json unmeshal error: json: cannot unmarshal number into Go value of type string
+</code></pre>
+<p>数据格式对应不上，想了一下这样写</p>
+<pre><code class="go">type dataFormat struct {
+    S1     string
+    S2     string
+    I1     int
+    S3     string
+}
+var v []dataFormat
+err = json.Unmarshal(data, &amp;v)
+if err != nil {
+    fmt.Println(`json unmeshal error:`, err)
+}
+</code></pre>
+<p>执行返回</p>
+<pre><code class="linux">json unmeshal error: json: cannot unmarshal array into Go value of type main.dataFormat
+</code></pre>
+<p>正常，因为本身json文件的格式确实是一个数组</p>
+<h2 id="所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。"><a href="#所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。" class="headerlink" title="所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。"></a>所以问题来了，json文件的格式是数组，但是其中第三个字段是int类型，其余的都是string类型，在强类型语言里这是无解的，因为一个数组只能全是string或者int。</h2><h3 id="最后还是写了个PHP脚本解决。。。。"><a href="#最后还是写了个PHP脚本解决。。。。" class="headerlink" title="最后还是写了个PHP脚本解决。。。。"></a>最后还是写了个PHP脚本解决。。。。</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/10/30/golang_json/" data-id="cjy5p7739000kqn38qbgk6gir" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/json/">json</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-goandphp" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/10/23/goandphp/" class="article-date">
@@ -105,7 +178,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjvyo01k700043a385hlmke4v" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/23/goandphp/" data-id="cjy5p772n0005qn38xftvv306" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
@@ -139,15 +212,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>macOS系统升级后，使用Git出现问题，提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun</span><br></pre></td></tr></table></figure></p>
-<p>因为Mac最新场景下安装Xcode时已经没有Command Line了，需要单独安装。<br>根据提示在使用命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure></p>
+        <p>macOS系统升级后，使用Git出现问题，提示：</p>
+<pre><code class="linux">xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
+</code></pre>
+<p>因为Mac最新场景下安装Xcode时已经没有Command Line了，需要单独安装。<br>根据提示在使用命令</p>
+<pre><code class="linux">xcode-select --install
+</code></pre>
 <p>安装时最后结果是不能安装该软件</p>
 <h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p><a href="https://developer.apple.com/download/more/" target="_blank" rel="noopener">Developer Apple</a>上手动下载对应的Command Line Tools 安装<br><img src="https://img-blog.csdn.net/20180111174208274?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbHVja3k5MzIy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjvyo01ld000s3a384t0e9xga" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/22/mac_os_xcode/" data-id="cjy5p773j000wqn38g3msah5f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac-os/">mac os</a></li></ul>
@@ -181,46 +258,93 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>几点基本的Markdown语法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">标题：</span><br><span class="line">#h1级标题</span><br><span class="line">##h2级标题</span><br><span class="line">###h3级标题</span><br><span class="line">####h4级标题</span><br><span class="line">#####h5级标题</span><br><span class="line">######h6级标题</span><br><span class="line"></span><br><span class="line">分割线：三个以上的短线 即可作出分割线</span><br><span class="line"></span><br><span class="line">----</span><br><span class="line"></span><br><span class="line">超链接：[连接名称](网址 , 标题)</span><br><span class="line">[我是链接名](http://www.izhangbo.cn, &quot;我是标题&quot;)</span><br><span class="line">[&lt;i class=&quot;icon-refresh&quot;&gt;&lt;/i&gt; 点我刷新](/sonfilename/)</span><br><span class="line"></span><br><span class="line">另一种超链接写法：[链接名][链接代号]</span><br><span class="line">[here][3]</span><br><span class="line">然后在别的地方定义 3 这个详细链接信息，</span><br><span class="line">[3]: http://www.izhangbo.cn &quot;聚牛团队&quot;</span><br><span class="line"></span><br><span class="line">直接展示链接的写法：&lt;http://www.izhangbo.cn&gt;</span><br><span class="line"></span><br><span class="line">键盘键</span><br><span class="line">&lt;kbd&gt;Ctrl+[&lt;/kbd&gt; and &lt;kbd&gt;Ctrl+]&lt;/kbd&gt;</span><br><span class="line"></span><br><span class="line">code格式：反引号</span><br><span class="line">Use the `printf()` function.</span><br><span class="line"></span><br><span class="line">``There is a literal backtick (`) here.针对在代码区段内插入反引号的情况`` </span><br><span class="line"></span><br><span class="line">强调：</span><br><span class="line">*斜体强调*</span><br><span class="line">**粗体强调**</span><br><span class="line"></span><br><span class="line">图片</span><br><span class="line">![Alt text](http://www.izhangbo.cn/wp-content/themes/minty/img/logo.png &quot;Optional title&quot;)</span><br><span class="line"></span><br><span class="line">使用 icon 图标文字</span><br><span class="line">&lt;i class=&quot;icon-cog&quot;&gt;&lt;/i&gt;</span><br><span class="line"></span><br><span class="line">段落：以一个空行开始，以一个空行结束，中间的就是一个段落。</span><br><span class="line"></span><br><span class="line">表格：</span><br><span class="line"></span><br><span class="line">Item     | Value</span><br><span class="line">-------- | ---</span><br><span class="line">Computer | $1600</span><br><span class="line">Phone    | $12</span><br><span class="line">Pipe     | $1</span><br><span class="line"></span><br><span class="line">无序列表：使用 - 加一个空格（）</span><br><span class="line"></span><br><span class="line">- 无需列表1</span><br><span class="line">- 无序列表2</span><br><span class="line">- 无序列表3</span><br><span class="line"></span><br><span class="line">有序列表：使用 数字 加一个英文句点</span><br><span class="line"></span><br><span class="line">1. 有序列表</span><br><span class="line">2. 有序列表</span><br><span class="line">3. 有序列表</span><br><span class="line">4. 有序列表</span><br><span class="line">5. 有序列表</span><br><span class="line"></span><br><span class="line">换行缩进形成代码区块</span><br><span class="line"></span><br><span class="line">    这里先换行，然后缩进4个空格，之后的内容便可以原样显示了，适合用于显示代码内容。直到文本结束或最后一个存在缩进的行为止。    </span><br><span class="line"></span><br><span class="line">块引用</span><br><span class="line">&gt;给引用的文本开始位置都加一个 &apos;&gt;&apos;，</span><br><span class="line">&gt;便可组成一个块引用。在块引用中，可以结合</span><br><span class="line">&gt;其他markdown元素一块使用，比如列表。</span><br><span class="line">&gt;**强调**</span><br><span class="line">也可以只在第一行加大于号，其他位置不加。</span><br><span class="line"></span><br><span class="line">&gt;- 块引用里使用列表，需要和上面的内容隔开一个空行</span><br><span class="line">&gt;- 记得加空格哦。</span><br></pre></td></tr></table></figure></p>
+        <p>几点基本的Markdown语法</p>
+<pre><code>标题：
+#h1级标题
+##h2级标题
+###h3级标题
+####h4级标题
+#####h5级标题
+######h6级标题
 
+分割线：三个以上的短线 即可作出分割线
+
+----
+
+超链接：[连接名称](网址 , 标题)
+[我是链接名](http://www.izhangbo.cn, &quot;我是标题&quot;)
+[&lt;i class=&quot;icon-refresh&quot;&gt;&lt;/i&gt; 点我刷新](/sonfilename/)
+
+另一种超链接写法：[链接名][链接代号]
+[here][3]
+然后在别的地方定义 3 这个详细链接信息，
+[3]: http://www.izhangbo.cn &quot;聚牛团队&quot;
+
+直接展示链接的写法：&lt;http://www.izhangbo.cn&gt;
+
+键盘键
+&lt;kbd&gt;Ctrl+[&lt;/kbd&gt; and &lt;kbd&gt;Ctrl+]&lt;/kbd&gt;
+
+code格式：反引号
+Use the `printf()` function.
+
+``There is a literal backtick (`) here.针对在代码区段内插入反引号的情况`` 
+
+强调：
+*斜体强调*
+**粗体强调**
+
+图片
+![Alt text](http://www.izhangbo.cn/wp-content/themes/minty/img/logo.png &quot;Optional title&quot;)
+
+使用 icon 图标文字
+&lt;i class=&quot;icon-cog&quot;&gt;&lt;/i&gt;
+
+段落：以一个空行开始，以一个空行结束，中间的就是一个段落。
+
+表格：
+
+Item     | Value
+-------- | ---
+Computer | $1600
+Phone    | $12
+Pipe     | $1
+
+无序列表：使用 - 加一个空格（）
+
+- 无需列表1
+- 无序列表2
+- 无序列表3
+
+有序列表：使用 数字 加一个英文句点
+
+1. 有序列表
+2. 有序列表
+3. 有序列表
+4. 有序列表
+5. 有序列表
+
+换行缩进形成代码区块
+
+    这里先换行，然后缩进4个空格，之后的内容便可以原样显示了，适合用于显示代码内容。直到文本结束或最后一个存在缩进的行为止。    
+
+块引用
+&gt;给引用的文本开始位置都加一个 &#39;&gt;&#39;，
+&gt;便可组成一个块引用。在块引用中，可以结合
+&gt;其他markdown元素一块使用，比如列表。
+&gt;**强调**
+也可以只在第一行加大于号，其他位置不加。
+
+&gt;- 块引用里使用列表，需要和上面的内容隔开一个空行
+&gt;- 记得加空格哦。
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjvyo01lh000y3a380w3u8cgh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/10/01/markdown/" data-id="cjy5p773l000yqn38jp85j7ch" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/markdown/">markdown</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-add_service" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/08/23/add_service/" class="article-date">
-  <time datetime="2018-08-23T07:27:48.000Z" itemprop="datePublished">2018-08-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>安装mysql后想使用Linux的service命令控制启动</p>
-<p>red hat 下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld</span><br><span class="line">#设置</span><br><span class="line">chkconfig --add mysqld</span><br><span class="line">chkconfig --level 2345 mysqld on</span><br></pre></td></tr></table></figure></p>
-<p>utubun 下没有chkconfig，试了一下使用update-rc.d，好像可以了，但具体还没太了解这个命令。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjvyo01jz00013a388bchy47n" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -264,10 +388,46 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjvyo01k500033a38u0xwn2co" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/crontab_keng/" data-id="cjy5p772l0004qn38p4mx7ri1" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/crontab/">crontab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-add_service" class="article article-type-post" itemscope="" itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/add_service/" class="article-date">
+  <time datetime="2018-08-23T07:27:48.000Z" itemprop="datePublished">2018-08-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>安装mysql后想使用Linux的service命令控制启动</p>
+<p>red hat 下</p>
+<pre><code class="linux">cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld
+#设置
+chkconfig --add mysqld
+chkconfig --level 2345 mysqld on
+</code></pre>
+<p>utubun 下没有chkconfig，试了一下使用update-rc.d，好像可以了，但具体还没太了解这个命令。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/23/add_service/" data-id="cjy5p772i0003qn38ejigrdjb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
 
     </footer>
   </div>
@@ -463,7 +623,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjvyo01o6002b3a38yv80yhqg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/10/23/linux_learn/" data-id="cjy5p775o002hqn38eayltrnh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
@@ -562,7 +722,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjvyo01kw000h3a38ce38z3dx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2001/08/23/hello-world/" data-id="cjy5p773c000nqn38k85id9zm" class="article-share-link">Share</a>
       
       
     </footer>
@@ -590,7 +750,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/aws/">aws</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crontab/">crontab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elasticsearch/">elasticsearch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git-linux/">git linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/golang/">golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac-os/">mac os</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql-node-js/">mysql node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">php</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/计算机系统/">计算机系统</a></li></ul>
     </div>
   </div>
 
@@ -600,7 +760,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/aws/" style="font-size: 10px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
+      <a href="/tags/aws/" style="font-size: 13.33px;">aws</a> <a href="/tags/crontab/" style="font-size: 13.33px;">crontab</a> <a href="/tags/elasticsearch/" style="font-size: 10px;">elasticsearch</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/git-linux/" style="font-size: 10px;">git linux</a> <a href="/tags/golang/" style="font-size: 20px;">golang</a> <a href="/tags/json/" style="font-size: 10px;">json</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mac-os/" style="font-size: 13.33px;">mac os</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/mysql-node-js/" style="font-size: 10px;">mysql node.js</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/计算机系统/" style="font-size: 10px;">计算机系统</a>
     </div>
   </div>
 
@@ -609,7 +769,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">October 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2001/08/">August 2001</a></li></ul>
     </div>
   </div>
 
@@ -620,6 +780,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/07/16/aws_es/">golang使用AWS ElasticSearch</a>
+          </li>
         
           <li>
             <a href="/2019/05/22/linux_s3cmd/">在Linux安装s3cmd</a>
@@ -635,10 +799,6 @@
         
           <li>
             <a href="/2019/04/01/golang_http_get_unpected/">golang Http ioutil.ReadAll 惊现 Unexpected EOF解决办法</a>
-          </li>
-        
-          <li>
-            <a href="/2019/03/28/mac_proxy/">macOS 终端通过代理访问网络的方法(包括ssh)</a>
           </li>
         
       </ul>
